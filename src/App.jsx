@@ -1,4 +1,27 @@
 import { useState, useEffect } from "react";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, limit } from "firebase/firestore";
+import emailjs from "@emailjs/browser";
+
+// ─────────────────────────────────────────────────────────────
+// FIREBASE + EMAILJS CONFIG
+// ─────────────────────────────────────────────────────────────
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCJSNckvatpfSlyvy9Z8Z1DiTYTYAJAQ7c",
+  authDomain:        "classpredictor.firebaseapp.com",
+  projectId:         "classpredictor",
+  storageBucket:     "classpredictor.firebasestorage.app",
+  messagingSenderId: "4567824313",
+  appId:             "1:4567824313:web:7437793a87687ec556a868",
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db          = getFirestore(firebaseApp);
+
+const EJS_SERVICE  = "service_nenmxs6";
+const EJS_TEMPLATE = "template_arqr2ti";
+const EJS_PUBLIC   = "jx1ujyAb4nc-S2dYw";
 
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -716,41 +739,70 @@ export default function App() {
     return () => { document.head.removeChild(link); document.head.removeChild(style); };
   }, []);
 
-  // ── STORAGE BACKEND ──
+  // ── FIREBASE BACKEND ──
   const loadStats = async () => {
     try {
-      const r = localStorage.getItem("cp_stats");
-      if (r) setStatsData(JSON.parse(r.value));
-    } catch (e) { /* first time, no data yet */ }
+      const rSnap = await getDocs(query(collection(db, "responses"), orderBy("date", "desc"), limit(50)));
+      const fSnap = await getDocs(query(collection(db, "feedbacks"), orderBy("date", "desc"), limit(50)));
+      const responses = rSnap.docs.map(d => d.data());
+      const feedback  = fSnap.docs.map(d => d.data());
+      setStatsData({ total: responses.length, responses, feedback });
+    } catch (e) { console.log("loadStats error:", e); }
   };
 
-  const saveResponse = (name, str, gl, riskStats) => {
+  const saveResponse = async (name, str, gl, riskStats) => {
     try {
-      let data = { total: 0, responses: [], feedback: [] };
-      try { const r = window.storage.get("cp_stats"); if (r) data = JSON.parse(r.value); } catch (e) {}
-      data.total = (data.total || 0) + 1;
-      data.responses = (data.responses || []).concat([{
-        name, stream: str, goal: gl,
+      const entry = {
+        name,
+        stream:   str,
+        goal:     gl,
         highRisk: riskStats.highCnt,
         medRisk:  riskStats.medCnt,
         lowRisk:  riskStats.lowCnt,
-        date: new Date().toLocaleDateString("en-IN"),
-      }]).slice(-100);
-      localStorage.setItem("cp_stats", JSON.stringify(data));
-      setStatsData(data);
-    } catch (e) {}
+        date:     new Date().toLocaleDateString("en-IN"),
+        timestamp: Date.now(),
+      };
+      await addDoc(collection(db, "responses"), entry);
+      setStatsData(s => ({ ...s, total: s.total + 1, responses: [entry, ...s.responses] }));
+
+      // Email notification
+      emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+        student_name: name,
+        stream:       str,
+        goal:         gl,
+        high_risk:    riskStats.highCnt,
+        med_risk:     riskStats.medCnt,
+        rating:       "—",
+        message:      "New analysis completed on ClassPredictor",
+        time:         new Date().toLocaleString("en-IN"),
+      }, EJS_PUBLIC).catch(e => console.log("EmailJS error:", e));
+
+    } catch (e) { console.log("saveResponse error:", e); }
   };
 
-  const saveFeedback = (name, rating, text) => {
+  const saveFeedback = async (name, rating, text) => {
     try {
-      let data = { total: 0, responses: [], feedback: [] };
-      try { const r =  window.storage.get("cp_stats"); if (r) data = JSON.parse(r.value); } catch (e) {}
-      data.feedback = (data.feedback || []).concat([{
-        name, rating, text, date: new Date().toLocaleDateString("en-IN"),
-      }]).slice(-100);
-       window.storage.set("cp_stats", JSON.stringify(data));
-      setStatsData(data);
-    } catch (e) {}
+      const entry = {
+        name, rating, text,
+        date:      new Date().toLocaleDateString("en-IN"),
+        timestamp: Date.now(),
+      };
+      await addDoc(collection(db, "feedbacks"), entry);
+      setStatsData(s => ({ ...s, feedback: [entry, ...s.feedback] }));
+
+      // Email notification
+      emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+        student_name: name,
+        stream:       "—",
+        goal:         "—",
+        high_risk:    "—",
+        med_risk:     "—",
+        rating:       rating + "/5 stars",
+        message:      text || "No message written",
+        time:         new Date().toLocaleString("en-IN"),
+      }, EJS_PUBLIC).catch(e => console.log("EmailJS error:", e));
+
+    } catch (e) { console.log("saveFeedback error:", e); }
   };
 
   const subjects    = STREAM_SUBJECTS[stream] || [];
@@ -865,11 +917,11 @@ export default function App() {
               type="password"
               value={adminPass}
               onChange={e => setAdminPass(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && adminPass === ADMIN_PASSWORD) setAdminUnlocked(true); }}
+              onKeyDown={e => { if (e.key === "Enter" && adminPass === ADMIN_PASSWORD) { setAdminUnlocked(true); loadStats(); } }}
               placeholder="Enter password..."
               style={{ width: "100%", padding: "0.75rem 1rem", borderRadius: 10, background: "#132035", border: "1px solid rgba(255,255,255,0.08)", color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.75rem" }}
             />
-            <button onClick={() => { if (adminPass === ADMIN_PASSWORD) setAdminUnlocked(true); else alert("Wrong password!"); }} className="btn ot" style={{ width: "100%", padding: "0.8rem", borderRadius: 10, background: "linear-gradient(135deg,#3B82F6,#1D4ED8)", color: "white", fontWeight: 700, fontSize: "0.9rem" }}>
+            <button onClick={() => { if (adminPass === ADMIN_PASSWORD) { setAdminUnlocked(true); loadStats(); } else alert("Wrong password!"); }} className="btn ot" style={{ width: "100%", padding: "0.8rem", borderRadius: 10, background: "linear-gradient(135deg,#3B82F6,#1D4ED8)", color: "white", fontWeight: 700, fontSize: "0.9rem" }}>
               Unlock Dashboard
             </button>
           </div>
@@ -1159,7 +1211,7 @@ export default function App() {
 
       <PBtn disabled={!stream || !goal} onClick={() => { setStep(2); setSubIdx(0); }}>
         Continue → Rate Your Chapters
-      </PBtn> 
+      </PBtn>
     </div>
   );
 
@@ -1219,7 +1271,7 @@ export default function App() {
         <div style={{ display: "flex", gap: "0.3rem", marginBottom: "1rem", flexWrap: "wrap" }}>
           {[1, 2, 3, 4, 5].map(v => (
             <span key={v} className="mn" style={{ fontSize: "0.65rem", color: DCOL[v], padding: "2px 7px", background: DCOL[v] + "18", borderRadius: 4 }}>
-              {v} = {DLABEL[v].split(" ")[0]}
+              {v} = {["","V.Easy","Easy","Avg","Hard","V.Hard"][v]}
             </span>
           ))}
         </div>
