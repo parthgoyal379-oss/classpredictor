@@ -8,21 +8,20 @@ import emailjs from "@emailjs/browser";
 // ─────────────────────────────────────────────────────────────
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyCJSNckvatpfSlyvy9Z8Z1DiTYTYAJAQ7c",
-  authDomain:        "classpredictor.firebaseapp.com",
-  projectId:         "classpredictor",
-  storageBucket:     "classpredictor.firebasestorage.app",
-  messagingSenderId: "4567824313",
-  appId:             "1:4567824313:web:7437793a87687ec556a868",
+  apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_ID,
+  appId:             import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db          = getFirestore(firebaseApp);
 
-const EJS_SERVICE  = "service_nenmxs6";
-const EJS_TEMPLATE = "template_arqr2ti";
-const EJS_PUBLIC   = "jx1ujyAb4nc-S2dYw";
-
+const EJS_SERVICE  = import.meta.env.VITE_EJS_SERVICE;
+const EJS_TEMPLATE = import.meta.env.VITE_EJS_TEMPLATE;
+const EJS_PUBLIC   = import.meta.env.VITE_EJS_PUBLIC;
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────
