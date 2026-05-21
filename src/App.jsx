@@ -1375,6 +1375,7 @@ export default function App() {
     };
 
     return (
+      <>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "1.5rem 1.5rem 5rem" }} className="fade">
 
         {/* Header */}
@@ -1639,49 +1640,44 @@ export default function App() {
           </div>
         )}
       </div>
-      <FeedbackPopup />
-    );
-  }
-
-  // ── FEEDBACK POPUP ──
-  function FeedbackPopup() {
-    if (!showFeedbackPopup || feedback.submitted) return null;
-    return (
-      <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 999, maxWidth: 320, width: "calc(100vw - 3rem)" }}>
-        <div style={{ background: "#0D1929", border: "1px solid rgba(59,130,246,0.4)", borderRadius: 16, padding: "1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
-            <div>
-              <p className="ot" style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.9rem" }}>How was your experience? 😊</p>
-              <p style={{ color: "#6B7280", fontSize: "0.75rem", marginTop: "2px" }}>Takes 10 seconds — helps improve this tool</p>
+      {showFeedbackPopup && !feedback.submitted && (
+        <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 999, maxWidth: 320, width: "calc(100vw - 3rem)" }}>
+          <div style={{ background: "#0D1929", border: "1px solid rgba(59,130,246,0.4)", borderRadius: 16, padding: "1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
+              <div>
+                <p className="ot" style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.9rem" }}>How was your experience? 😊</p>
+                <p style={{ color: "#6B7280", fontSize: "0.75rem", marginTop: "2px" }}>Takes 10 seconds — helps improve this tool</p>
+              </div>
+              <button onClick={() => setShowFeedbackPopup(false)} className="btn" style={{ color: "#374151", fontSize: "1rem", padding: "0 4px" }}>✕</button>
             </div>
-            <button onClick={() => setShowFeedbackPopup(false)} className="btn" style={{ color: "#374151", fontSize: "1rem", padding: "0 4px" }}>✕</button>
+            <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.75rem" }}>
+              {[1, 2, 3, 4, 5].map(v => (
+                <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{
+                  flex: 1, padding: "0.5rem 0", borderRadius: 8, fontSize: "1.2rem",
+                  background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035",
+                  border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)"),
+                }}>★</button>
+              ))}
+            </div>
+            <textarea
+              value={feedback.text}
+              onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
+              placeholder="Any suggestions? (optional)"
+              rows={2}
+              style={{ width: "100%", padding: "0.6rem", borderRadius: 8, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.8rem", resize: "none", marginBottom: "0.75rem", fontFamily: "Plus Jakarta Sans, sans-serif" }}
+            />
+            <button onClick={() => { if (feedback.rating === 0) return; submitFeedback(); setShowFeedbackPopup(false); }} className="btn ot" style={{
+              width: "100%", padding: "0.65rem", borderRadius: 9, fontWeight: 700, fontSize: "0.85rem",
+              background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#132035",
+              color: feedback.rating > 0 ? "white" : "#374151",
+              cursor: feedback.rating > 0 ? "pointer" : "not-allowed",
+            }}>
+              {feedback.rating > 0 ? "Submit Feedback 🙏" : "Select a rating first"}
+            </button>
           </div>
-          <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.75rem" }}>
-            {[1, 2, 3, 4, 5].map(v => (
-              <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{
-                flex: 1, padding: "0.5rem 0", borderRadius: 8, fontSize: "1.2rem",
-                background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035",
-                border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)"),
-              }}>★</button>
-            ))}
-          </div>
-          <textarea
-            value={feedback.text}
-            onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
-            placeholder="Any suggestions? (optional)"
-            rows={2}
-            style={{ width: "100%", padding: "0.6rem", borderRadius: 8, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.8rem", resize: "none", marginBottom: "0.75rem", fontFamily: "Plus Jakarta Sans, sans-serif" }}
-          />
-          <button onClick={() => { if (feedback.rating === 0) return; submitFeedback(); setShowFeedbackPopup(false); }} className="btn ot" style={{
-            width: "100%", padding: "0.65rem", borderRadius: 9, fontWeight: 700, fontSize: "0.85rem",
-            background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#132035",
-            color: feedback.rating > 0 ? "white" : "#374151",
-            cursor: feedback.rating > 0 ? "pointer" : "not-allowed",
-          }}>
-            {feedback.rating > 0 ? "Submit Feedback 🙏" : "Select a rating first"}
-          </button>
         </div>
-      </div>
+      )}
+      </>
     );
   }
 }
