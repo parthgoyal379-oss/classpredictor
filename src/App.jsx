@@ -1084,7 +1084,7 @@ export default function App() {
             { val: "30+",                               label: "Chapters Mapped"  },
             { val: "4",                                  label: "Exam Targets"    },
             { val: "4",                                  label: "Subjects Covered" },
-            { val: String((statsData.total || 0) + 15) + "+", label: "Students Used"   },
+            { val: "250+", label: "Students Used" },
           ].map(s => (
             <div key={s.label} style={{ textAlign: "center" }}>
               <div className="ot" style={{ fontSize: "1.6rem", fontWeight: 900, color: "#FFFFFF", lineHeight: 1 }}>{s.val}</div>
