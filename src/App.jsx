@@ -1117,12 +1117,14 @@ export default function App() {
 
       {/* Footer */}
       <footer style={{ padding: "1.25rem 2.5rem", borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", position: "relative", zIndex: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ color: "#1F2937", fontSize: "0.73rem" }}>Designed & developed by</span>
-          <span className="ot" style={{ color: "#F59E0B", fontWeight: 700, fontSize: "0.78rem" }}>Parth Goyal</span>
-        </div>
-        <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.72rem", textDecoration: "none", fontFamily: "Space Mono, monospace" }}>{CREATOR_EMAIL}</a>
-      </footer>
+  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <span style={{ color: "#1F2937", fontSize: "0.73rem" }}>Designed & developed by</span>
+    <a href="https://parth-goyal.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#F59E0B", fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", fontFamily: "Outfit, sans-serif" }}>
+      Parth Goyal ↗
+    </a>
+  </div>
+  <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.72rem", textDecoration: "none", fontFamily: "Space Mono, monospace" }}>{CREATOR_EMAIL}</a>
+</footer>
     </div>
   );
 
