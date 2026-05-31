@@ -23,6 +23,7 @@ const db          = getFirestore(firebaseApp);
 const EJS_SERVICE  = import.meta.env.VITE_EJS_SERVICE;
 const EJS_TEMPLATE = import.meta.env.VITE_EJS_TEMPLATE;
 const EJS_PUBLIC   = import.meta.env.VITE_EJS_PUBLIC;
+
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────
@@ -690,23 +691,23 @@ function runAnalysis(ratings, stream, goal) {
 // ─────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [step,          setStep]          = useState(0);
-  const [studentName,   setStudentName]   = useState("");
-  const [nameInput,     setNameInput]     = useState("");
-  const [stream,        setStream]        = useState(null);
-  const [goal,          setGoal]          = useState(null);
-  const [ratings,       setRatings]       = useState({});
-  const [subIdx,        setSubIdx]        = useState(0);
-  const [results,       setResults]       = useState(null);
-  const [tab,           setTab]           = useState("report");
-  const [loading,       setLoading]       = useState(false);
-  const [expanded,      setExpanded]      = useState(null);
-  const [feedback,           setFeedback]           = useState({ rating: 0, text: "", submitted: false });
-  const [statsData,          setStatsData]          = useState({ total: 0, responses: [], feedback: [] });
-  const [showAdmin,          setShowAdmin]          = useState(false);
-  const [adminPass,          setAdminPass]          = useState("");
-  const [adminUnlocked,      setAdminUnlocked]      = useState(false);
-  const [showFeedbackPopup,  setShowFeedbackPopup]  = useState(false);
+  const [step,                setStep]                = useState(0);
+  const [studentName,         setStudentName]         = useState("");
+  const [nameInput,           setNameInput]           = useState("");
+  const [stream,              setStream]              = useState(null);
+  const [goal,                setGoal]                = useState(null);
+  const [ratings,             setRatings]             = useState({});
+  const [subIdx,              setSubIdx]              = useState(0);
+  const [results,             setResults]             = useState(null);
+  const [tab,                 setTab]                 = useState("report");
+  const [loading,             setLoading]             = useState(false);
+  const [expanded,            setExpanded]            = useState(null);
+  const [feedback,            setFeedback]            = useState({ rating: 0, text: "", submitted: false });
+  const [statsData,           setStatsData]           = useState({ total: 0, responses: [], feedback: [] });
+  const [showAdmin,           setShowAdmin]           = useState(false);
+  const [adminPass,           setAdminPass]           = useState("");
+  const [adminUnlocked,       setAdminUnlocked]       = useState(false);
+  const [showFeedbackPopup,   setShowFeedbackPopup]   = useState(false);
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -755,54 +756,35 @@ export default function App() {
     try {
       const entry = {
         name,
-        stream:   str,
-        goal:     gl,
-        highRisk: riskStats.highCnt,
-        medRisk:  riskStats.medCnt,
-        lowRisk:  riskStats.lowCnt,
-        date:     new Date().toLocaleDateString("en-IN"),
+        stream:    str,
+        goal:      gl,
+        highRisk:  riskStats.highCnt,
+        medRisk:   riskStats.medCnt,
+        lowRisk:   riskStats.lowCnt,
+        date:      new Date().toLocaleDateString("en-IN"),
         timestamp: Date.now(),
       };
       await addDoc(collection(db, "responses"), entry);
       setStatsData(s => ({ ...s, total: s.total + 1, responses: [entry, ...s.responses] }));
-
-      // Email notification
       emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-        student_name: name,
-        stream:       str,
-        goal:         gl,
-        high_risk:    riskStats.highCnt,
-        med_risk:     riskStats.medCnt,
-        rating:       "—",
-        message:      "New analysis completed on ClassPredictor",
-        time:         new Date().toLocaleString("en-IN"),
+        student_name: name, stream: str, goal: gl,
+        high_risk: riskStats.highCnt, med_risk: riskStats.medCnt,
+        rating: "—", message: "New analysis completed on ClassPredictor",
+        time: new Date().toLocaleString("en-IN"),
       }, EJS_PUBLIC).catch(e => console.log("EmailJS error:", e));
-
     } catch (e) { console.log("saveResponse error:", e); }
   };
 
   const saveFeedback = async (name, rating, text) => {
     try {
-      const entry = {
-        name, rating, text,
-        date:      new Date().toLocaleDateString("en-IN"),
-        timestamp: Date.now(),
-      };
+      const entry = { name, rating, text, date: new Date().toLocaleDateString("en-IN"), timestamp: Date.now() };
       await addDoc(collection(db, "feedbacks"), entry);
       setStatsData(s => ({ ...s, feedback: [entry, ...s.feedback] }));
-
-      // Email notification
       emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-        student_name: name,
-        stream:       "—",
-        goal:         "—",
-        high_risk:    "—",
-        med_risk:     "—",
-        rating:       rating + "/5 stars",
-        message:      text || "No message written",
-        time:         new Date().toLocaleString("en-IN"),
+        student_name: name, stream: "—", goal: "—", high_risk: "—", med_risk: "—",
+        rating: rating + "/5 stars", message: text || "No message written",
+        time: new Date().toLocaleString("en-IN"),
       }, EJS_PUBLIC).catch(e => console.log("EmailJS error:", e));
-
     } catch (e) { console.log("saveFeedback error:", e); }
   };
 
@@ -811,8 +793,7 @@ export default function App() {
   const curChapters = FOUNDATION[curSub] || [];
 
   const { ratedCount, totalCount } = (() => {
-    let r = 0;
-    let t = 0;
+    let r = 0; let t = 0;
     subjects.forEach(s => {
       const chs = FOUNDATION[s] || [];
       t += chs.length;
@@ -833,7 +814,6 @@ export default function App() {
       setLoading(false);
       setStep(3);
       setTab("report");
-      // Show feedback popup after 8 seconds
       setTimeout(() => setShowFeedbackPopup(true), 8000);
     }, 2000);
   };
@@ -865,15 +845,8 @@ export default function App() {
   };
 
   const resetAll = () => {
-    setStep(0);
-    setStream(null);
-    setGoal(null);
-    setRatings({});
-    setResults(null);
-    setStudentName("");
-    setNameInput("");
-    setFeedback({ rating: 0, text: "", submitted: false });
-    setExpanded(null);
+    setStep(0); setStream(null); setGoal(null); setRatings({}); setResults(null);
+    setStudentName(""); setNameInput(""); setFeedback({ rating: 0, text: "", submitted: false }); setExpanded(null);
   };
 
   // ─────────────────────────────────────────────────────────────
@@ -917,9 +890,7 @@ export default function App() {
             <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🔐</div>
             <p className="ot" style={{ color: "#E2E8F0", fontWeight: 700, marginBottom: "1rem", fontSize: "1rem" }}>Enter Admin Password</p>
             <input
-              type="password"
-              value={adminPass}
-              onChange={e => setAdminPass(e.target.value)}
+              type="password" value={adminPass} onChange={e => setAdminPass(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter" && adminPass === ADMIN_PASSWORD) { setAdminUnlocked(true); loadStats(); } }}
               placeholder="Enter password..."
               style={{ width: "100%", padding: "0.75rem 1rem", borderRadius: 10, background: "#132035", border: "1px solid rgba(255,255,255,0.08)", color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.75rem" }}
@@ -945,9 +916,7 @@ export default function App() {
 
             <div className="card" style={{ marginBottom: "1rem", overflow: "hidden" }}>
               <div style={{ padding: "0.75rem 1rem", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(59,130,246,0.08)" }}>
-                <span className="ot" style={{ fontWeight: 700, color: "#60A5FA", fontSize: "0.87rem" }}>
-                  Recent Responses ({(statsData.responses || []).length})
-                </span>
+                <span className="ot" style={{ fontWeight: 700, color: "#60A5FA", fontSize: "0.87rem" }}>Recent Responses ({(statsData.responses || []).length})</span>
               </div>
               {(statsData.responses || []).length === 0 ? (
                 <p style={{ padding: "1rem", color: "#374151", fontSize: "0.82rem" }}>No responses yet. Share the tool!</p>
@@ -969,9 +938,7 @@ export default function App() {
 
             <div className="card" style={{ overflow: "hidden" }}>
               <div style={{ padding: "0.75rem 1rem", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(16,185,129,0.08)" }}>
-                <span className="ot" style={{ fontWeight: 700, color: "#34D399", fontSize: "0.87rem" }}>
-                  User Feedback ({(statsData.feedback || []).length})
-                </span>
+                <span className="ot" style={{ fontWeight: 700, color: "#34D399", fontSize: "0.87rem" }}>User Feedback ({(statsData.feedback || []).length})</span>
               </div>
               {(statsData.feedback || []).length === 0 ? (
                 <p style={{ padding: "1rem", color: "#374151", fontSize: "0.82rem" }}>No feedback yet.</p>
@@ -1001,11 +968,9 @@ export default function App() {
   // ─────────────────────────────────────────────────────────────
   if (step === 0) return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#07101E", position: "relative", overflow: "hidden" }} className="fade">
-      {/* Ambient orbs */}
       <div style={{ position: "fixed", top: "-10%", left: "-5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "fixed", bottom: "-15%", right: "-8%", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      {/* Nav */}
       <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2.5rem", borderBottom: "1px solid rgba(255,255,255,0.04)", position: "relative", zIndex: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
           <div style={{ width: 30, height: 30, borderRadius: 8, background: "linear-gradient(135deg,#3B82F6,#8B5CF6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem" }}>📊</div>
@@ -1022,10 +987,7 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Hero */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "3rem 1.5rem 2rem", textAlign: "center", position: "relative", zIndex: 5 }}>
-
-        {/* Creator badge */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", padding: "0.45rem 1.1rem", borderRadius: 999, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", marginBottom: "1.75rem" }}>
           <div style={{ width: 22, height: 22, borderRadius: "50%", background: "linear-gradient(135deg,#F59E0B,#EF4444)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.7rem", fontWeight: 700, color: "white", fontFamily: "Outfit, sans-serif" }}>P</div>
           <span style={{ color: "#9CA3AF", fontSize: "0.78rem" }}>Built by</span>
@@ -1062,7 +1024,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* Feature cards — PC-friendly grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "0.75rem", maxWidth: 720, width: "100%", marginBottom: "3rem" }}>
           {[
             { icon: "🔗", title: "Dependency Graph",  desc: "Maps 30+ real chapter prerequisites across all subjects",  col: "#3B82F6" },
@@ -1078,13 +1039,12 @@ export default function App() {
           ))}
         </div>
 
-        {/* Stats bar */}
         <div style={{ display: "flex", gap: "2.5rem", flexWrap: "wrap", justifyContent: "center", padding: "1.25rem 2.5rem", borderRadius: 16, background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: "3rem" }}>
           {[
-            { val: "30+",                               label: "Chapters Mapped"  },
-            { val: "4",                                  label: "Exam Targets"    },
-            { val: "4",                                  label: "Subjects Covered" },
-            { val: "250+", label: "Students Used" },
+            { val: "30+",  label: "Chapters Mapped"   },
+            { val: "4",    label: "Exam Targets"       },
+            { val: "4",    label: "Subjects Covered"   },
+            { val: "250+", label: "Students Used"      },
           ].map(s => (
             <div key={s.label} style={{ textAlign: "center" }}>
               <div className="ot" style={{ fontSize: "1.6rem", fontWeight: 900, color: "#FFFFFF", lineHeight: 1 }}>{s.val}</div>
@@ -1093,7 +1053,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* Testimonials */}
         <div style={{ width: "100%", maxWidth: 780, marginBottom: "2rem" }}>
           <div className="mn" style={{ color: "#374151", fontSize: "0.65rem", letterSpacing: "0.12em", marginBottom: "1rem", textAlign: "center" }}>WHAT STUDENTS SAY</div>
           <div className="scrollhide" style={{ display: "flex", gap: "0.75rem", overflowX: "auto", paddingBottom: 4 }}>
@@ -1116,16 +1075,13 @@ export default function App() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer style={{ padding: "1.25rem 2.5rem", borderTop: "1px solid rgba(255,255,255,0.04)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", position: "relative", zIndex: 10 }}>
-  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-    <span style={{ color: "#1F2937", fontSize: "0.73rem" }}>Designed & developed by</span>
-    <a href="https://parth-goyal.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#F59E0B", fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", fontFamily: "Outfit, sans-serif" }}>
-      Parth Goyal ↗
-    </a>
-  </div>
-  <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.72rem", textDecoration: "none", fontFamily: "Space Mono, monospace" }}>{CREATOR_EMAIL}</a>
-</footer>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <span style={{ color: "#1F2937", fontSize: "0.73rem" }}>Designed & developed by</span>
+          <a href="https://parth-goyal.vercel.app" target="_blank" rel="noopener noreferrer" style={{ color: "#F59E0B", fontWeight: 700, fontSize: "0.78rem", textDecoration: "none", fontFamily: "Outfit, sans-serif" }}>Parth Goyal ↗</a>
+        </div>
+        <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.72rem", textDecoration: "none", fontFamily: "Space Mono, monospace" }}>{CREATOR_EMAIL}</a>
+      </footer>
     </div>
   );
 
@@ -1137,37 +1093,18 @@ export default function App() {
       <div style={{ width: "100%", maxWidth: 440, textAlign: "center" }}>
         <div style={{ fontSize: "2.5rem", marginBottom: "1.25rem" }}>👋</div>
         <h2 className="ot" style={{ fontSize: "1.9rem", fontWeight: 900, color: "#FFFFFF", marginBottom: "0.5rem", letterSpacing: "-0.02em" }}>What's your name?</h2>
-        <p style={{ color: "#6B7280", fontSize: "0.9rem", marginBottom: "2rem", lineHeight: 1.6 }}>
-          We'll use this to personalise your report and roadmap.
-        </p>
+        <p style={{ color: "#6B7280", fontSize: "0.9rem", marginBottom: "2rem", lineHeight: 1.6 }}>We'll use this to personalise your report and roadmap.</p>
         <input
-          type="text"
-          value={nameInput}
-          onChange={e => setNameInput(e.target.value)}
+          type="text" value={nameInput} onChange={e => setNameInput(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter" && nameInput.trim().length >= 2) { setStudentName(nameInput.trim()); setStep(1); } }}
-          placeholder="Enter your full name..."
-          autoFocus
-          style={{
-            width: "100%", padding: "1rem 1.25rem", borderRadius: 12,
-            background: "#0D1929", color: "#FFFFFF", fontSize: "1.05rem", marginBottom: "1rem",
-            border: "1px solid " + (nameInput.length > 1 ? "#3B82F6" : "rgba(255,255,255,0.1)"),
-            transition: "border-color 0.2s",
-          }}
+          placeholder="Enter your full name..." autoFocus
+          style={{ width: "100%", padding: "1rem 1.25rem", borderRadius: 12, background: "#0D1929", color: "#FFFFFF", fontSize: "1.05rem", marginBottom: "1rem", border: "1px solid " + (nameInput.length > 1 ? "#3B82F6" : "rgba(255,255,255,0.1)"), transition: "border-color 0.2s" }}
         />
         <button
           onClick={() => { if (nameInput.trim().length >= 2) { setStudentName(nameInput.trim()); setStep(1); } }}
-          disabled={nameInput.trim().length < 2}
-          className="btn ot"
-          style={{
-            width: "100%", padding: "0.95rem", borderRadius: 12, fontSize: "1rem", fontWeight: 700,
-            background: nameInput.trim().length >= 2 ? "linear-gradient(135deg,#3B82F6,#1D4ED8)" : "#0D1929",
-            color: nameInput.trim().length >= 2 ? "white" : "#374151",
-            cursor: nameInput.trim().length >= 2 ? "pointer" : "not-allowed",
-            boxShadow: nameInput.trim().length >= 2 ? "0 4px 20px rgba(59,130,246,0.35)" : "none",
-          }}
-        >
-          Let's Go →
-        </button>
+          disabled={nameInput.trim().length < 2} className="btn ot"
+          style={{ width: "100%", padding: "0.95rem", borderRadius: 12, fontSize: "1rem", fontWeight: 700, background: nameInput.trim().length >= 2 ? "linear-gradient(135deg,#3B82F6,#1D4ED8)" : "#0D1929", color: nameInput.trim().length >= 2 ? "white" : "#374151", cursor: nameInput.trim().length >= 2 ? "pointer" : "not-allowed", boxShadow: nameInput.trim().length >= 2 ? "0 4px 20px rgba(59,130,246,0.35)" : "none" }}
+        >Let's Go →</button>
         <button onClick={() => setStep(0)} className="btn" style={{ marginTop: "1rem", color: "#374151", fontSize: "0.78rem" }}>← Back to home</button>
       </div>
     </div>
@@ -1179,23 +1116,15 @@ export default function App() {
   if (step === 1) return (
     <div style={{ maxWidth: 640, margin: "0 auto", padding: "2rem 1.5rem" }} className="fade">
       <StepBar step={1} />
-      <h2 className="ot" style={{ fontSize: "1.65rem", fontWeight: 800, marginBottom: "0.25rem", color: "#FFFFFF" }}>
-        Hey {studentName}! 👋
-      </h2>
+      <h2 className="ot" style={{ fontSize: "1.65rem", fontWeight: 800, marginBottom: "0.25rem", color: "#FFFFFF" }}>Hey {studentName}! 👋</h2>
       <p style={{ color: "#6B7280", marginBottom: "2rem", fontSize: "0.9rem" }}>Choose your stream and target exam to personalise your analysis.</p>
 
       <SLabel>CHOOSE YOUR STREAM</SLabel>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem", marginBottom: "2rem" }}>
         {Object.entries(STREAM_SUBJECTS).map(([id, subs]) => (
-          <button key={id} onClick={() => setStream(id)} className="btn card" style={{
-            padding: "1rem", textAlign: "left",
-            borderColor: stream === id ? "#3B82F6" : "rgba(255,255,255,0.06)",
-            background: stream === id ? "rgba(59,130,246,0.1)" : "#0D1929",
-          }}>
+          <button key={id} onClick={() => setStream(id)} className="btn card" style={{ padding: "1rem", textAlign: "left", borderColor: stream === id ? "#3B82F6" : "rgba(255,255,255,0.06)", background: stream === id ? "rgba(59,130,246,0.1)" : "#0D1929" }}>
             <div className="ot" style={{ fontWeight: 700, fontSize: "1.05rem", color: stream === id ? "#3B82F6" : "#E2E8F0" }}>{id}</div>
-            <div style={{ fontSize: "0.72rem", color: "#374151", marginTop: "3px" }}>
-              {subs.filter(s => s !== "core_maths").map(s => SMETA[s].name).join(" · ")}
-            </div>
+            <div style={{ fontSize: "0.72rem", color: "#374151", marginTop: "3px" }}>{subs.filter(s => s !== "core_maths").map(s => SMETA[s].name).join(" · ")}</div>
           </button>
         ))}
       </div>
@@ -1203,20 +1132,14 @@ export default function App() {
       <SLabel>YOUR TARGET EXAM</SLabel>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem", marginBottom: "2.5rem" }}>
         {[["JEE", "IIT/NIT Engineering"], ["NEET", "Medical Entrance"], ["Boards", "CBSE/State Boards"], ["CUET", "Central University"]].map(([g, desc]) => (
-          <button key={g} onClick={() => setGoal(g)} className="btn card" style={{
-            padding: "1rem", textAlign: "left",
-            borderColor: goal === g ? "#F59E0B" : "rgba(255,255,255,0.06)",
-            background: goal === g ? "rgba(245,158,11,0.1)" : "#0D1929",
-          }}>
+          <button key={g} onClick={() => setGoal(g)} className="btn card" style={{ padding: "1rem", textAlign: "left", borderColor: goal === g ? "#F59E0B" : "rgba(255,255,255,0.06)", background: goal === g ? "rgba(245,158,11,0.1)" : "#0D1929" }}>
             <div className="ot" style={{ fontWeight: 700, fontSize: "1.05rem", color: goal === g ? "#F59E0B" : "#E2E8F0" }}>{g}</div>
             <div style={{ fontSize: "0.72rem", color: "#374151", marginTop: "3px" }}>{desc}</div>
           </button>
         ))}
       </div>
 
-      <PBtn disabled={!stream || !goal} onClick={() => { setStep(2); setSubIdx(0); }}>
-        Continue → Rate Your Chapters
-      </PBtn>
+      <PBtn disabled={!stream || !goal} onClick={() => { setStep(2); setSubIdx(0); }}>Continue → Rate Your Chapters</PBtn>
     </div>
   );
 
@@ -1240,19 +1163,13 @@ export default function App() {
           <div style={{ height: "100%", width: pct + "%", background: "linear-gradient(90deg,#3B82F6,#8B5CF6)", borderRadius: 9, transition: "width 0.4s" }} />
         </div>
 
-        {/* Subject tabs */}
         <div className="scrollhide" style={{ display: "flex", gap: "0.4rem", marginBottom: "1.25rem", overflowX: "auto", paddingBottom: 2 }}>
           {subjects.map((s, i) => {
             const m    = SMETA[s];
             const chs  = FOUNDATION[s] || [];
             const done = chs.filter(c => ratings[c.id] != null).length;
             return (
-              <button key={s} onClick={() => setSubIdx(i)} className="btn ot" style={{
-                padding: "0.45rem 0.9rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 700, whiteSpace: "nowrap",
-                background: subIdx === i ? m.bg : "#0D1929",
-                color: subIdx === i ? m.color : "#4B5563",
-                border: "1px solid " + (subIdx === i ? m.color + "55" : "rgba(255,255,255,0.06)"),
-              }}>
+              <button key={s} onClick={() => setSubIdx(i)} className="btn ot" style={{ padding: "0.45rem 0.9rem", borderRadius: 8, fontSize: "0.8rem", fontWeight: 700, whiteSpace: "nowrap", background: subIdx === i ? m.bg : "#0D1929", color: subIdx === i ? m.color : "#4B5563", border: "1px solid " + (subIdx === i ? m.color + "55" : "rgba(255,255,255,0.06)") }}>
                 {m.icon} {m.name}{done > 0 && <span style={{ opacity: 0.55, fontWeight: 400 }}> {done}/{chs.length}</span>}
               </button>
             );
@@ -1272,7 +1189,6 @@ export default function App() {
           Rate 1 (very easy) to 5 (very difficult). Be honest, {studentName} — this only helps you.
         </p>
 
-        {/* Legend */}
         <div style={{ display: "flex", gap: "0.3rem", marginBottom: "1rem", flexWrap: "wrap" }}>
           {[1, 2, 3, 4, 5].map(v => (
             <span key={v} className="mn" style={{ fontSize: "0.65rem", color: DCOL[v], padding: "2px 7px", background: DCOL[v] + "18", borderRadius: 4 }}>
@@ -1281,35 +1197,21 @@ export default function App() {
           ))}
         </div>
 
-        {/* PC-friendly 2-column grid on wide screens */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "0.65rem" }}>
           {curChapters.map(ch => {
             const r = ratings[ch.id];
             return (
-              <div key={ch.id} className="card" style={{
-                padding: "0.9rem 1rem",
-                borderColor: r ? DCOL[r] + "55" : "rgba(255,255,255,0.06)",
-                background: r ? DCOL[r] + "0A" : "#0D1929",
-              }}>
+              <div key={ch.id} className="card" style={{ padding: "0.9rem 1rem", borderColor: r ? DCOL[r] + "55" : "rgba(255,255,255,0.06)", background: r ? DCOL[r] + "0A" : "#0D1929" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.6rem" }}>
                   <div style={{ flex: 1, minWidth: 0, paddingRight: "0.5rem" }}>
                     <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem" }}>{ch.name}</div>
                     <div style={{ color: "#374151", fontSize: "0.72rem", marginTop: "2px" }}>{ch.detail} · Class {ch.cl}</div>
                   </div>
-                  {r && (
-                    <span className="mn" style={{ fontSize: "0.65rem", color: DCOL[r], background: DCOL[r] + "18", padding: "2px 8px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {DLABEL[r]}
-                    </span>
-                  )}
+                  {r && <span className="mn" style={{ fontSize: "0.65rem", color: DCOL[r], background: DCOL[r] + "18", padding: "2px 8px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 }}>{DLABEL[r]}</span>}
                 </div>
                 <div style={{ display: "flex", gap: "0.35rem" }}>
                   {[1, 2, 3, 4, 5].map(v => (
-                    <button key={v} onClick={() => rate(ch.id, v)} className="btn mn" style={{
-                      flex: 1, padding: "0.4rem 0", borderRadius: 7, fontSize: "0.72rem", fontWeight: 700,
-                      background: r === v ? DCOL[v] : r && r !== v ? "#060E1A" : "#132035",
-                      color: r === v ? "white" : r && r !== v ? "#1F2937" : "#4B5563",
-                      border: "1px solid " + (r === v ? DCOL[v] : "rgba(255,255,255,0.04)"),
-                    }}>{v}</button>
+                    <button key={v} onClick={() => rate(ch.id, v)} className="btn mn" style={{ flex: 1, padding: "0.4rem 0", borderRadius: 7, fontSize: "0.72rem", fontWeight: 700, background: r === v ? DCOL[v] : r && r !== v ? "#060E1A" : "#132035", color: r === v ? "white" : r && r !== v ? "#1F2937" : "#4B5563", border: "1px solid " + (r === v ? DCOL[v] : "rgba(255,255,255,0.04)") }}>{v}</button>
                   ))}
                 </div>
               </div>
@@ -1317,39 +1219,14 @@ export default function App() {
           })}
         </div>
 
-        {/* Buttons — Next Subject is primary, Analyze is secondary */}
         <div style={{ display: "flex", gap: "0.65rem", marginTop: "1.5rem" }}>
-          <button
-            onClick={doAnalyze}
-            disabled={ratedCount === 0}
-            className="btn ot"
-            style={{
-              flex: 1, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem",
-              background: ratedCount > 0 ? "#132035" : "#0D1929",
-              color: ratedCount > 0 ? "#6B7280" : "#1F2937",
-              cursor: ratedCount > 0 ? "pointer" : "not-allowed",
-              border: "1px solid rgba(255,255,255,0.07)",
-            }}
-          >
+          <button onClick={doAnalyze} disabled={ratedCount === 0} className="btn ot" style={{ flex: 1, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem", background: ratedCount > 0 ? "#132035" : "#0D1929", color: ratedCount > 0 ? "#6B7280" : "#1F2937", cursor: ratedCount > 0 ? "pointer" : "not-allowed", border: "1px solid rgba(255,255,255,0.07)" }}>
             {allRated ? "Get Report 🚀" : "Analyze (" + ratedCount + "/" + totalCount + ")"}
           </button>
-
           {!isLast ? (
-            <button onClick={() => setSubIdx(i => i + 1)} className="btn ot" style={{
-              flex: 2, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem",
-              background: "linear-gradient(135deg,#3B82F6,#1D4ED8)", color: "white",
-              boxShadow: "0 4px 18px rgba(59,130,246,0.35)",
-            }}>
-              Next Subject →
-            </button>
+            <button onClick={() => setSubIdx(i => i + 1)} className="btn ot" style={{ flex: 2, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem", background: "linear-gradient(135deg,#3B82F6,#1D4ED8)", color: "white", boxShadow: "0 4px 18px rgba(59,130,246,0.35)" }}>Next Subject →</button>
           ) : (
-            <button onClick={doAnalyze} disabled={ratedCount === 0} className="btn ot" style={{
-              flex: 2, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem",
-              background: ratedCount > 0 ? "linear-gradient(135deg,#3B82F6,#1D4ED8)" : "#0D1929",
-              color: ratedCount > 0 ? "white" : "#1F2937",
-              cursor: ratedCount > 0 ? "pointer" : "not-allowed",
-              boxShadow: ratedCount > 0 ? "0 4px 18px rgba(59,130,246,0.35)" : "none",
-            }}>
+            <button onClick={doAnalyze} disabled={ratedCount === 0} className="btn ot" style={{ flex: 2, padding: "0.85rem", borderRadius: 11, fontWeight: 700, fontSize: "0.9rem", background: ratedCount > 0 ? "linear-gradient(135deg,#3B82F6,#1D4ED8)" : "#0D1929", color: ratedCount > 0 ? "white" : "#1F2937", cursor: ratedCount > 0 ? "pointer" : "not-allowed", boxShadow: ratedCount > 0 ? "0 4px 18px rgba(59,130,246,0.35)" : "none" }}>
               {allRated ? "Generate My Report 🚀" : "Analyze (" + ratedCount + "/" + totalCount + " rated)"}
             </button>
           )}
@@ -1362,6 +1239,9 @@ export default function App() {
     );
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // STEP 3 — RESULTS
+  // ─────────────────────────────────────────────────────────────
   if (step === 3 && results) {
     const { res, roadmap, warnings, stats } = results;
     const gk = goal === "NEET" ? "NEET" : goal === "JEE" ? "JEE" : goal === "CUET" ? "CUET" : "Boards";
@@ -1378,314 +1258,277 @@ export default function App() {
 
     return (
       <>
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "1.5rem 1.5rem 5rem" }} className="fade">
+        <div style={{ maxWidth: 860, margin: "0 auto", padding: "1.5rem 1.5rem 5rem" }} className="fade">
 
-        {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem", gap: "0.75rem", flexWrap: "wrap" }}>
-          <div>
-            <div className="mn" style={{ color: "#3B82F6", fontSize: "0.65rem", letterSpacing: "0.2em", marginBottom: "4px" }}>YOUR INTELLIGENCE REPORT</div>
-            <h1 className="ot" style={{ fontSize: "1.7rem", fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-              {studentName}'s Class 11–12 Analysis
-            </h1>
-            <p style={{ color: "#374151", fontSize: "0.8rem", marginTop: "4px" }}>{stream} · {goal} · {stats.total} chapters mapped</p>
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <button onClick={shareReport} className="btn ot" style={{ padding: "0.5rem 0.9rem", borderRadius: 9, fontSize: "0.8rem", fontWeight: 600, background: "#0D1929", color: "#4B5563", border: "1px solid rgba(255,255,255,0.07)" }}>Share 📤</button>
-            <button onClick={resetAll} className="btn ot" style={{ padding: "0.5rem 0.9rem", borderRadius: 9, fontSize: "0.8rem", fontWeight: 600, background: "#0D1929", color: "#4B5563", border: "1px solid rgba(255,255,255,0.07)" }}>↩ Restart</button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "0.6rem", marginBottom: "1.5rem" }}>
-          {[
-            { label: "High Risk",   val: stats.highCnt,          col: "#EF4444" },
-            { label: "Medium Risk", val: stats.medCnt,           col: "#F59E0B" },
-            { label: "Low Risk",    val: stats.lowCnt,           col: "#10B981" },
-            { label: "Study Hours", val: "~" + stats.totalH + "h", col: "#3B82F6" },
-          ].map(s => (
-            <div key={s.label} className="card" style={{ padding: "0.85rem", textAlign: "center" }}>
-              <div className="mn" style={{ fontSize: "1.4rem", fontWeight: 700, color: s.col, lineHeight: 1 }}>{s.val}</div>
-              <div style={{ color: "#374151", fontSize: "0.68rem", marginTop: "4px" }}>{s.label}</div>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem", gap: "0.75rem", flexWrap: "wrap" }}>
+            <div>
+              <div className="mn" style={{ color: "#3B82F6", fontSize: "0.65rem", letterSpacing: "0.2em", marginBottom: "4px" }}>YOUR INTELLIGENCE REPORT</div>
+              <h1 className="ot" style={{ fontSize: "1.7rem", fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{studentName}'s Class 11–12 Analysis</h1>
+              <p style={{ color: "#374151", fontSize: "0.8rem", marginTop: "4px" }}>{stream} · {goal} · {stats.total} chapters mapped</p>
             </div>
-          ))}
-        </div>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <button onClick={shareReport} className="btn ot" style={{ padding: "0.5rem 0.9rem", borderRadius: 9, fontSize: "0.8rem", fontWeight: 600, background: "#0D1929", color: "#4B5563", border: "1px solid rgba(255,255,255,0.07)" }}>Share 📤</button>
+              <button onClick={resetAll} className="btn ot" style={{ padding: "0.5rem 0.9rem", borderRadius: 9, fontSize: "0.8rem", fontWeight: 600, background: "#0D1929", color: "#4B5563", border: "1px solid rgba(255,255,255,0.07)" }}>↩ Restart</button>
+            </div>
+          </div>
 
-        {/* Warnings */}
-        {warnings.length > 0 && (
-          <div style={{ marginBottom: "1.5rem" }}>
-            <SLabel>REALITY WARNINGS FOR {studentName.toUpperCase()}</SLabel>
-            {warnings.map((w, i) => (
-              <div key={i} className="card" style={{
-                padding: "0.85rem 1rem", marginBottom: "0.5rem", display: "flex", gap: "0.75rem", alignItems: "flex-start",
-                borderColor: w.sev === "high" ? "rgba(239,68,68,0.35)" : "rgba(245,158,11,0.35)",
-                background: w.sev === "high" ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.06)",
-              }}>
-                <span style={{ fontSize: "1.1rem", flexShrink: 0, marginTop: "1px" }}>{w.icon}</span>
-                <p style={{ color: w.sev === "high" ? "#FCA5A5" : "#FDE68A", fontSize: "0.82rem", lineHeight: 1.55 }}>{w.text}</p>
+          {/* Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "0.6rem", marginBottom: "1.5rem" }}>
+            {[
+              { label: "High Risk",   val: stats.highCnt,            col: "#EF4444" },
+              { label: "Medium Risk", val: stats.medCnt,             col: "#F59E0B" },
+              { label: "Low Risk",    val: stats.lowCnt,             col: "#10B981" },
+              { label: "Study Hours", val: "~" + stats.totalH + "h", col: "#3B82F6" },
+            ].map(s => (
+              <div key={s.label} className="card" style={{ padding: "0.85rem", textAlign: "center" }}>
+                <div className="mn" style={{ fontSize: "1.4rem", fontWeight: 700, color: s.col, lineHeight: 1 }}>{s.val}</div>
+                <div style={{ color: "#374151", fontSize: "0.68rem", marginTop: "4px" }}>{s.label}</div>
               </div>
             ))}
           </div>
-        )}
 
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: "0.35rem", marginBottom: "1.25rem", background: "#0D1929", borderRadius: 10, padding: "4px" }}>
-[["report","📋 Report"],["roadmap","🗺️ Roadmap"],["matrix","🎯 Priority"],["graph","🔗 Graph"],["feedback","💬 Feedback"]]            <button key={id} onClick={() => setTab(id)} className="btn ot" style={{
-              flex: 1, padding: "0.5rem 0.25rem", borderRadius: 7, fontSize: "0.78rem", fontWeight: 700,
-              background: tab === id ? "#132035" : "transparent",
-              color: tab === id ? "#E2E8F0" : "#4B5563",
-              border: tab === id ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
-            }}>{label}</button>
-          )
-        </div>
+          {/* Warnings */}
+          {warnings.length > 0 && (
+            <div style={{ marginBottom: "1.5rem" }}>
+              <SLabel>REALITY WARNINGS FOR {studentName.toUpperCase()}</SLabel>
+              {warnings.map((w, i) => (
+                <div key={i} className="card" style={{ padding: "0.85rem 1rem", marginBottom: "0.5rem", display: "flex", gap: "0.75rem", alignItems: "flex-start", borderColor: w.sev === "high" ? "rgba(239,68,68,0.35)" : "rgba(245,158,11,0.35)", background: w.sev === "high" ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.06)" }}>
+                  <span style={{ fontSize: "1.1rem", flexShrink: 0, marginTop: "1px" }}>{w.icon}</span>
+                  <p style={{ color: w.sev === "high" ? "#FCA5A5" : "#FDE68A", fontSize: "0.82rem", lineHeight: 1.55 }}>{w.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* ── REPORT TAB ── */}
-        {tab === "report" && (
-          <div>
-            <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "0.9rem" }}>Tap any chapter to see your specific gaps and action plan.</p>
-            {/* PC-friendly 2-col grid for LOW risk chapters */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {res.map((ch, i) => {
-                const open   = expanded === ch.id;
-                const wtVal  = ch.wt[gk] || "M";
-                const chTip  = getTip(ch, goal);
-                const riskIcon = ch.risk === "HIGH" ? "🔴" : ch.risk === "MEDIUM" ? "🟡" : "🟢";
-                return (
-                  <div key={ch.id} className="card" style={{ overflow: "hidden", borderColor: open ? RC[ch.risk] + "55" : "rgba(255,255,255,0.06)" }}>
-                    <div onClick={() => setExpanded(open ? null : ch.id)} style={{ padding: "0.9rem 1rem", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flex: 1, minWidth: 0 }}>
-                        <span className="mn" style={{ color: "#1F2937", fontSize: "0.7rem", flexShrink: 0 }}>#{i + 1}</span>
-                        <div style={{ minWidth: 0 }}>
-                          <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ch.name}</div>
-                          <div style={{ color: "#374151", fontSize: "0.7rem", marginTop: "2px" }}>{SMETA[ch.subj] && SMETA[ch.subj].name} · Class {ch.cls}</div>
+          {/* ── FIX 1: Tab bar — properly mapped ── */}
+          <div style={{ display: "flex", gap: "0.35rem", marginBottom: "1.25rem", background: "#0D1929", borderRadius: 10, padding: "4px" }}>
+            {[["report","📋 Report"],["roadmap","🗺️ Roadmap"],["matrix","🎯 Priority"],["graph","🔗 Graph"],["feedback","💬 Feedback"]].map(([id, label]) => (
+              <button key={id} onClick={() => setTab(id)} className="btn ot" style={{
+                flex: 1, padding: "0.5rem 0.25rem", borderRadius: 7, fontSize: "0.78rem", fontWeight: 700,
+                background: tab === id ? "#132035" : "transparent",
+                color: tab === id ? "#E2E8F0" : "#4B5563",
+                border: tab === id ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
+              }}>{label}</button>
+            ))}
+          </div>
+
+          {/* ── REPORT TAB ── */}
+          {tab === "report" && (
+            <div>
+              <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "0.9rem" }}>Tap any chapter to see your specific gaps and action plan.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                {res.map((ch, i) => {
+                  const open     = expanded === ch.id;
+                  const wtVal    = ch.wt[gk] || "M";
+                  const chTip    = getTip(ch, goal);
+                  const riskIcon = ch.risk === "HIGH" ? "🔴" : ch.risk === "MEDIUM" ? "🟡" : "🟢";
+                  return (
+                    <div key={ch.id} className="card" style={{ overflow: "hidden", borderColor: open ? RC[ch.risk] + "55" : "rgba(255,255,255,0.06)" }}>
+                      <div onClick={() => setExpanded(open ? null : ch.id)} style={{ padding: "0.9rem 1rem", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flex: 1, minWidth: 0 }}>
+                          <span className="mn" style={{ color: "#1F2937", fontSize: "0.7rem", flexShrink: 0 }}>#{i + 1}</span>
+                          <div style={{ minWidth: 0 }}>
+                            <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ch.name}</div>
+                            <div style={{ color: "#374151", fontSize: "0.7rem", marginTop: "2px" }}>{SMETA[ch.subj] && SMETA[ch.subj].name} · Class {ch.cls}</div>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "3px", flexShrink: 0 }}>
+                          <span className="mn" style={{ fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 999, background: RBG[ch.risk], color: RC[ch.risk] }}>{riskIcon} {ch.risk}</span>
+                          <span style={{ color: wtColor(wtVal), fontSize: "0.67rem", fontFamily: "Space Mono, monospace" }}>{goal}: {wtLabel(wtVal)}</span>
                         </div>
                       </div>
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "3px", flexShrink: 0 }}>
-                        <span className="mn" style={{ fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: 999, background: RBG[ch.risk], color: RC[ch.risk] }}>
-                          {riskIcon} {ch.risk}
-                        </span>
-                        <span style={{ color: wtColor(wtVal), fontSize: "0.67rem", fontFamily: "Space Mono, monospace" }}>{goal}: {wtLabel(wtVal)}</span>
-                      </div>
-                    </div>
-
-                    {open && (
-                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "0.9rem 1rem", background: "rgba(0,0,0,0.2)" }}>
-                        {ch.gaps.length > 0 ? (
-                          <div style={{ marginBottom: "0.9rem" }}>
-                            <div className="mn" style={{ color: "#EF4444", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", marginBottom: "0.45rem" }}>WHY YOU MAY STRUGGLE</div>
-                            {ch.gaps.map((g, gi) => (
-                              <div key={gi} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.4rem" }}>
-                                <span style={{ color: "#EF4444", fontSize: "0.78rem", flexShrink: 0, marginTop: "2px" }}>↳</span>
-                                <p style={{ color: "#D1D5DB", fontSize: "0.8rem", lineHeight: 1.55 }}>{g.reason}</p>
+                      {open && (
+                        <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "0.9rem 1rem", background: "rgba(0,0,0,0.2)" }}>
+                          {ch.gaps.length > 0 ? (
+                            <div style={{ marginBottom: "0.9rem" }}>
+                              <div className="mn" style={{ color: "#EF4444", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", marginBottom: "0.45rem" }}>WHY YOU MAY STRUGGLE</div>
+                              {ch.gaps.map((g, gi) => (
+                                <div key={gi} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.4rem" }}>
+                                  <span style={{ color: "#EF4444", fontSize: "0.78rem", flexShrink: 0, marginTop: "2px" }}>↳</span>
+                                  <p style={{ color: "#D1D5DB", fontSize: "0.8rem", lineHeight: 1.55 }}>{g.reason}</p>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p style={{ color: "#10B981", fontSize: "0.82rem", marginBottom: "0.9rem" }}>✅ No major prerequisite gaps detected.</p>
+                          )}
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "0.5rem", marginBottom: "0.75rem" }}>
+                            {[
+                              { l: "Study Hours",    v: ch.studyH + " hrs", c: "#3B82F6"      },
+                              { l: "Risk Level",     v: ch.risk,            c: RC[ch.risk]    },
+                              { l: goal + " Weight", v: wtLabel(wtVal),     c: wtColor(wtVal) },
+                            ].map(s => (
+                              <div key={s.l} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 7, padding: "0.55rem", textAlign: "center" }}>
+                                <div className="mn" style={{ color: s.c, fontWeight: 700, fontSize: "0.8rem" }}>{s.v}</div>
+                                <div style={{ color: "#374151", fontSize: "0.65rem", marginTop: "2px" }}>{s.l}</div>
                               </div>
                             ))}
                           </div>
-                        ) : (
-                          <p style={{ color: "#10B981", fontSize: "0.82rem", marginBottom: "0.9rem" }}>✅ No major prerequisite gaps detected.</p>
-                        )}
-
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                          {[
-                            { l: "Study Hours", v: ch.studyH + " hrs", c: "#3B82F6"      },
-                            { l: "Risk Level",  v: ch.risk,            c: RC[ch.risk]    },
-                            { l: goal + " Weight", v: wtLabel(wtVal),  c: wtColor(wtVal) },
-                          ].map(s => (
-                            <div key={s.l} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 7, padding: "0.55rem", textAlign: "center" }}>
-                              <div className="mn" style={{ color: s.c, fontWeight: 700, fontSize: "0.8rem" }}>{s.v}</div>
-                              <div style={{ color: "#374151", fontSize: "0.65rem", marginTop: "2px" }}>{s.l}</div>
-                            </div>
-                          ))}
+                          <div style={{ background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, padding: "0.6rem 0.85rem" }}>
+                            <span className="ot" style={{ color: "#60A5FA", fontSize: "0.7rem", fontWeight: 700 }}>💡 ACTION  </span>
+                            <span style={{ color: "#93C5FD", fontSize: "0.8rem" }}>{chTip}</span>
+                          </div>
                         </div>
-
-                        <div style={{ background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, padding: "0.6rem 0.85rem" }}>
-                          <span className="ot" style={{ color: "#60A5FA", fontSize: "0.7rem", fontWeight: 700 }}>💡 ACTION  </span>
-                          <span style={{ color: "#93C5FD", fontSize: "0.8rem" }}>{chTip}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ── ROADMAP TAB ── */}
-        {tab === "roadmap" && (
-          <div>
-            <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "1.25rem" }}>
-              Your personalised study sequence, {studentName}. Follow this order for maximum efficiency.
-            </p>
-            {roadmap.length === 0 ? (
-              <div className="card" style={{ padding: "2rem", textAlign: "center" }}>
-                <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>🎉</div>
-                <p className="ot" style={{ color: "#10B981", fontWeight: 800, fontSize: "1.1rem" }}>Strong Foundation!</p>
-                <p style={{ color: "#4B5563", fontSize: "0.85rem", marginTop: "0.5rem" }}>Your Class 9-10 base looks solid. Focus on consistency and regular revision.</p>
-              </div>
-            ) : (
-              roadmap.map((ph, pi) => (
-                <div key={pi} className="card" style={{ marginBottom: "0.75rem", overflow: "hidden" }}>
-                  <div style={{ background: ph.col + "18", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "0.65rem 1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                    <span className="mn" style={{ color: ph.col, fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.05em" }}>{ph.phase}</span>
-                    <span className="ot" style={{ color: "#E2E8F0", fontWeight: 700, fontSize: "0.87rem" }}>{ph.title}</span>
-                  </div>
-                  {ph.items.map((item, ii) => (
-                    <div key={ii} style={{ padding: "0.6rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: ii < ph.items.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ color: "#D1D5DB", fontSize: "0.83rem" }}><span style={{ color: ph.col, marginRight: "0.35rem" }}>→</span>{item.label}</div>
-                        {item.detail && <div style={{ color: "#374151", fontSize: "0.72rem", marginTop: "2px", marginLeft: "1rem" }}>{item.detail}</div>}
-                      </div>
-                      <span className="mn" style={{ color: "#374151", fontSize: "0.68rem", flexShrink: 0, marginLeft: "0.75rem" }}>{item.time}</span>
+                      )}
                     </div>
-                  ))}
-                </div>
-              ))
-            )}
-          </div>
-        )}
-
-        {/* ── PRIORITY MATRIX TAB ── */}
-        {tab === "matrix" && (
-          <div>
-            <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "1.25rem" }}>
-              Time allocation strategy: your risk level × {goal} exam weightage.
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-              {[
-                { key: "critical", label: "🔴 FOCUS FIRST",      desc: "High risk · High weightage",  col: "#EF4444", bg: "rgba(239,68,68,0.07)"  },
-                { key: "review",   label: "🟡 REVIEW CAREFULLY", desc: "High risk · Lower weightage",  col: "#F59E0B", bg: "rgba(245,158,11,0.07)" },
-                { key: "easywin", label: "✅ EASY MARKS",        desc: "Low risk · High weightage",    col: "#10B981", bg: "rgba(16,185,129,0.07)" },
-                { key: "skip",     label: "⬇️ MINIMAL TIME",    desc: "Low risk · Lower weightage",   col: "#4B5563", bg: "rgba(75,85,99,0.07)"   },
-              ].map(q => (
-                <div key={q.key} style={{ border: "1px solid " + q.col + "33", borderRadius: 12, padding: "1rem", background: q.bg, minHeight: 130 }}>
-                  <div className="ot" style={{ fontWeight: 700, fontSize: "0.8rem", color: q.col, marginBottom: "2px" }}>{q.label}</div>
-                  <div style={{ color: "#374151", fontSize: "0.7rem", marginBottom: "0.65rem" }}>{q.desc}</div>
-                  {quads[q.key].length === 0 ? (
-                    <div style={{ color: "#1F2937", fontSize: "0.72rem" }}>None here</div>
-                  ) : (
-                    quads[q.key].map(ch => (
-                      <div key={ch.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 5, padding: "0.25rem 0.5rem", marginBottom: "0.25rem", fontSize: "0.73rem", color: "#6B7280" }}>
-                        {ch.name}
-                      </div>
-                    ))
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── FEEDBACK TAB ── */}
-        {tab === "feedback" && (
-          <div>
-            {feedback.submitted ? (
-              <div className="card" style={{ padding: "2.5rem", textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🙏</div>
-                <h3 className="ot" style={{ color: "#10B981", fontWeight: 800, fontSize: "1.2rem", marginBottom: "0.5rem" }}>Thank you, {studentName}!</h3>
-                <p style={{ color: "#4B5563", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>Your feedback helps make this tool better for every student who uses it.</p>
-                <p style={{ color: "#374151", fontSize: "0.8rem" }}>Have suggestions or questions? Reach out directly:</p>
-                <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#F59E0B", fontSize: "0.82rem", fontFamily: "Space Mono, monospace", textDecoration: "none", display: "block", marginTop: "0.4rem" }}>{CREATOR_EMAIL}</a>
+                  );
+                })}
               </div>
-            ) : (
-              <div style={{ maxWidth: 560, margin: "0 auto" }}>
-                <p style={{ color: "#6B7280", fontSize: "0.85rem", marginBottom: "1.5rem", lineHeight: 1.6 }}>
-                  Help Parth improve this tool! Your honest feedback takes 30 seconds and makes a real difference.
-                </p>
+            </div>
+          )}
 
-                <div className="card" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
-                  <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.75rem" }}>How useful was this analysis for you?</div>
-                  <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                    {[1, 2, 3, 4, 5].map(v => (
-                      <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{
-                        flex: 1, padding: "0.65rem 0", borderRadius: 9, fontSize: "1.3rem",
-                        background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035",
-                        border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)"),
-                      }}>★</button>
+          {/* ── ROADMAP TAB ── */}
+          {tab === "roadmap" && (
+            <div>
+              <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "1.25rem" }}>Your personalised study sequence, {studentName}. Follow this order for maximum efficiency.</p>
+              {roadmap.length === 0 ? (
+                <div className="card" style={{ padding: "2rem", textAlign: "center" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>🎉</div>
+                  <p className="ot" style={{ color: "#10B981", fontWeight: 800, fontSize: "1.1rem" }}>Strong Foundation!</p>
+                  <p style={{ color: "#4B5563", fontSize: "0.85rem", marginTop: "0.5rem" }}>Your Class 9-10 base looks solid. Focus on consistency and regular revision.</p>
+                </div>
+              ) : (
+                roadmap.map((ph, pi) => (
+                  <div key={pi} className="card" style={{ marginBottom: "0.75rem", overflow: "hidden" }}>
+                    <div style={{ background: ph.col + "18", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "0.65rem 1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                      <span className="mn" style={{ color: ph.col, fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.05em" }}>{ph.phase}</span>
+                      <span className="ot" style={{ color: "#E2E8F0", fontWeight: 700, fontSize: "0.87rem" }}>{ph.title}</span>
+                    </div>
+                    {ph.items.map((item, ii) => (
+                      <div key={ii} style={{ padding: "0.6rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: ii < ph.items.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ color: "#D1D5DB", fontSize: "0.83rem" }}><span style={{ color: ph.col, marginRight: "0.35rem" }}>→</span>{item.label}</div>
+                          {item.detail && <div style={{ color: "#374151", fontSize: "0.72rem", marginTop: "2px", marginLeft: "1rem" }}>{item.detail}</div>}
+                        </div>
+                        <span className="mn" style={{ color: "#374151", fontSize: "0.68rem", flexShrink: 0, marginLeft: "0.75rem" }}>{item.time}</span>
+                      </div>
                     ))}
                   </div>
-                  {feedback.rating > 0 && (
-                    <p style={{ color: "#6B7280", fontSize: "0.72rem", textAlign: "center" }}>
-                      {["", "Not useful", "Could be better", "Average", "Quite useful", "Very useful!"][feedback.rating]}
-                    </p>
-                  )}
-                </div>
+                ))
+              )}
+            </div>
+          )}
 
-                <div className="card" style={{ padding: "1.25rem", marginBottom: "1.25rem" }}>
-                  <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.6rem" }}>Any specific feedback? (optional)</div>
-                  <textarea
-                    value={feedback.text}
-                    onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
-                    placeholder="What did you like? What can be improved? Which chapters are missing?"
-                    rows={3}
-                    style={{ width: "100%", padding: "0.75rem", borderRadius: 9, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.85rem", resize: "none", lineHeight: 1.6 }}
-                  />
-                </div>
-
-                <button onClick={submitFeedback} disabled={feedback.rating === 0} className="btn ot" style={{
-                  width: "100%", padding: "0.9rem", borderRadius: 11, fontWeight: 700, fontSize: "0.95rem",
-                  background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#0D1929",
-                  color: feedback.rating > 0 ? "white" : "#374151",
-                  cursor: feedback.rating > 0 ? "pointer" : "not-allowed",
-                  boxShadow: feedback.rating > 0 ? "0 4px 18px rgba(16,185,129,0.3)" : "none",
-                  marginBottom: "1.5rem",
-                }}>
-                  Submit Feedback 🙏
-                </button>
-
-                <div style={{ textAlign: "center", padding: "1.25rem", borderRadius: 12, background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                  <p style={{ color: "#374151", fontSize: "0.8rem", marginBottom: "0.4rem" }}>Built with ❤️ by</p>
-                  <p className="ot" style={{ color: "#F59E0B", fontWeight: 800, fontSize: "1rem", marginBottom: "0.4rem" }}>Parth Goyal</p>
-                  <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.75rem", fontFamily: "Space Mono, monospace", textDecoration: "none" }}>{CREATOR_EMAIL}</a>
-                </div>
+          {/* ── PRIORITY MATRIX TAB ── */}
+          {tab === "matrix" && (
+            <div>
+              <p style={{ color: "#374151", fontSize: "0.78rem", marginBottom: "1.25rem" }}>Time allocation strategy: your risk level × {goal} exam weightage.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                {[
+                  { key: "critical", label: "🔴 FOCUS FIRST",      desc: "High risk · High weightage",  col: "#EF4444", bg: "rgba(239,68,68,0.07)"  },
+                  { key: "review",   label: "🟡 REVIEW CAREFULLY", desc: "High risk · Lower weightage",  col: "#F59E0B", bg: "rgba(245,158,11,0.07)" },
+                  { key: "easywin", label: "✅ EASY MARKS",        desc: "Low risk · High weightage",    col: "#10B981", bg: "rgba(16,185,129,0.07)" },
+                  { key: "skip",     label: "⬇️ MINIMAL TIME",    desc: "Low risk · Lower weightage",   col: "#4B5563", bg: "rgba(75,85,99,0.07)"   },
+                ].map(q => (
+                  <div key={q.key} style={{ border: "1px solid " + q.col + "33", borderRadius: 12, padding: "1rem", background: q.bg, minHeight: 130 }}>
+                    <div className="ot" style={{ fontWeight: 700, fontSize: "0.8rem", color: q.col, marginBottom: "2px" }}>{q.label}</div>
+                    <div style={{ color: "#374151", fontSize: "0.7rem", marginBottom: "0.65rem" }}>{q.desc}</div>
+                    {quads[q.key].length === 0 ? (
+                      <div style={{ color: "#1F2937", fontSize: "0.72rem" }}>None here</div>
+                    ) : (
+                      quads[q.key].map(ch => (
+                        <div key={ch.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 5, padding: "0.25rem 0.5rem", marginBottom: "0.25rem", fontSize: "0.73rem", color: "#6B7280" }}>{ch.name}</div>
+                      ))
+                    )}
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
+
+          {/* ── FIX 2: Graph tab — moved OUT of popup, correct location ── */}
+          {tab === "graph" && (
+            <DependencyGraph
+              results={results}
+              ratings={ratings}
+              goal={goal}
+              stream={stream}
+            />
+          )}
+
+          {/* ── FEEDBACK TAB ── */}
+          {tab === "feedback" && (
+            <div>
+              {feedback.submitted ? (
+                <div className="card" style={{ padding: "2.5rem", textAlign: "center" }}>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🙏</div>
+                  <h3 className="ot" style={{ color: "#10B981", fontWeight: 800, fontSize: "1.2rem", marginBottom: "0.5rem" }}>Thank you, {studentName}!</h3>
+                  <p style={{ color: "#4B5563", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: "1.25rem" }}>Your feedback helps make this tool better for every student who uses it.</p>
+                  <p style={{ color: "#374151", fontSize: "0.8rem" }}>Have suggestions or questions? Reach out directly:</p>
+                  <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#F59E0B", fontSize: "0.82rem", fontFamily: "Space Mono, monospace", textDecoration: "none", display: "block", marginTop: "0.4rem" }}>{CREATOR_EMAIL}</a>
+                </div>
+              ) : (
+                <div style={{ maxWidth: 560, margin: "0 auto" }}>
+                  <p style={{ color: "#6B7280", fontSize: "0.85rem", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                    Help Parth improve this tool! Your honest feedback takes 30 seconds and makes a real difference.
+                  </p>
+
+                  <div className="card" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
+                    <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.75rem" }}>How useful was this analysis for you?</div>
+                    <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                      {[1, 2, 3, 4, 5].map(v => (
+                        <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{ flex: 1, padding: "0.65rem 0", borderRadius: 9, fontSize: "1.3rem", background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035", border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)") }}>★</button>
+                      ))}
+                    </div>
+                    {feedback.rating > 0 && (
+                      <p style={{ color: "#6B7280", fontSize: "0.72rem", textAlign: "center" }}>
+                        {["", "Not useful", "Could be better", "Average", "Quite useful", "Very useful!"][feedback.rating]}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="card" style={{ padding: "1.25rem", marginBottom: "1.25rem" }}>
+                    <div className="ot" style={{ fontWeight: 700, color: "#E2E8F0", fontSize: "0.9rem", marginBottom: "0.6rem" }}>Any specific feedback? (optional)</div>
+                    <textarea
+                      value={feedback.text} onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
+                      placeholder="What did you like? What can be improved? Which chapters are missing?" rows={3}
+                      style={{ width: "100%", padding: "0.75rem", borderRadius: 9, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.85rem", resize: "none", lineHeight: 1.6 }}
+                    />
+                  </div>
+
+                  <button onClick={submitFeedback} disabled={feedback.rating === 0} className="btn ot" style={{ width: "100%", padding: "0.9rem", borderRadius: 11, fontWeight: 700, fontSize: "0.95rem", background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#0D1929", color: feedback.rating > 0 ? "white" : "#374151", cursor: feedback.rating > 0 ? "pointer" : "not-allowed", boxShadow: feedback.rating > 0 ? "0 4px 18px rgba(16,185,129,0.3)" : "none", marginBottom: "1.5rem" }}>
+                    Submit Feedback 🙏
+                  </button>
+
+                  <div style={{ textAlign: "center", padding: "1.25rem", borderRadius: 12, background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                    <p style={{ color: "#374151", fontSize: "0.8rem", marginBottom: "0.4rem" }}>Built with ❤️ by</p>
+                    <p className="ot" style={{ color: "#F59E0B", fontWeight: 800, fontSize: "1rem", marginBottom: "0.4rem" }}>Parth Goyal</p>
+                    <a href={"mailto:" + CREATOR_EMAIL} style={{ color: "#374151", fontSize: "0.75rem", fontFamily: "Space Mono, monospace", textDecoration: "none" }}>{CREATOR_EMAIL}</a>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Feedback popup — DependencyGraph removed from here */}
+        {showFeedbackPopup && !feedback.submitted && (
+          <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 999, maxWidth: 320, width: "calc(100vw - 3rem)" }}>
+            <div style={{ background: "#0D1929", border: "1px solid rgba(59,130,246,0.4)", borderRadius: 16, padding: "1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
+                <div>
+                  <p className="ot" style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.9rem" }}>How was your experience? 😊</p>
+                  <p style={{ color: "#6B7280", fontSize: "0.75rem", marginTop: "2px" }}>Takes 10 seconds — helps improve this tool</p>
+                </div>
+                <button onClick={() => setShowFeedbackPopup(false)} className="btn" style={{ color: "#374151", fontSize: "1rem", padding: "0 4px" }}>✕</button>
+              </div>
+              <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.75rem" }}>
+                {[1, 2, 3, 4, 5].map(v => (
+                  <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{ flex: 1, padding: "0.5rem 0", borderRadius: 8, fontSize: "1.2rem", background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035", border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)") }}>★</button>
+                ))}
+              </div>
+              <textarea
+                value={feedback.text} onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
+                placeholder="Any suggestions? (optional)" rows={2}
+                style={{ width: "100%", padding: "0.6rem", borderRadius: 8, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.8rem", resize: "none", marginBottom: "0.75rem", fontFamily: "Plus Jakarta Sans, sans-serif" }}
+              />
+              <button onClick={() => { if (feedback.rating === 0) return; submitFeedback(); setShowFeedbackPopup(false); }} className="btn ot" style={{ width: "100%", padding: "0.65rem", borderRadius: 9, fontWeight: 700, fontSize: "0.85rem", background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#132035", color: feedback.rating > 0 ? "white" : "#374151", cursor: feedback.rating > 0 ? "pointer" : "not-allowed" }}>
+                {feedback.rating > 0 ? "Submit Feedback 🙏" : "Select a rating first"}
+              </button>
+            </div>
           </div>
         )}
-      </div>
-      {showFeedbackPopup && !feedback.submitted && (
-        <div style={{ position: "fixed", bottom: "1.5rem", right: "1.5rem", zIndex: 999, maxWidth: 320, width: "calc(100vw - 3rem)" }}>
-          <div style={{ background: "#0D1929", border: "1px solid rgba(59,130,246,0.4)", borderRadius: 16, padding: "1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
-              <div>
-                <p className="ot" style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.9rem" }}>How was your experience? 😊</p>
-                <p style={{ color: "#6B7280", fontSize: "0.75rem", marginTop: "2px" }}>Takes 10 seconds — helps improve this tool</p>
-              </div>
-              <button onClick={() => setShowFeedbackPopup(false)} className="btn" style={{ color: "#374151", fontSize: "1rem", padding: "0 4px" }}>✕</button>
-            </div>
-            <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.75rem" }}>
-              {[1, 2, 3, 4, 5].map(v => (
-                <button key={v} onClick={() => setFeedback(f => ({ ...f, rating: v }))} className="btn" style={{
-                  flex: 1, padding: "0.5rem 0", borderRadius: 8, fontSize: "1.2rem",
-                  background: feedback.rating >= v ? "rgba(245,158,11,0.15)" : "#132035",
-                  border: "1px solid " + (feedback.rating >= v ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.05)"),
-                }}>★</button>
-              ))}
-            </div>
-            <textarea
-              value={feedback.text}
-              onChange={e => setFeedback(f => ({ ...f, text: e.target.value }))}
-              placeholder="Any suggestions? (optional)"
-              rows={2}
-              style={{ width: "100%", padding: "0.6rem", borderRadius: 8, background: "#132035", border: "1px solid rgba(255,255,255,0.07)", color: "#E2E8F0", fontSize: "0.8rem", resize: "none", marginBottom: "0.75rem", fontFamily: "Plus Jakarta Sans, sans-serif" }}
-            />
-            <button onClick={() => { if (feedback.rating === 0) return; submitFeedback(); setShowFeedbackPopup(false); }} className="btn ot" style={{
-              width: "100%", padding: "0.65rem", borderRadius: 9, fontWeight: 700, fontSize: "0.85rem",
-              background: feedback.rating > 0 ? "linear-gradient(135deg,#10B981,#059669)" : "#132035",
-              color: feedback.rating > 0 ? "white" : "#374151",
-              cursor: feedback.rating > 0 ? "pointer" : "not-allowed",
-            }}>
-              {feedback.rating > 0 ? "Submit Feedback 🙏" : "Select a rating first"}
-            </button>
-            {tab === "graph" && (
-  <DependencyGraph
-    results={results}
-    ratings={ratings}
-    goal={goal}
-    stream={stream}
-  />
-)}
-          </div>
-        </div>
-      )}
       </>
     );
   }
@@ -1701,13 +1544,7 @@ function StepBar({ step }) {
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem" }}>
       {[1, 2, 3].map((s, i) => (
         <div key={s} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <div style={{
-            width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-            fontFamily: "Space Mono, monospace", fontSize: "0.7rem", fontWeight: 700, flexShrink: 0,
-            background: step >= s ? "#3B82F6" : "#0D1929",
-            color: step >= s ? "white" : "#374151",
-            border: step >= s ? "none" : "1px solid rgba(255,255,255,0.07)",
-          }}>{s}</div>
+          <div style={{ width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Mono, monospace", fontSize: "0.7rem", fontWeight: 700, flexShrink: 0, background: step >= s ? "#3B82F6" : "#0D1929", color: step >= s ? "white" : "#374151", border: step >= s ? "none" : "1px solid rgba(255,255,255,0.07)" }}>{s}</div>
           {i < 2 && <div style={{ width: 28, height: 2, background: step > s ? "#3B82F6" : "#0D1929", borderRadius: 1 }} />}
         </div>
       ))}
@@ -1722,12 +1559,6 @@ function SLabel({ children }) {
 
 function PBtn({ children, onClick, disabled }) {
   return (
-    <button onClick={onClick} disabled={disabled} className="btn ot" style={{
-      width: "100%", padding: "0.9rem", borderRadius: 11, fontSize: "0.95rem", fontWeight: 700,
-      background: disabled ? "#0D1929" : "linear-gradient(135deg,#3B82F6,#1D4ED8)",
-      color: disabled ? "#1F2937" : "white",
-      cursor: disabled ? "not-allowed" : "pointer",
-      boxShadow: disabled ? "none" : "0 4px 18px rgba(59,130,246,0.35)",
-    }}>{children}</button>
+    <button onClick={onClick} disabled={disabled} className="btn ot" style={{ width: "100%", padding: "0.9rem", borderRadius: 11, fontSize: "0.95rem", fontWeight: 700, background: disabled ? "#0D1929" : "linear-gradient(135deg,#3B82F6,#1D4ED8)", color: disabled ? "#1F2937" : "white", cursor: disabled ? "not-allowed" : "pointer", boxShadow: disabled ? "none" : "0 4px 18px rgba(59,130,246,0.35)" }}>{children}</button>
   );
 }
