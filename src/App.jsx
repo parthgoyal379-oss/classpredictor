@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, limit } from "firebase/firestore";
 import emailjs from "@emailjs/browser";
+import DependencyGraph from "./DependencyGraph";
 
 // ─────────────────────────────────────────────────────────────
 // FIREBASE + EMAILJS CONFIG
@@ -1428,14 +1429,13 @@ export default function App() {
 
         {/* Tabs */}
         <div style={{ display: "flex", gap: "0.35rem", marginBottom: "1.25rem", background: "#0D1929", borderRadius: 10, padding: "4px" }}>
-          {[["report", "📋 Report"], ["roadmap", "🗺️ Roadmap"], ["matrix", "🎯 Priority"], ["feedback", "💬 Feedback"]].map(([id, label]) => (
-            <button key={id} onClick={() => setTab(id)} className="btn ot" style={{
+[["report","📋 Report"],["roadmap","🗺️ Roadmap"],["matrix","🎯 Priority"],["graph","🔗 Graph"],["feedback","💬 Feedback"]]            <button key={id} onClick={() => setTab(id)} className="btn ot" style={{
               flex: 1, padding: "0.5rem 0.25rem", borderRadius: 7, fontSize: "0.78rem", fontWeight: 700,
               background: tab === id ? "#132035" : "transparent",
               color: tab === id ? "#E2E8F0" : "#4B5563",
               border: tab === id ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
             }}>{label}</button>
-          ))}
+          )
         </div>
 
         {/* ── REPORT TAB ── */}
@@ -1675,6 +1675,14 @@ export default function App() {
             }}>
               {feedback.rating > 0 ? "Submit Feedback 🙏" : "Select a rating first"}
             </button>
+            {tab === "graph" && (
+  <DependencyGraph
+    results={results}
+    ratings={ratings}
+    goal={goal}
+    stream={stream}
+  />
+)}
           </div>
         </div>
       )}
