@@ -3,7 +3,7 @@ import confetti from "canvas-confetti";
 import { 
   Share2, RotateCcw, AlertTriangle, ChevronDown, 
   Lightbulb, BookOpen, CheckCircle2, 
-  Compass, Grid, Network, MessageSquare, Flame, Download
+  Compass, Grid, Network, MessageSquare, Flame, Download, MessageCircle
 } from "lucide-react";
 import { SMETA, WT_ORD } from "../data/chapters";
 import { getTip } from "../utils/analyzer";
@@ -12,6 +12,8 @@ import PriorityMatrix from "./PriorityMatrix";
 import DependencyGraph from "../DependencyGraph";
 import SpotlightCard from "./SpotlightCard";
 import BrandLogo from "./BrandLogo";
+import TopperBenchmark from "./TopperBenchmark";
+import RemediationChecklist from "./RemediationChecklist";
 import { generateDiagnosticDossier } from "../utils/dossierGenerator";
 import { playSuccess, playClick } from "../utils/audio";
 
@@ -86,6 +88,22 @@ export default function ReportDashboard({
     setTimeout(() => setCopyFeedback(false), 2000);
   };
 
+  const handleWhatsAppShare = () => {
+    playClick();
+    const criticalChapters = res.filter(c => c.risk === "HIGH").map(c => c.name).slice(0, 3).join(", ");
+    const readinessScore = Math.min(100, Math.max(15, Math.round(((stats.lowCnt * 1.0 + stats.medCnt * 0.4) / (stats.total || 1)) * 100)));
+    
+    const text = `🎯 *Class 11 Diagnostic Report for ${studentName}*\n\n` +
+      `📌 *Stream:* ${stream} | *Target Goal:* ${goal}\n` +
+      `⚠️ *Critical Bottlenecks:* ${stats.highCnt} chapters (${criticalChapters || "None identified"})\n` +
+      `⏱️ *Recovery Deficit:* ~${stats.totalH} hrs foundational study\n` +
+      `📊 *Readiness Score:* ${readinessScore}%\n\n` +
+      `Check your full prerequisite diagnostic breakdown here:\n${window.location.origin}`;
+
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="animate-fade-in" style={{ maxWidth: 940, margin: "0 auto", padding: "1rem 0 5rem" }}>
       {/* Header Bar */}
@@ -142,6 +160,22 @@ export default function ReportDashboard({
           >
             <Download size={14} />
             <span>Download Dossier</span>
+          </button>
+
+          <button
+            onClick={handleWhatsAppShare}
+            className="btn-secondary"
+            style={{
+              padding: "0.5rem 0.85rem",
+              fontSize: "0.8rem",
+              background: "rgba(37, 211, 102, 0.08)",
+              borderColor: "rgba(37, 211, 102, 0.35)",
+              color: "#25D366",
+            }}
+            title="Share diagnostic summary directly to WhatsApp"
+          >
+            <MessageCircle size={14} />
+            <span>WhatsApp</span>
           </button>
 
           <button
@@ -240,6 +274,9 @@ export default function ReportDashboard({
           </SpotlightCard>
         ))}
       </div>
+
+      {/* Kinetic Foundation Health Benchmark vs. 99th-Percentile Toppers */}
+      <TopperBenchmark results={results} stream={stream} goal={goal} />
 
       {/* Reality Warnings Section */}
       {warnings.length > 0 && (
@@ -344,6 +381,9 @@ export default function ReportDashboard({
       {/* ── 1. REPORT TAB ── */}
       {tab === "report" && (
         <div className="animate-fade-in">
+          {/* Interactive Remediation Action Checklist */}
+          <RemediationChecklist results={results} />
+
           <div style={{
             display: "flex",
             justifyContent: "space-between",

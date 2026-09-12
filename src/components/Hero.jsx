@@ -8,6 +8,8 @@ import TiltCard from "./TiltCard";
 import WaveformHUD from "./WaveformHUD";
 import MagicButton from "./MagicButton";
 import InteractiveSandbox from "./InteractiveSandbox";
+import WordRotator from "./WordRotator";
+import SyllabusShockWidget from "./SyllabusShockWidget";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
@@ -66,23 +68,21 @@ export default function Hero({ onStart }) {
           <BrandLogo size={58} variant="icon" glow={true} />
         </div>
 
-        {/* Hero Title with Shimmering Animated Gradient */}
+        {/* Hero Title with Dynamic Word Rotator (Option C) */}
         <h1
           style={{
-            fontSize: "clamp(2.5rem, 6.5vw, 4.9rem)",
+            fontSize: "clamp(2.4rem, 6.2vw, 4.8rem)",
             fontWeight: 800,
-            lineHeight: 1.05,
+            lineHeight: 1.1,
             letterSpacing: "-0.04em",
             color: "#FFFFFF",
-            maxWidth: 920,
+            maxWidth: 960,
             marginBottom: "1.25rem",
             textShadow: "0 0 40px rgba(255, 255, 255, 0.15)",
           }}
         >
-          Know exactly what<br />
-          <span className="animated-gradient-text" style={{ display: "inline-block" }}>
-            Class 11 will hit you with.
-          </span>
+          Predict your bottlenecks in<br />
+          <WordRotator words={["Class 11 🚀", "Physics ⚡", "Mathematics 📐", "Chemistry 🧪", "NEET & JEE 🎯"]} />
         </h1>
 
         {/* Hero Description */}
@@ -90,13 +90,13 @@ export default function Hero({ onStart }) {
           style={{
             fontSize: "clamp(1rem, 2vw, 1.18rem)",
             color: "var(--text-secondary)",
-            maxWidth: 640,
+            maxWidth: 680,
             lineHeight: 1.65,
             letterSpacing: "-0.01em",
             marginBottom: "2.5rem",
           }}
         >
-          Rate your Class 9–10 foundations. Our algorithmic dependency graph projects which Class 11–12 chapters will bottleneck you — and maps precisely how to fix them.
+          Class 10 scores don't predict Class 11 success — prerequisite depth does. Our algorithmic dependency graph projects where you will struggle across 30+ chapters, and maps your recovery roadmap before Day 1.
         </p>
 
         {/* 10-Second Interactive Sandbox Preview */}
@@ -345,6 +345,9 @@ export default function Hero({ onStart }) {
             </div>
           </TiltCard>
         </div>
+
+        {/* 5.8x Syllabus Shock Reality Comparison */}
+        <SyllabusShockWidget />
 
         {/* Minimalist Metrics Counter Strip */}
         <SpotlightCard
