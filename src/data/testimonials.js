@@ -1,0 +1,42 @@
+export const TESTIMONIALS = [
+  {
+    name: "Aarav Sharma",
+    role: "JEE Aspirant, Delhi",
+    text: "This tool predicted exactly that I'd struggle with Mole Concept. Saved me from a rude shock in November. Wish I had this before Class 11 started.",
+    stars: 5,
+    avatar: "A",
+    verified: true,
+  },
+  {
+    name: "Priya Mehta",
+    role: "NEET Aspirant, Mumbai",
+    text: "The roadmap feature is genuinely useful. It told me to revise Life Processes before Human Physiology. My teacher said the same thing 3 months later.",
+    stars: 5,
+    avatar: "P",
+    verified: true,
+  },
+  {
+    name: "Rohan Verma",
+    role: "PCM Student, Jaipur",
+    text: "I rated Trigonometry as difficult and it immediately flagged Calculus as HIGH risk. That's exactly what happened. I was not prepared at all.",
+    stars: 5,
+    avatar: "R",
+    verified: true,
+  },
+  {
+    name: "Sneha Iyer",
+    role: "Boards + CUET, Chennai",
+    text: "The priority matrix helped me stop panicking and actually focus. Knew exactly which chapters to spend time on vs which to leave for later.",
+    stars: 5,
+    avatar: "S",
+    verified: true,
+  },
+  {
+    name: "Karan Patel",
+    role: "JEE Advanced Aspirant",
+    text: "Built with incredible depth for gap analysis. Far more actionable than generic coaching guidance.",
+    stars: 5,
+    avatar: "K",
+    verified: true,
+  },
+];

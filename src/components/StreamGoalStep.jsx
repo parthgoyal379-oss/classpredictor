@@ -1,0 +1,221 @@
+import { ArrowRight, Check } from "lucide-react";
+import { STREAM_SUBJECTS, SMETA } from "../data/chapters";
+
+export default function StreamGoalStep({ studentName, stream, setStream, goal, setGoal, onContinue }) {
+  const exams = [
+    { id: "JEE", name: "JEE Main & Advanced", desc: "IIT, NIT & Elite Engineering Colleges" },
+    { id: "NEET", name: "NEET-UG", desc: "Medical Entrance (MBBS / BDS / AIIMS)" },
+    { id: "Boards", name: "Class 12 Boards", desc: "CBSE, CISCE & State Board Excellence" },
+    { id: "CUET", name: "CUET-UG", desc: "Central & National University Admissions" },
+  ];
+
+  return (
+    <div className="animate-fade-in" style={{ maxWidth: 740, margin: "0 auto", padding: "1rem 0 3rem" }}>
+      {/* Title & Introduction */}
+      <div style={{ marginBottom: "2.25rem" }}>
+        <span className="font-mono" style={{
+          fontSize: "0.72rem",
+          color: "var(--accent-blue)",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+        }}>
+          Initial Calibration
+        </span>
+        <h2 style={{
+          fontSize: "1.75rem",
+          fontWeight: 700,
+          color: "#FFFFFF",
+          letterSpacing: "-0.02em",
+          marginTop: "0.35rem",
+          marginBottom: "0.35rem",
+        }}>
+          Configure your academic track, {studentName}
+        </h2>
+        <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+          Select your Class 11 stream and primary competitive target so we can calibrate weights and risk equations.
+        </p>
+      </div>
+
+      {/* 1. Stream Selection */}
+      <div style={{ marginBottom: "2.5rem" }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "0.85rem",
+        }}>
+          <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "0.02em" }}>
+            1. CHOOSE YOUR STREAM
+          </label>
+          <span style={{ fontSize: "0.72rem", color: "var(--text-tertiary)" }}>
+            Select one
+          </span>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gap: "0.75rem",
+        }}>
+          {Object.entries(STREAM_SUBJECTS).map(([id, subs]) => {
+            const isSelected = stream === id;
+            const subNames = subs.filter(s => s !== "core_maths").map(s => SMETA[s].name);
+
+            return (
+              <div
+                key={id}
+                onClick={() => setStream(id)}
+                className={"vercel-card " + (isSelected ? "vercel-card-active" : "")}
+                style={{
+                  padding: "1.1rem",
+                  cursor: "pointer",
+                  userSelect: "none",
+                }}
+              >
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "0.65rem",
+                }}>
+                  <span className="font-mono" style={{
+                    fontSize: "1.05rem",
+                    fontWeight: 700,
+                    color: isSelected ? "#FFFFFF" : "var(--text-primary)",
+                  }}>
+                    {id}
+                  </span>
+                  {isSelected && (
+                    <div style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "#FFFFFF",
+                      color: "#000000",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                      <Check size={12} strokeWidth={3} />
+                    </div>
+                  )}
+                </div>
+
+                <div style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "0.35rem",
+                }}>
+                  {subNames.map(s => (
+                    <span key={s} style={{
+                      fontSize: "0.68rem",
+                      padding: "2px 6px",
+                      borderRadius: 4,
+                      background: "rgba(255, 255, 255, 0.05)",
+                      color: "var(--text-secondary)",
+                    }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 2. Target Exam */}
+      <div style={{ marginBottom: "3rem" }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "0.85rem",
+        }}>
+          <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-primary)", letterSpacing: "0.02em" }}>
+            2. PRIMARY TARGET EXAM
+          </label>
+          <span style={{ fontSize: "0.72rem", color: "var(--text-tertiary)" }}>
+            Calibrates chapter weightage
+          </span>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "0.75rem",
+        }}>
+          {exams.map(e => {
+            const isSelected = goal === e.id;
+
+            return (
+              <div
+                key={e.id}
+                onClick={() => setGoal(e.id)}
+                className={"vercel-card " + (isSelected ? "vercel-card-active" : "")}
+                style={{
+                  padding: "1.1rem",
+                  cursor: "pointer",
+                  userSelect: "none",
+                }}
+              >
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "0.35rem",
+                }}>
+                  <span style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 600,
+                    color: isSelected ? "#FFFFFF" : "var(--text-primary)",
+                  }}>
+                    {e.name}
+                  </span>
+                  {isSelected && (
+                    <div style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      background: "#FFFFFF",
+                      color: "#000000",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                      <Check size={12} strokeWidth={3} />
+                    </div>
+                  )}
+                </div>
+
+                <p style={{
+                  fontSize: "0.75rem",
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.45,
+                }}>
+                  {e.desc}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Action CTA */}
+      <button
+        onClick={onContinue}
+        disabled={!stream || !goal}
+        className="btn-primary"
+        style={{
+          width: "100%",
+          padding: "0.9rem",
+          fontSize: "1rem",
+          borderRadius: 8,
+        }}
+      >
+        <span>Proceed to Chapter Rating</span>
+        <ArrowRight size={17} />
+      </button>
+    </div>
+  );
+}
