@@ -3,6 +3,7 @@ import { TESTIMONIALS } from "../data/testimonials";
 import SpotlightCard from "./SpotlightCard";
 import AnimatedCounter from "./AnimatedCounter";
 import BorderBeam from "./BorderBeam";
+import BrandLogo from "./BrandLogo";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
@@ -44,30 +45,11 @@ export default function Hero({ onStart }) {
         alignItems: "center",
         textAlign: "center",
       }}>
-        {/* Creator Shimmer Badge */}
-        <div className="shimmer-badge" style={{ marginBottom: "1.75rem", cursor: "default" }}>
-          <div style={{
-            width: 18,
-            height: 18,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #F59E0B, #EF4444)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "0.62rem",
-            fontWeight: 700,
-            color: "#FFFFFF",
-          }}>
-            P
-          </div>
-          <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
-            Engineered by <strong style={{ color: "#EDEDED", fontWeight: 600 }}>Parth Goyal</strong>
-          </span>
-          <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
-          <span className="font-mono" style={{ fontSize: "0.7rem", color: "var(--accent-amber)" }}>
-            JEE · NEET · Boards · CUET
-          </span>
+        {/* Brand Icon Mark */}
+        <div style={{ marginBottom: "1.25rem" }}>
+          <BrandLogo size={52} variant="icon" glow={true} />
         </div>
+
 
         {/* Hero Title with Shimmering Animated Gradient */}
         <h1 style={{
@@ -353,7 +335,8 @@ export default function Hero({ onStart }) {
           flexWrap: "wrap",
           gap: "1rem",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+            <BrandLogo size={22} variant="icon" glow={false} />
             <span style={{ fontSize: "0.78rem", color: "var(--text-tertiary)" }}>
               Designed & developed by
             </span>
