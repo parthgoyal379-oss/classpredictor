@@ -1,4 +1,5 @@
-import { ArrowRight, User, X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function NameModal({ nameInput, setNameInput, onProceed, onBack }) {
   const isValid = nameInput.trim().length >= 2;
@@ -37,19 +38,8 @@ export default function NameModal({ nameInput, setNameInput, onProceed, onBack }
           <X size={18} />
         </button>
 
-        <div style={{
-          width: 44,
-          height: 44,
-          borderRadius: 10,
-          background: "rgba(255, 255, 255, 0.05)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: "1.25rem",
-          color: "#EDEDED",
-        }}>
-          <User size={22} />
+        <div style={{ marginBottom: "1.25rem" }}>
+          <BrandLogo size={46} variant="icon" glow={true} />
         </div>
 
         <h2 style={{
