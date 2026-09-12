@@ -49,13 +49,13 @@ export default function StepProgress({ step }) {
                 }}>
                   {isDone ? <Check size={13} strokeWidth={3} /> : s.num}
                 </div>
-                <span style={{
-                  fontSize: "0.82rem",
-                  fontWeight: isCurrent ? 600 : 400,
-                  color: isCurrent ? "#EDEDED" : isDone ? "var(--text-secondary)" : "var(--text-tertiary)",
-                  display: "none",
-                  "@media (min-width: 640px)": { display: "inline" },
-                }}>
+                <span
+                  className="stepper-label-text"
+                  style={{
+                    fontWeight: isCurrent ? 600 : 400,
+                    color: isCurrent ? "#EDEDED" : isDone ? "var(--text-secondary)" : "var(--text-tertiary)",
+                  }}
+                >
                   {s.label}
                 </span>
               </div>

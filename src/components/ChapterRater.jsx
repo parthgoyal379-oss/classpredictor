@@ -14,6 +14,7 @@ export default function ChapterRater({
   ratedCount,
   totalCount,
   pct,
+  onBack,
 }) {
   const curSub = subjects[subIdx];
   const curChapters = FOUNDATION[curSub] || [];
@@ -185,6 +186,28 @@ export default function ChapterRater({
             <span>{s.label}</span>
           </div>
         ))}
+
+        <button
+          onClick={() => {
+            curChapters.forEach(c => {
+              if (ratings[c.id] == null) onRate(c.id, 2);
+            });
+          }}
+          className="btn-ghost"
+          style={{
+            marginLeft: "auto",
+            padding: "2px 9px",
+            fontSize: "0.72rem",
+            color: "#00DFD8",
+            background: "rgba(0, 223, 216, 0.08)",
+            border: "1px solid rgba(0, 223, 216, 0.25)",
+            borderRadius: 4,
+            cursor: "pointer",
+          }}
+          title="Fill unrated chapters in this subject as Confident (2) and refine weak topics"
+        >
+          <span>⚡ Fill Remaining as Confident</span>
+        </button>
       </div>
 
       {/* Chapters Rating Cards with Spotlight Effect */}
@@ -301,12 +324,13 @@ export default function ChapterRater({
                       }}>
                         {val}
                       </span>
-                      <span style={{
-                        fontSize: "0.62rem",
-                        opacity: isSelected ? 1 : 0.6,
-                        display: "none",
-                        "@media (min-width: 640px)": { display: "inline" },
-                      }}>
+                      <span
+                        className="rating-sublabel"
+                        style={{
+                          opacity: isSelected ? 1 : 0.65,
+                          color: isSelected ? "#FFFFFF" : "var(--text-tertiary)",
+                        }}
+                      >
                         {["","Mastered","Confident","Moderate","Struggling","Unprepared"][val]}
                       </span>
                     </button>
@@ -333,7 +357,18 @@ export default function ChapterRater({
         border: "1px solid rgba(255, 255, 255, 0.12)",
         boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.8)",
       }}>
-        {!isFirst && (
+        {isFirst ? (
+          onBack && (
+            <button
+              onClick={onBack}
+              className="btn-secondary"
+              style={{ padding: "0.75rem 1.1rem" }}
+            >
+              <ChevronLeft size={16} />
+              <span>Stream & Target</span>
+            </button>
+          )
+        ) : (
           <button
             onClick={() => setSubIdx(i => i - 1)}
             className="btn-secondary"

@@ -123,68 +123,183 @@ export default function Hero({ onStart }) {
           </div>
         </div>
 
-        {/* 3D Holographic Bento Grid Showcase */}
-        <div
-          style={{
+        {/* 3-Step Blueprint Walkthrough */}
+        <div style={{ width: "100%", maxWidth: 1040, marginBottom: "3.5rem" }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1.25rem",
+            padding: "0 0.5rem",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+          }}>
+            <span className="font-mono" style={{ fontSize: "0.72rem", color: "#00DFD8", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+              • THE 3-MINUTE BLUEPRINT
+            </span>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+              Simple, precise, and 100% free
+            </span>
+          </div>
+
+          <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "1.25rem",
-            width: "100%",
-            maxWidth: 1020,
-            marginBottom: "4.5rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "1rem",
             textAlign: "left",
-          }}
-        >
-          {/* Card 1: Prerequisite Graph + Live Telemetry Waveform */}
-          <TiltCard
-            glowColor="#00DFD8"
-            hasBeam={true}
-            beamColorFrom="#00DFD8"
-            beamColorTo="#A855F7"
-            style={{
-              padding: "1.5rem",
-              gridColumn: "span 1",
-              border: "1px solid rgba(0, 223, 216, 0.25)",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-              <div
+          }}>
+            {[
+              {
+                step: "01",
+                title: "Calibrate Track & Goal",
+                desc: "Select PCM, PCB, or PCMB along with your target exam (JEE, NEET, CUET, or Boards) to calibrate weighted risk equations.",
+                tag: "Step 1",
+                color: "#00DFD8",
+              },
+              {
+                step: "02",
+                title: "Benchmark 9-10 Foundations",
+                desc: "Rate your honest understanding across core Class 9 & 10 prerequisites in under 3 minutes with zero guesswork.",
+                tag: "Step 2",
+                color: "#A855F7",
+              },
+              {
+                step: "03",
+                title: "Receive Recovery Blueprint",
+                desc: "Get your personalized bottleneck dossier, 99th-percentile topper comparison, and week-by-week remedial checklist.",
+                tag: "Step 3",
+                color: "#10B981",
+              },
+            ].map(card => (
+              <SpotlightCard
+                key={card.step}
                 style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 8,
-                  background: "rgba(0, 223, 216, 0.08)",
-                  border: "1px solid rgba(0, 223, 216, 0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding: "1.35rem 1.5rem",
+                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%), #0A0A0A",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  position: "relative",
                 }}
               >
-                <GitFork size={20} style={{ color: "#00DFD8" }} />
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem", position: "relative", zIndex: 2 }}>
+                  <span className="font-mono" style={{ fontSize: "1.5rem", fontWeight: 800, color: card.color, lineHeight: 1 }}>
+                    {card.step}
+                  </span>
+                  <span className="font-mono" style={{
+                    fontSize: "0.65rem",
+                    color: card.color,
+                    background: card.color + "15",
+                    border: "1px solid " + card.color + "33",
+                    padding: "2px 7px",
+                    borderRadius: 4,
+                  }}>
+                    {card.tag}
+                  </span>
+                </div>
+                <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#EDEDED", marginBottom: "0.4rem", position: "relative", zIndex: 2 }}>
+                  {card.title}
+                </h4>
+                <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.55, position: "relative", zIndex: 2 }}>
+                  {card.desc}
+                </p>
+              </SpotlightCard>
+            ))}
+          </div>
+        </div>
+
+        {/* 3D Holographic Asymmetric Bento Grid Showcase */}
+        <div className="asymmetric-bento-grid">
+          {/* Card 1: Prerequisite Graph (Col-Span 2 Featured Hero Card) */}
+          <div className="bento-col-span-2">
+            <TiltCard
+              glowColor="#00DFD8"
+              hasBeam={true}
+              beamColorFrom="#00DFD8"
+              beamColorTo="#A855F7"
+              style={{
+                padding: "1.75rem",
+                border: "1px solid rgba(0, 223, 216, 0.25)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", flexWrap: "wrap", gap: "0.5rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      background: "rgba(0, 223, 216, 0.1)",
+                      border: "1px solid rgba(0, 223, 216, 0.25)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <GitFork size={22} style={{ color: "#00DFD8" }} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#EDEDED" }}>
+                      Prerequisite Dependency Cascade Engine
+                    </h3>
+                    <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
+                      Simulates cascade failures across 30+ core syllabus chapters
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize: "0.65rem",
+                    color: "#00DFD8",
+                    background: "rgba(0, 223, 216, 0.08)",
+                    padding: "3px 8px",
+                    borderRadius: 4,
+                    border: "1px solid rgba(0, 223, 216, 0.2)",
+                  }}
+                >
+                  LIVE GRAPH TELEMETRY
+                </span>
               </div>
-              <span
-                className="font-mono"
-                style={{
-                  fontSize: "0.65rem",
-                  color: "#00DFD8",
-                  background: "rgba(0, 223, 216, 0.08)",
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  border: "1px solid rgba(0, 223, 216, 0.15)",
-                }}
-              >
-                GRAPH THEORY
-              </span>
-            </div>
-            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#EDEDED", marginBottom: "0.35rem" }}>
-              Prerequisite Graph
-            </h3>
-            <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: "1.25rem" }}>
-              Maps 30+ fundamental Class 9–10 nodes to Class 11–12 advanced chapters.
-            </p>
-            {/* Live 60fps Oscillating Waveform Monitor */}
-            <WaveformHUD />
-          </TiltCard>
+
+              {/* Sample Prerequisite Pipeline Visualizer */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: "0.75rem",
+                marginBottom: "1.25rem",
+              }}>
+                <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 8, padding: "0.85rem" }}>
+                  <div className="font-mono" style={{ fontSize: "0.68rem", color: "var(--accent-blue)", marginBottom: "4px" }}>
+                    PHYSICS CASCADE PIPELINE
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#EDEDED", display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap" }}>
+                    <span>Trigonometry</span>
+                    <span style={{ color: "var(--text-tertiary)" }}>➔</span>
+                    <span>Vectors</span>
+                    <span style={{ color: "var(--text-tertiary)" }}>➔</span>
+                    <span style={{ color: "#F97316" }}>Kinematics</span>
+                    <span style={{ color: "var(--text-tertiary)" }}>➔</span>
+                    <span style={{ color: "#EF4444", fontWeight: 600 }}>Rotational Dynamics</span>
+                  </div>
+                </div>
+
+                <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 8, padding: "0.85rem" }}>
+                  <div className="font-mono" style={{ fontSize: "0.68rem", color: "var(--accent-purple)", marginBottom: "4px" }}>
+                    CHEMISTRY CASCADE PIPELINE
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#EDEDED", display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap" }}>
+                    <span>Carbon Compounds</span>
+                    <span style={{ color: "var(--text-tertiary)" }}>➔</span>
+                    <span>IUPAC Nomenclature</span>
+                    <span style={{ color: "var(--text-tertiary)" }}>➔</span>
+                    <span style={{ color: "#EF4444", fontWeight: 600 }}>Reaction Mechanisms (GOC)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Live 60fps Oscillating Waveform Monitor */}
+              <WaveformHUD />
+            </TiltCard>
+          </div>
 
           {/* Card 2: Predictive Risk Scoring */}
           <TiltCard glowColor="#A855F7" style={{ padding: "1.5rem" }}>
@@ -250,7 +365,7 @@ export default function Hero({ onStart }) {
                   width: 38,
                   height: 38,
                   borderRadius: 8,
-                  background: "rgba(16, 185, 129, 0.08)",
+                  background: "rgba(168, 85, 247, 0.08)",
                   border: "1px solid rgba(16, 185, 129, 0.2)",
                   display: "flex",
                   alignItems: "center",
@@ -294,52 +409,75 @@ export default function Hero({ onStart }) {
             </div>
           </TiltCard>
 
-          {/* Card 4: Reality Warnings */}
-          <TiltCard glowColor="#F59E0B" style={{ padding: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-              <div
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 8,
-                  background: "rgba(245, 158, 11, 0.08)",
-                  border: "1px solid rgba(245, 158, 11, 0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <AlertTriangle size={20} style={{ color: "#F59E0B" }} />
+          {/* Card 4: Reality Warnings (Col-Span 2 on Desktop) */}
+          <div className="bento-col-span-2">
+            <TiltCard glowColor="#F59E0B" style={{ padding: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                  <div
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 8,
+                      background: "rgba(245, 158, 11, 0.08)",
+                      border: "1px solid rgba(245, 158, 11, 0.2)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <AlertTriangle size={20} style={{ color: "#F59E0B" }} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#EDEDED" }}>
+                      Curriculum Reality Radar & Difficulty Multipliers
+                    </h3>
+                    <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+                      Historical failure patterns from 250+ Class 11 school & coaching transitions
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize: "0.65rem",
+                    color: "#F59E0B",
+                    background: "rgba(245, 158, 11, 0.08)",
+                    padding: "2px 6px",
+                    borderRadius: 4,
+                    border: "1px solid rgba(245, 158, 11, 0.15)",
+                  }}
+                >
+                  PREVENTIVE ADVISORY
+                </span>
               </div>
-              <span
-                className="font-mono"
-                style={{
-                  fontSize: "0.65rem",
-                  color: "#F59E0B",
-                  background: "rgba(245, 158, 11, 0.08)",
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  border: "1px solid rgba(245, 158, 11, 0.15)",
-                }}
-              >
-                ADVISORY
-              </span>
-            </div>
-            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#EDEDED", marginBottom: "0.35rem" }}>
-              Reality Warnings
-            </h3>
-            <p style={{ fontSize: "0.78rem", color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: "1.25rem" }}>
-              Data-driven advisories on syllabus difficulty jumps and blind spots before term begins.
-            </p>
-            <div style={{ background: "rgba(245, 158, 11, 0.05)", border: "1px solid rgba(245, 158, 11, 0.15)", borderRadius: 8, padding: "0.75rem" }}>
-              <div className="font-mono" style={{ fontSize: "0.68rem", color: "#F59E0B", fontWeight: 600, marginBottom: "0.25rem" }}>
-                CRITICAL WARNING: VECTORS & CALCULUS
+
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: "0.75rem",
+                marginTop: "1rem",
+              }}>
+                <div style={{ background: "rgba(245, 158, 11, 0.05)", border: "1px solid rgba(245, 158, 11, 0.15)", borderRadius: 8, padding: "0.85rem" }}>
+                  <div className="font-mono" style={{ fontSize: "0.68rem", color: "#F59E0B", fontWeight: 600, marginBottom: "0.25rem" }}>
+                    CRITICAL WARNING: VECTORS & CALCULUS
+                  </div>
+                  <p style={{ fontSize: "0.74rem", color: "var(--text-secondary)", lineHeight: 1.45 }}>
+                    82% of Class 11 Physics struggles stem directly from deficient Class 10 Trigonometry and ratio fluency.
+                  </p>
+                </div>
+
+                <div style={{ background: "rgba(239, 68, 68, 0.05)", border: "1px solid rgba(239, 68, 68, 0.15)", borderRadius: 8, padding: "0.85rem" }}>
+                  <div className="font-mono" style={{ fontSize: "0.68rem", color: "#EF4444", fontWeight: 600, marginBottom: "0.25rem" }}>
+                    CRITICAL WARNING: MOLE CONCEPT
+                  </div>
+                  <p style={{ fontSize: "0.74rem", color: "var(--text-secondary)", lineHeight: 1.45 }}>
+                    Chemistry transitions from theory to numerical stoichiometry from Chapter 1. Unprepared students fall 3 weeks behind.
+                  </p>
+                </div>
               </div>
-              <p style={{ fontSize: "0.72rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                82% of Class 11 Physics struggles stem from deficient Trigonometry & Quadratic foundations.
-              </p>
-            </div>
-          </TiltCard>
+            </TiltCard>
+          </div>
         </div>
 
         {/* 5.8x Syllabus Shock Reality Comparison */}
@@ -383,6 +521,52 @@ export default function Hero({ onStart }) {
             </div>
           ))}
         </SpotlightCard>
+
+        {/* Target Institutions & Aspirant Base Trust Strip */}
+        <div style={{
+          width: "100%",
+          maxWidth: 960,
+          marginBottom: "3.5rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "0.85rem",
+        }}>
+          <span className="font-mono" style={{
+            fontSize: "0.68rem",
+            color: "var(--text-tertiary)",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+          }}>
+            TRUSTED BY ASPIRANTS PREPARING FOR PREMIER INSTITUTIONS
+          </span>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.6rem 1rem",
+            justifyContent: "center",
+            alignItems: "center",
+            opacity: 0.8,
+          }}>
+            {["IIT Bombay", "AIIMS New Delhi", "BITS Pilani", "IIT Delhi", "IIT Madras", "NIT Trichy"].map(inst => (
+              <span
+                key={inst}
+                className="font-mono"
+                style={{
+                  fontSize: "0.76rem",
+                  fontWeight: 600,
+                  color: "#EDEDED",
+                  background: "rgba(255, 255, 255, 0.03)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "4px 10px",
+                  borderRadius: 6,
+                }}
+              >
+                {inst}
+              </span>
+            ))}
+          </div>
+        </div>
 
         {/* Dual Opposing Continuous Infinite 3D Marquee Ticker */}
         <div style={{ width: "100%", maxWidth: 1040, marginBottom: "4.5rem" }}>

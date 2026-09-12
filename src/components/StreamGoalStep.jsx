@@ -2,7 +2,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { STREAM_SUBJECTS, SMETA } from "../data/chapters";
 import SpotlightCard from "./SpotlightCard";
 
-export default function StreamGoalStep({ studentName, stream, setStream, goal, setGoal, onContinue }) {
+export default function StreamGoalStep({ studentName, stream, setStream, goal, setGoal, onContinue, onBack }) {
   const exams = [
     { id: "JEE", name: "JEE Main & Advanced", desc: "IIT, NIT & Elite Engineering Colleges" },
     { id: "NEET", name: "NEET-UG", desc: "Medical Entrance (MBBS / BDS / AIIMS)" },
@@ -213,20 +213,35 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
       </div>
 
       {/* Action CTA */}
-      <button
-        onClick={onContinue}
-        disabled={!stream || !goal}
-        className="btn-primary"
-        style={{
-          width: "100%",
-          padding: "0.9rem",
-          fontSize: "1rem",
-          borderRadius: 8,
-        }}
-      >
-        <span>Proceed to Chapter Rating</span>
-        <ArrowRight size={17} />
-      </button>
+      <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="btn-secondary"
+            style={{
+              padding: "0.9rem 1.25rem",
+              borderRadius: 8,
+              fontSize: "0.9rem",
+            }}
+          >
+            <span>← Back</span>
+          </button>
+        )}
+        <button
+          onClick={onContinue}
+          disabled={!stream || !goal}
+          className="btn-primary"
+          style={{
+            flex: 1,
+            padding: "0.9rem",
+            fontSize: "1rem",
+            borderRadius: 8,
+          }}
+        >
+          <span>Proceed to Chapter Rating</span>
+          <ArrowRight size={17} />
+        </button>
+      </div>
     </div>
   );
 }

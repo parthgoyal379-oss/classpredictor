@@ -34,6 +34,8 @@ export default function ReportDashboard({
 }) {
   const [expanded, setExpanded] = useState(null);
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [filterSub, setFilterSub] = useState("all");
+  const [filterRisk, setFilterRisk] = useState("all");
 
   // Celebratory confetti burst on initial report generation
   useEffect(() => {
@@ -63,6 +65,13 @@ export default function ReportDashboard({
     easywin: res.filter(c => c.risk === "LOW" && WT_ORD[c.wt[gk] || "M"] >= 3),
     skip: res.filter(c => c.risk === "LOW" && WT_ORD[c.wt[gk] || "M"] < 3),
   };
+
+  const availableSubjs = Array.from(new Set(res.map(c => c.subj)));
+  const filteredRes = res.filter(ch => {
+    if (filterSub !== "all" && ch.subj !== filterSub) return false;
+    if (filterRisk !== "all" && ch.risk !== filterRisk) return false;
+    return true;
+  });
 
   const tabs = [
     { id: "report", label: "Analysis", icon: <BookOpen size={14} /> },
@@ -203,6 +212,64 @@ export default function ReportDashboard({
           </button>
         </div>
       </div>
+
+      {/* Executive Diagnostic Verdict Card */}
+      <SpotlightCard
+        style={{
+          padding: "1.25rem 1.5rem",
+          marginBottom: "1.5rem",
+          background: stats.highCnt >= 3 
+            ? "linear-gradient(180deg, rgba(239, 68, 68, 0.08) 0%, rgba(10, 10, 10, 0.95) 100%)" 
+            : "linear-gradient(180deg, rgba(0, 223, 216, 0.06) 0%, rgba(10, 10, 10, 0.95) 100%)",
+          border: stats.highCnt >= 3 ? "1px solid rgba(239, 68, 68, 0.3)" : "1px solid rgba(0, 223, 216, 0.25)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "0.85rem", position: "relative", zIndex: 2 }}>
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: 8,
+              background: stats.highCnt >= 3 ? "rgba(239, 68, 68, 0.15)" : "rgba(0, 223, 216, 0.15)",
+              border: stats.highCnt >= 3 ? "1px solid rgba(239, 68, 68, 0.3)" : "1px solid rgba(0, 223, 216, 0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: stats.highCnt >= 3 ? "#EF4444" : "#00DFD8",
+              flexShrink: 0,
+              marginTop: "2px",
+            }}
+          >
+            <Lightbulb size={18} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem", flexWrap: "wrap" }}>
+              <span className="font-mono" style={{
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                color: stats.highCnt >= 3 ? "#EF4444" : "#00DFD8",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}>
+                EXECUTIVE DIAGNOSTIC VERDICT
+              </span>
+              <span style={{
+                fontSize: "0.7rem",
+                color: "var(--text-tertiary)",
+              }}>
+                • Automated Foundation Intelligence
+              </span>
+            </div>
+            <p style={{ fontSize: "0.85rem", color: "#EDEDED", lineHeight: 1.55 }}>
+              {stats.highCnt >= 3
+                ? `Critical bottleneck vulnerability detected across ${stats.highCnt} core prerequisite domains. Without remediation, you are projected to face steep cognitive drag in early Class 11 terms. Allocate ~${stats.totalH} hours to the structured recovery checklist below.`
+                : stats.highCnt > 0
+                ? `Moderate foundation gaps detected in ${stats.highCnt} key chapter${stats.highCnt > 1 ? "s" : ""}. Targeted pre-term revision of highlighted prerequisite concepts will prevent early academic slump.`
+                : `Excellent foundation baseline! You have 0 critical vulnerabilities. Focus on high-order numerical problem solving to maximize competitive percentile.`}
+            </p>
+          </div>
+        </div>
+      </SpotlightCard>
 
       {/* Metric Cards Grid with Cursor Spotlight */}
       <div style={{
@@ -384,6 +451,82 @@ export default function ReportDashboard({
           {/* Interactive Remediation Action Checklist */}
           <RemediationChecklist results={results} />
 
+          {/* Chapter Filter Toolbar */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.75rem",
+            marginBottom: "1.25rem",
+            flexWrap: "wrap",
+            padding: "0.75rem 1rem",
+            background: "rgba(255, 255, 255, 0.02)",
+            border: "1px solid var(--border)",
+            borderRadius: 10,
+          }}>
+            {/* Subject Filters */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap" }}>
+              <span className="font-mono" style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", marginRight: "4px" }}>
+                SUBJECT:
+              </span>
+              {["all", ...availableSubjs].map(s => {
+                const isAct = filterSub === s;
+                const label = s === "all" ? "All Subjects" : SMETA[s]?.name || s;
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setFilterSub(s)}
+                    className="btn-ghost"
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: 5,
+                      fontSize: "0.72rem",
+                      fontWeight: isAct ? 600 : 400,
+                      background: isAct ? "rgba(255, 255, 255, 0.1)" : "transparent",
+                      color: isAct ? "#FFFFFF" : "var(--text-secondary)",
+                      border: isAct ? "1px solid rgba(255, 255, 255, 0.2)" : "1px solid transparent",
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Risk Filters */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", flexWrap: "wrap" }}>
+              <span className="font-mono" style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", marginRight: "4px" }}>
+                RISK:
+              </span>
+              {[
+                { id: "all", label: "All" },
+                { id: "HIGH", label: `Critical (${stats.highCnt})`, col: "#EF4444" },
+                { id: "MEDIUM", label: `Elevated (${stats.medCnt})`, col: "#F59E0B" },
+                { id: "LOW", label: `Optimal (${stats.lowCnt})`, col: "#10B981" },
+              ].map(r => {
+                const isAct = filterRisk === r.id;
+                return (
+                  <button
+                    key={r.id}
+                    onClick={() => setFilterRisk(r.id)}
+                    className="btn-ghost"
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: 5,
+                      fontSize: "0.72rem",
+                      fontWeight: isAct ? 600 : 400,
+                      background: isAct ? (r.col ? r.col + "22" : "rgba(255, 255, 255, 0.1)") : "transparent",
+                      color: isAct ? (r.col || "#FFFFFF") : "var(--text-secondary)",
+                      border: isAct ? `1px solid ${r.col || "rgba(255, 255, 255, 0.2)"}` : "1px solid transparent",
+                    }}
+                  >
+                    {r.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div style={{
             display: "flex",
             justifyContent: "space-between",
@@ -391,12 +534,18 @@ export default function ReportDashboard({
             marginBottom: "1rem",
           }}>
             <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
-              Sorted by risk priority. Click any chapter to expand foundational gaps and actionable tactics.
+              Showing {filteredRes.length} of {res.length} chapters sorted by risk priority. Click any chapter to inspect foundational prerequisites.
             </p>
           </div>
 
           <div style={{ display: "grid", gap: "0.6rem" }}>
-            {res.map((ch, idx) => {
+            {filteredRes.length === 0 ? (
+              <div className="vercel-card" style={{ padding: "2rem", textAlign: "center" }}>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                  No chapters match the selected filter criteria.
+                </p>
+              </div>
+            ) : filteredRes.map((ch, idx) => {
               const isOpen = expanded === ch.id;
               const wtVal = ch.wt[gk] || "M";
               const chTip = getTip(ch, goal);

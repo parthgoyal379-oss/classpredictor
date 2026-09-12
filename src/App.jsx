@@ -325,6 +325,7 @@ export default function App() {
               setStream={setStream}
               goal={goal}
               setGoal={setGoal}
+              onBack={() => setStep(0.5)}
               onContinue={() => {
                 setStep(2);
                 setSubIdx(0);
@@ -348,6 +349,7 @@ export default function App() {
               ratedCount={ratedCount}
               totalCount={totalCount}
               pct={pct}
+              onBack={() => setStep(1)}
             />
           </div>
         )}

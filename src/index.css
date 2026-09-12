@@ -586,3 +586,55 @@ html, body {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE STEPPER & RATING LABELS
+   ───────────────────────────────────────────────────────────── */
+.stepper-label-text {
+  font-size: 0.82rem;
+  transition: color 0.2s ease;
+}
+
+@media (max-width: 580px) {
+  .stepper-label-text {
+    display: none;
+  }
+}
+
+.rating-sublabel {
+  font-size: 0.62rem;
+  line-height: 1.1;
+  text-align: center;
+  transition: opacity 0.18s ease;
+}
+
+@media (max-width: 480px) {
+  .rating-sublabel {
+    display: none;
+  }
+}
+
+/* Asymmetric Bento Layout */
+.asymmetric-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 1040px;
+  margin-bottom: 4.5rem;
+  text-align: left;
+}
+
+.bento-col-span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .asymmetric-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-col-span-2 {
+    grid-column: span 1;
+  }
+}
+
+
