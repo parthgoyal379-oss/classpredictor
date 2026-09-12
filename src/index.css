@@ -573,3 +573,16 @@ html, body {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0%); }
 }
+
+/* Command Palette Scale In */
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
