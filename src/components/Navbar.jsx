@@ -1,4 +1,4 @@
-﻿import { Shield, Search, Volume2, VolumeX } from "lucide-react";
+import { Shield, Volume2, VolumeX } from "lucide-react";
 import BrandLogo from "./BrandLogo";
 import { playClick } from "../utils/audio";
 
@@ -81,42 +81,6 @@ export default function Navbar({
 
         {/* Right Nav actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
-          {/* Quick Cmd+K Search Pill */}
-          <button
-            onClick={() => {
-              playClick();
-              onOpenPalette?.();
-            }}
-            className="btn-ghost"
-            style={{
-              padding: "0.35rem 0.65rem",
-              background: "rgba(255, 255, 255, 0.04)",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: 6,
-              color: "var(--text-secondary)",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.45rem",
-              cursor: "pointer",
-            }}
-            title="Open Command Palette (Ctrl+K or Cmd+K)"
-          >
-            <Search size={13} style={{ color: "#00DFD8" }} />
-            <span style={{ fontSize: "0.75rem" }}>Search</span>
-            <kbd
-              style={{
-                fontSize: "0.65rem",
-                background: "rgba(255, 255, 255, 0.08)",
-                padding: "1px 4px",
-                borderRadius: 3,
-                border: "1px solid rgba(255, 255, 255, 0.12)",
-                fontFamily: "'Geist Mono', monospace",
-              }}
-            >
-              ⌘K
-            </kbd>
-          </button>
-
           {/* Sound FX Toggle */}
           <button
             onClick={() => {
