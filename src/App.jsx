@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, limit } from "firebase/firestore";
 import emailjs from "@emailjs/browser";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Hero, { CREATOR_EMAIL } from "./components/Hero";
 import NameModal from "./components/NameModal";
@@ -402,6 +403,9 @@ export default function App() {
 
       {/* Live Social Proof Activity Ticker */}
       <LiveActivityToast />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </div>
   );
 }
