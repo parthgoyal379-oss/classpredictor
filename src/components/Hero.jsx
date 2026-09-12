@@ -7,7 +7,6 @@ import LampEffect from "./LampEffect";
 import TiltCard from "./TiltCard";
 import WaveformHUD from "./WaveformHUD";
 import MagicButton from "./MagicButton";
-import InteractiveSandbox from "./InteractiveSandbox";
 import WordRotator from "./WordRotator";
 import SyllabusShockWidget from "./SyllabusShockWidget";
 
@@ -98,9 +97,6 @@ export default function Hero({ onStart }) {
         >
           Class 10 scores don't predict Class 11 success — prerequisite depth does. Our algorithmic dependency graph projects where you will struggle across 30+ chapters, and maps your recovery roadmap before Day 1.
         </p>
-
-        {/* 10-Second Interactive Sandbox Preview */}
-        <InteractiveSandbox onStartAnalysis={onStart} />
 
         {/* High-Energy Magic CTA Button with Rotating Conic Laser */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.15rem", marginBottom: "4rem" }}>
