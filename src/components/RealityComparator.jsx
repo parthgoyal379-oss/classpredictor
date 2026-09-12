@@ -171,7 +171,7 @@ export default function RealityComparator({ onStartAnalysis }) {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "1rem",
+          gap: "0.75rem",
           textAlign: "left",
         }}
       >
@@ -182,6 +182,7 @@ export default function RealityComparator({ onStartAnalysis }) {
           return (
             <SpotlightCard
               key={c.title}
+              className="mobile-card-p"
               style={{
                 padding: "1.4rem",
                 background: isR 

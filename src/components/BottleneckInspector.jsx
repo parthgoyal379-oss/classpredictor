@@ -75,6 +75,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
 
       {/* 4 Interactive Selector Cards */}
       <div
+        className="bottleneck-selector-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
@@ -92,6 +93,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
                 playRating(3);
                 setSelectedId(b.id);
               }}
+              className="bottleneck-selector-card"
               style={{
                 padding: "1rem 1.15rem",
                 borderRadius: 12,

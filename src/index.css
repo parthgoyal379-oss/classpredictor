@@ -651,6 +651,26 @@ html, body {
     display: none !important;
   }
 
+  .mobile-hide-marquee {
+    display: none !important;
+  }
+
+  .lamp-effect-container {
+    min-height: 160px !important;
+    max-height: 190px !important;
+  }
+
+  .hero-container-mobile {
+    margin-top: -65px !important;
+    padding-left: 1.15rem !important;
+    padding-right: 1.15rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  .hero-cta-wrapper {
+    margin-bottom: 2.25rem !important;
+  }
+
   .mobile-compact-p {
     padding: 0.65rem 0.85rem !important;
   }
@@ -660,7 +680,7 @@ html, body {
   }
 
   .mobile-card-p {
-    padding: 1.15rem 1rem !important;
+    padding: 1rem 1.15rem !important;
   }
 
   .mobile-sticky-bar {
@@ -673,10 +693,67 @@ html, body {
     font-size: 0.78rem !important;
   }
 
-  .hero-container-mobile {
-    margin-top: -120px !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+  /* Console Mockup Mobile Enhancements */
+  .console-mockup-wrapper {
+    perspective: none !important;
+    margin-bottom: 2.75rem !important;
+  }
+
+  .console-telemetry-row {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.4rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .console-telemetry-item {
+    padding: 0.6rem 0.5rem !important;
+    border-radius: 8px !important;
+  }
+
+  .mobile-stat-num {
+    font-size: 1.25rem !important;
+  }
+
+  /* Pipeline nodes mobile vertical flow */
+  .pipeline-nodes-mobile {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.45rem !important;
+  }
+
+  .pipeline-node-chip {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .pipeline-chevron-mobile {
+    display: flex !important;
+    justify-content: center !important;
+    transform: rotate(90deg) !important;
+    margin: -2px 0 !important;
+    opacity: 0.5;
+  }
+
+  /* Bottleneck 2x2 Selector Grid */
+  .bottleneck-selector-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .bottleneck-selector-card {
+    padding: 0.65rem 0.75rem !important;
+  }
+
+  /* Bento Grid Mobile Breathing Room */
+  .asymmetric-bento-grid {
+    gap: 0.85rem !important;
+    margin-bottom: 3rem !important;
+  }
+
+  /* Testimonial Mobile Sizing */
+  .marquee-card-item {
+    width: 270px !important;
+    padding: 0.95rem 1rem !important;
   }
 }
 

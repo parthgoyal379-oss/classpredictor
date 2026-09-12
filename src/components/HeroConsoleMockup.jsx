@@ -106,6 +106,7 @@ export default function HeroConsoleMockup({ onStart }) {
 
   return (
     <div
+      className="console-mockup-wrapper"
       style={{
         width: "100%",
         maxWidth: 1040,
@@ -115,6 +116,7 @@ export default function HeroConsoleMockup({ onStart }) {
     >
       {/* 3D Tilted Perspective Glass Frame */}
       <div
+        className="console-mockup-frame"
         style={{
           borderRadius: 20,
           background: "linear-gradient(180deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.96) 100%)",
@@ -152,7 +154,7 @@ export default function HeroConsoleMockup({ onStart }) {
             <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
               <Activity size={13} style={{ color: "#00DFD8" }} />
               <span className="font-mono" style={{ fontSize: "0.72rem", color: "#EDEDED", fontWeight: 600, letterSpacing: "0.05em" }}>
-                INTERACTIVE DIAGNOSTIC SIMULATOR
+                <span className="mobile-hide-text">INTERACTIVE </span>DIAGNOSTIC SIMULATOR
               </span>
             </div>
           </div>
@@ -182,7 +184,8 @@ export default function HeroConsoleMockup({ onStart }) {
                     transition: "all 0.2s ease",
                   }}
                 >
-                  {s.label}
+                  <span>{s.id}</span>
+                  <span className="mobile-hide-text"> ({s.id === "PCM" ? "JEE" : s.id === "PCB" ? "NEET" : "Dual"})</span>
                 </button>
               );
             })}
@@ -193,6 +196,7 @@ export default function HeroConsoleMockup({ onStart }) {
         <div className="mobile-card-p" style={{ padding: "clamp(1rem, 3vw, 1.5rem)" }}>
           {/* Diagnostic Telemetry Top Bar */}
           <div
+            className="console-telemetry-row"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -200,42 +204,42 @@ export default function HeroConsoleMockup({ onStart }) {
               marginBottom: "1.5rem",
             }}
           >
-            <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "1rem" }}>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
-                FOUNDATION READINESS
+            <div className="console-telemetry-item" style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "0.85rem" }}>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
+                READINESS
               </div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                <span className="font-mono" style={{ fontSize: "1.75rem", fontWeight: 800, color: current.riskCol, lineHeight: 1 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.45rem", flexWrap: "wrap" }}>
+                <span className="font-mono mobile-stat-num" style={{ fontSize: "1.75rem", fontWeight: 800, color: current.riskCol, lineHeight: 1 }}>
                   {current.score}%
                 </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                  vs. 92% Topper Benchmark
+                <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>
+                  <span className="mobile-hide-text">vs. 92% </span>Topper
                 </span>
               </div>
             </div>
 
-            <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "1rem" }}>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
-                DIAGNOSTIC STATUS
+            <div className="console-telemetry-item" style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "0.85rem" }}>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
+                STATUS
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
-                <ShieldAlert size={16} style={{ color: current.riskCol }} />
-                <span className="font-mono" style={{ fontSize: "0.85rem", fontWeight: 700, color: current.riskCol }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <ShieldAlert size={15} style={{ color: current.riskCol, flexShrink: 0 }} />
+                <span className="font-mono" style={{ fontSize: "clamp(0.72rem, 1.8vw, 0.85rem)", fontWeight: 700, color: current.riskCol, lineHeight: 1.2 }}>
                   {current.riskLevel}
                 </span>
               </div>
             </div>
 
-            <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "1rem" }}>
-              <div style={{ fontSize: "0.7rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
-                ESTIMATED RECOVERY DEFICIT
+            <div className="console-telemetry-item" style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid rgba(255, 255, 255, 0.06)", borderRadius: 10, padding: "0.85rem" }}>
+              <div style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", textTransform: "uppercase", marginBottom: "4px" }} className="font-mono">
+                DEFICIT
               </div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: "0.45rem" }}>
-                <span className="font-mono" style={{ fontSize: "1.75rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.45rem", flexWrap: "wrap" }}>
+                <span className="font-mono mobile-stat-num" style={{ fontSize: "1.75rem", fontWeight: 800, color: "#FFFFFF", lineHeight: 1 }}>
                   ~{current.deficit}
                 </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                  across {current.criticalCount} bottlenecks
+                <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>
+                  {current.criticalCount} bottlenecks
                 </span>
               </div>
             </div>
@@ -243,15 +247,15 @@ export default function HeroConsoleMockup({ onStart }) {
 
           {/* Interactive Prerequisite Dependency Laser Pathways */}
           <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem", flexWrap: "wrap", gap: "0.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
                 <GitFork size={15} style={{ color: "#00DFD8" }} />
                 <span className="font-mono" style={{ fontSize: "0.75rem", fontWeight: 600, color: "#EDEDED", letterSpacing: "0.06em" }}>
-                  SIMULATED PREREQUISITE CASCADE FAILURES
+                  SIMULATED CASCADE FAILURES
                 </span>
               </div>
               <span style={{ fontSize: "0.7rem", color: "var(--text-tertiary)" }}>
-                Hover any node to inspect risk cascade
+                Tap any node to inspect risk cascade
               </span>
             </div>
 
@@ -276,18 +280,25 @@ export default function HeroConsoleMockup({ onStart }) {
                   </div>
 
                   {/* Connected Pathway Nodes */}
-                  <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.6rem",
-                    flexWrap: "wrap",
-                  }}>
+                  <div
+                    className="pipeline-nodes-mobile"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.6rem",
+                      flexWrap: "wrap",
+                    }}
+                  >
                     {pipe.nodes.map((node, nIdx) => {
                       const isHovered = activeNode === node.id;
 
                       return (
-                        <div key={node.id} style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", maxWidth: "100%" }}>
+                        <div key={node.id} style={{ display: "contents" }}>
                           <div
+                            onClick={() => {
+                              playClick();
+                              setActiveNode(activeNode === node.id ? null : node.id);
+                            }}
                             onMouseEnter={() => setActiveNode(node.id)}
                             onMouseLeave={() => setActiveNode(null)}
                             style={{
@@ -301,20 +312,21 @@ export default function HeroConsoleMockup({ onStart }) {
                               cursor: "pointer",
                               transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
                               transform: isHovered ? "translateY(-2px) scale(1.02)" : "scale(1)",
-                              maxWidth: "100%",
                             }}
                           >
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", flexWrap: "wrap" }}>
-                              <span style={{
-                                width: 7,
-                                height: 7,
-                                borderRadius: "50%",
-                                background: node.col,
-                                boxShadow: `0 0 8px ${node.col}`,
-                              }} />
-                              <span style={{ fontSize: "0.82rem", fontWeight: 600, color: isHovered ? "#FFFFFF" : "#EDEDED" }}>
-                                {node.name}
-                              </span>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+                                <span style={{
+                                  width: 7,
+                                  height: 7,
+                                  borderRadius: "50%",
+                                  background: node.col,
+                                  boxShadow: `0 0 8px ${node.col}`,
+                                }} />
+                                <span style={{ fontSize: "0.82rem", fontWeight: 600, color: isHovered ? "#FFFFFF" : "#EDEDED" }}>
+                                  {node.name}
+                                </span>
+                              </div>
                               <span className="font-mono" style={{
                                 fontSize: "0.62rem",
                                 color: node.col,
@@ -328,7 +340,7 @@ export default function HeroConsoleMockup({ onStart }) {
                           </div>
 
                           {nIdx < pipe.nodes.length - 1 && (
-                            <div style={{ display: "flex", alignItems: "center", color: "var(--text-tertiary)" }}>
+                            <div className="pipeline-chevron-mobile" style={{ display: "flex", alignItems: "center", color: "var(--text-tertiary)" }}>
                               <ChevronRight size={16} />
                             </div>
                           )}

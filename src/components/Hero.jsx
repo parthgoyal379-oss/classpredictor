@@ -103,12 +103,12 @@ export default function Hero({ onStart }) {
         </p>
 
         {/* High-Energy Magic CTA Button with Rotating Conic Laser */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.15rem", marginBottom: "4rem" }}>
+        <div className="hero-cta-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.15rem", marginBottom: "4rem" }}>
           <MagicButton onClick={onStart}>
             Start Free Analysis
           </MagicButton>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap", justifyContent: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem 1.1rem", flexWrap: "wrap", justifyContent: "center" }}>
             {["~3 mins", "30+ chapters mapped", "Instant roadmap", "100% Free"].map(item => (
               <span
                 key={item}
@@ -180,6 +180,7 @@ export default function Hero({ onStart }) {
             ].map(card => (
               <SpotlightCard
                 key={card.step}
+                className="mobile-card-p"
                 style={{
                   padding: "1.35rem 1.5rem",
                   background: "linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%), #0A0A0A",
@@ -218,6 +219,7 @@ export default function Hero({ onStart }) {
           {/* Card 1: Prerequisite Graph (Col-Span 2 Featured Hero Card) */}
           <div className="bento-col-span-2">
             <TiltCard
+              className="mobile-card-p"
               glowColor="#00DFD8"
               hasBeam={true}
               beamColorFrom="#00DFD8"
@@ -309,7 +311,7 @@ export default function Hero({ onStart }) {
           </div>
 
           {/* Card 2: Predictive Risk Scoring */}
-          <TiltCard glowColor="#A855F7" style={{ padding: "1.5rem" }}>
+          <TiltCard className="mobile-card-p" glowColor="#A855F7" style={{ padding: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div
                 style={{
@@ -365,7 +367,7 @@ export default function Hero({ onStart }) {
           </TiltCard>
 
           {/* Card 3: Phased Roadmap */}
-          <TiltCard glowColor="#10B981" style={{ padding: "1.5rem" }}>
+          <TiltCard className="mobile-card-p" glowColor="#10B981" style={{ padding: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div
                 style={{
@@ -418,7 +420,7 @@ export default function Hero({ onStart }) {
 
           {/* Card 4: Reality Warnings (Col-Span 2 on Desktop) */}
           <div className="bento-col-span-2">
-            <TiltCard glowColor="#F59E0B" style={{ padding: "1.5rem" }}>
+            <TiltCard className="mobile-card-p" glowColor="#F59E0B" style={{ padding: "1.5rem" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
                   <div
@@ -616,6 +618,7 @@ export default function Hero({ onStart }) {
               {marqueeList1.map((t, idx) => (
                 <div
                   key={idx}
+                  className="marquee-card-item"
                   style={{
                     padding: "1.25rem",
                     width: 320,
@@ -664,8 +667,8 @@ export default function Hero({ onStart }) {
             </div>
           </div>
 
-          {/* Row 2: Rightward Gliding Stream */}
-          <div className="marquee-container">
+          {/* Row 2: Rightward Gliding Stream (Hidden on mobile to reduce congestion) */}
+          <div className="marquee-container mobile-hide-marquee">
             <div className="marquee-reverse">
               {marqueeList2.map((t, idx) => (
                 <div

@@ -1,6 +1,7 @@
-﻿export default function LampEffect({ children }) {
+export default function LampEffect({ children }) {
   return (
     <div
+      className="lamp-effect-container"
       style={{
         position: "relative",
         display: "flex",
