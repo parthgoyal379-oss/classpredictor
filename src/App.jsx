@@ -13,6 +13,9 @@ import AdminDashboard from "./components/AdminDashboard";
 import FeedbackModal from "./components/FeedbackModal";
 import LoadingScanner from "./components/LoadingScanner";
 import CosmicCanvas from "./components/CosmicCanvas";
+import CommandPalette from "./components/CommandPalette";
+import LiveActivityToast from "./components/LiveActivityToast";
+import { getSoundEnabled, setSoundEnabled } from "./utils/audio";
 
 import { ADMIN_PASSWORD, STREAM_SUBJECTS, FOUNDATION } from "./data/chapters";
 import { runAnalysis } from "./utils/analyzer";
@@ -54,6 +57,25 @@ export default function App() {
   const [adminPass, setAdminPass] = useState("");
   const [adminUnlocked, setAdminUnlocked] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [soundEnabled, setSoundEnabledState] = useState(() => getSoundEnabled());
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleToggleSound = () => {
+    const next = !soundEnabled;
+    setSoundEnabled(next);
+    setSoundEnabledState(next);
+  };
 
   // ── FIREBASE ACTIONS ──
   const loadStats = async () => {
@@ -266,6 +288,9 @@ export default function App() {
         step={step}
         onReset={resetAll}
         onOpenAdmin={() => setShowAdmin(true)}
+        onOpenPalette={() => setIsPaletteOpen(true)}
+        soundEnabled={soundEnabled}
+        onToggleSound={handleToggleSound}
       />
 
       {/* Main Container */}
@@ -358,6 +383,23 @@ export default function App() {
         setFeedback={setFeedback}
         onSubmit={submitFeedback}
       />
+
+      {/* Cmd+K Global Command Palette */}
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+        onStartAnalysis={() => {
+          if (step === 0) setStep(0.5);
+          else if (step === 3) setStep(1);
+        }}
+        onOpenAdmin={() => setShowAdmin(true)}
+        onReset={resetAll}
+        soundEnabled={soundEnabled}
+        setSoundEnabledState={setSoundEnabledState}
+      />
+
+      {/* Live Social Proof Activity Ticker */}
+      <LiveActivityToast />
     </div>
   );
 }
