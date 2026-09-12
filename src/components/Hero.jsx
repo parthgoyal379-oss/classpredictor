@@ -8,7 +8,10 @@ import TiltCard from "./TiltCard";
 import WaveformHUD from "./WaveformHUD";
 import MagicButton from "./MagicButton";
 import WordRotator from "./WordRotator";
-import SyllabusShockWidget from "./SyllabusShockWidget";
+import HeroConsoleMockup from "./HeroConsoleMockup";
+import RealityComparator from "./RealityComparator";
+import BottleneckInspector from "./BottleneckInspector";
+import FAQSection from "./FAQSection";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
@@ -122,6 +125,9 @@ export default function Hero({ onStart }) {
             ))}
           </div>
         </div>
+
+        {/* 3D Holographic Diagnostic Console Product Showcase */}
+        <HeroConsoleMockup onStart={onStart} />
 
         {/* 3-Step Blueprint Walkthrough */}
         <div style={{ width: "100%", maxWidth: 1040, marginBottom: "3.5rem" }}>
@@ -480,8 +486,11 @@ export default function Hero({ onStart }) {
           </div>
         </div>
 
-        {/* 5.8x Syllabus Shock Reality Comparison */}
-        <SyllabusShockWidget />
+        {/* The 4 Notorious Bottlenecks Deep-Dive Inspector */}
+        <BottleneckInspector onStartAnalysis={onStart} />
+
+        {/* The Great Filter — Class 10 Illusion vs Class 11 Reality */}
+        <RealityComparator onStartAnalysis={onStart} />
 
         {/* Minimalist Metrics Counter Strip */}
         <SpotlightCard
@@ -567,6 +576,9 @@ export default function Hero({ onStart }) {
             ))}
           </div>
         </div>
+
+        {/* High-Craft Glass FAQ Accordion */}
+        <FAQSection />
 
         {/* Dual Opposing Continuous Infinite 3D Marquee Ticker */}
         <div style={{ width: "100%", maxWidth: 1040, marginBottom: "4.5rem" }}>
