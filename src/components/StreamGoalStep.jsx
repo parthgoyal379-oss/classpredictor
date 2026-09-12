@@ -1,5 +1,6 @@
 import { ArrowRight, Check } from "lucide-react";
 import { STREAM_SUBJECTS, SMETA } from "../data/chapters";
+import SpotlightCard from "./SpotlightCard";
 
 export default function StreamGoalStep({ studentName, stream, setStream, goal, setGoal, onContinue }) {
   const exams = [
@@ -62,10 +63,10 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
             const subNames = subs.filter(s => s !== "core_maths").map(s => SMETA[s].name);
 
             return (
-              <div
+              <SpotlightCard
                 key={id}
                 onClick={() => setStream(id)}
-                className={"vercel-card " + (isSelected ? "vercel-card-active" : "")}
+                active={isSelected}
                 style={{
                   padding: "1.1rem",
                   cursor: "pointer",
@@ -77,6 +78,8 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                   alignItems: "center",
                   justifyContent: "space-between",
                   marginBottom: "0.65rem",
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   <span className="font-mono" style={{
                     fontSize: "1.05rem",
@@ -95,6 +98,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      animation: "fadeInUp 0.2s ease",
                     }}>
                       <Check size={12} strokeWidth={3} />
                     </div>
@@ -105,6 +109,8 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                   display: "flex",
                   flexWrap: "wrap",
                   gap: "0.35rem",
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   {subNames.map(s => (
                     <span key={s} style={{
@@ -118,7 +124,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                     </span>
                   ))}
                 </div>
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>
@@ -149,10 +155,10 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
             const isSelected = goal === e.id;
 
             return (
-              <div
+              <SpotlightCard
                 key={e.id}
                 onClick={() => setGoal(e.id)}
-                className={"vercel-card " + (isSelected ? "vercel-card-active" : "")}
+                active={isSelected}
                 style={{
                   padding: "1.1rem",
                   cursor: "pointer",
@@ -164,6 +170,8 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                   alignItems: "center",
                   justifyContent: "space-between",
                   marginBottom: "0.35rem",
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   <span style={{
                     fontSize: "0.95rem",
@@ -182,6 +190,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      animation: "fadeInUp 0.2s ease",
                     }}>
                       <Check size={12} strokeWidth={3} />
                     </div>
@@ -192,10 +201,12 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
                   fontSize: "0.75rem",
                   color: "var(--text-secondary)",
                   lineHeight: 1.45,
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   {e.desc}
                 </p>
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>

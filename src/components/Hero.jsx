@@ -1,12 +1,13 @@
 import { ArrowRight, GitFork, AlertTriangle, Compass, CheckCircle2, Star, ShieldCheck } from "lucide-react";
 import { TESTIMONIALS } from "../data/testimonials";
+import SpotlightCard from "./SpotlightCard";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
 export default function Hero({ onStart }) {
   return (
     <div style={{ position: "relative", minHeight: "100vh", overflow: "hidden" }}>
-      {/* Background ambient spotlight & grid */}
+      {/* Background ambient spotlight & pulsing grid */}
       <div className="ambient-spotlight" />
       <div className="vercel-grid-bg" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }} />
 
@@ -21,41 +22,6 @@ export default function Hero({ onStart }) {
         alignItems: "center",
         textAlign: "center",
       }}>
-        {/* Creator Pill Badge */}
-        <div style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.3rem 0.85rem",
-          borderRadius: 9999,
-          background: "rgba(255, 255, 255, 0.04)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          marginBottom: "1.75rem",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        }}>
-          <div style={{
-            width: 18,
-            height: 18,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #F59E0B, #EF4444)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "0.62rem",
-            fontWeight: 700,
-            color: "#FFFFFF",
-          }}>
-            P
-          </div>
-          <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
-            Engineered by <strong style={{ color: "#EDEDED", fontWeight: 600 }}>Parth Goyal</strong>
-          </span>
-          <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
-          <span className="font-mono" style={{ fontSize: "0.7rem", color: "var(--accent-amber)" }}>
-            JEE · NEET · Boards · CUET
-          </span>
-        </div>
 
         {/* Hero Title */}
         <h1 style={{
@@ -69,9 +35,10 @@ export default function Hero({ onStart }) {
         }}>
           Know exactly what<br />
           <span style={{
-            background: "linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%)",
+            background: "linear-gradient(180deg, #FFFFFF 20%, #A1A1AA 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
+            display: "inline-block",
           }}>
             Class 11 will hit you with.
           </span>
@@ -84,19 +51,19 @@ export default function Hero({ onStart }) {
           maxWidth: 620,
           lineHeight: 1.65,
           letterSpacing: "-0.01em",
-          marginBottom: "2.25rem",
+          marginBottom: "2.5rem",
         }}>
           Rate your Class 9–10 foundations. Our algorithmic dependency graph projects which Class 11–12 chapters will bottleneck you — and maps precisely how to fix them.
         </p>
 
-        {/* Primary CTA */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.85rem", marginBottom: "3rem" }}>
+        {/* Primary CTA with Vercel hover glow */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", marginBottom: "3.5rem" }}>
           <button
             onClick={onStart}
             className="btn-primary"
             style={{
-              padding: "0.9rem 2.5rem",
-              fontSize: "1.05rem",
+              padding: "0.95rem 2.75rem",
+              fontSize: "1.08rem",
               borderRadius: 10,
             }}
           >
@@ -120,14 +87,14 @@ export default function Hero({ onStart }) {
           </div>
         </div>
 
-        {/* Bento Grid Feature Showcase */}
+        {/* Bento Grid Feature Showcase with Mouse Spotlight */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
           gap: "1rem",
           width: "100%",
           maxWidth: 960,
-          marginBottom: "4rem",
+          marginBottom: "4.5rem",
           textAlign: "left",
         }}>
           {[
@@ -156,12 +123,14 @@ export default function Hero({ onStart }) {
               tag: "Early Warning",
             },
           ].map(f => (
-            <div key={f.title} className="vercel-card" style={{ padding: "1.35rem" }}>
+            <SpotlightCard key={f.title} style={{ padding: "1.35rem" }}>
               <div style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
                 marginBottom: "1rem",
+                position: "relative",
+                zIndex: 2,
               }}>
                 <div style={{
                   width: 38,
@@ -192,6 +161,8 @@ export default function Hero({ onStart }) {
                 color: "#EDEDED",
                 marginBottom: "0.35rem",
                 letterSpacing: "-0.01em",
+                position: "relative",
+                zIndex: 2,
               }}>
                 {f.title}
               </h3>
@@ -199,15 +170,17 @@ export default function Hero({ onStart }) {
                 fontSize: "0.78rem",
                 color: "var(--text-secondary)",
                 lineHeight: 1.55,
+                position: "relative",
+                zIndex: 2,
               }}>
                 {f.desc}
               </p>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 
         {/* Minimalist Metrics Counter */}
-        <div className="vercel-card" style={{
+        <SpotlightCard style={{
           width: "100%",
           maxWidth: 880,
           padding: "1.75rem 2rem",
@@ -223,7 +196,7 @@ export default function Hero({ onStart }) {
             { val: "100%", label: "Free & Independent" },
             { val: "250+", label: "Students Analyzed" },
           ].map(s => (
-            <div key={s.label} style={{ textAlign: "center" }}>
+            <div key={s.label} style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
               <div className="font-mono" style={{
                 fontSize: "2rem",
                 fontWeight: 700,
@@ -242,7 +215,7 @@ export default function Hero({ onStart }) {
               </div>
             </div>
           ))}
-        </div>
+        </SpotlightCard>
 
         {/* Student Testimonials */}
         <div style={{ width: "100%", maxWidth: 960, marginBottom: "4rem" }}>
@@ -273,8 +246,8 @@ export default function Hero({ onStart }) {
             textAlign: "left",
           }}>
             {TESTIMONIALS.map((t, idx) => (
-              <div key={idx} className="vercel-card" style={{ padding: "1.25rem" }}>
-                <div style={{ display: "flex", gap: "2px", marginBottom: "0.75rem" }}>
+              <SpotlightCard key={idx} style={{ padding: "1.25rem" }}>
+                <div style={{ display: "flex", gap: "2px", marginBottom: "0.75rem", position: "relative", zIndex: 2 }}>
                   {[...Array(t.stars)].map((_, i) => (
                     <Star key={i} size={13} fill="#F59E0B" color="#F59E0B" />
                   ))}
@@ -284,10 +257,12 @@ export default function Hero({ onStart }) {
                   color: "var(--text-secondary)",
                   lineHeight: 1.6,
                   marginBottom: "1rem",
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   "{t.text}"
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", position: "relative", zIndex: 2 }}>
                   <div style={{
                     width: 28,
                     height: 28,
@@ -312,7 +287,7 @@ export default function Hero({ onStart }) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>

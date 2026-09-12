@@ -11,6 +11,7 @@ import ChapterRater from "./components/ChapterRater";
 import ReportDashboard from "./components/ReportDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import FeedbackModal from "./components/FeedbackModal";
+import LoadingScanner from "./components/LoadingScanner";
 
 import { ADMIN_PASSWORD, STREAM_SUBJECTS, FOUNDATION } from "./data/chapters";
 import { runAnalysis } from "./utils/analyzer";
@@ -218,34 +219,7 @@ export default function App() {
 
   // ── LOADING STATE ──
   if (loading) {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#000000",
-        padding: "2rem",
-        textAlign: "center",
-      }}>
-        <div style={{
-          width: 48,
-          height: 48,
-          borderRadius: "50%",
-          border: "2px solid rgba(255, 255, 255, 0.1)",
-          borderTopColor: "#FFFFFF",
-          animation: "spin 0.8s linear infinite",
-          marginBottom: "1.5rem",
-        }} />
-        <h3 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#FFFFFF", marginBottom: "0.4rem" }}>
-          Evaluating Prerequisite Graph Matrix...
-        </h3>
-        <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", maxWidth: 420 }}>
-          Calculating individual topic dependency paths and risk distribution for {studentName}.
-        </p>
-      </div>
-    );
+    return <LoadingScanner studentName={studentName} goal={goal} />;
   }
 
   // ── ADMIN VIEW ──

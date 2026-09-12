@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import SpotlightCard from "./components/SpotlightCard";
 
 const SUBJ_COLOR = {
   physics: "#3B82F6",
@@ -108,7 +109,7 @@ export default function DependencyGraph({ results, ratings, goal }) {
       defs.append("marker")
         .attr("id", "arrow-" + r)
         .attr("viewBox", "0 -4 8 8")
-        .attr("refX", 20)
+        .attr("refX", 21)
         .attr("refY", 0)
         .attr("markerWidth", 5)
         .attr("markerHeight", 5)
@@ -116,7 +117,7 @@ export default function DependencyGraph({ results, ratings, goal }) {
         .append("path")
         .attr("d", "M0,-4L8,0L0,4")
         .attr("fill", col)
-        .attr("opacity", 0.6);
+        .attr("opacity", 0.75);
     });
 
     // Glow filter
@@ -165,17 +166,17 @@ export default function DependencyGraph({ results, ratings, goal }) {
       .force("x", d3.forceX(d => d.type === "foundation" ? w * 0.22 : w * 0.75).strength(0.18))
       .force("y", d3.forceY(h / 2).strength(0.06));
 
-    // Links
+    // Animated Links
     const linkG = g.append("g").attr("class", "links");
     const linkEl = linkG.selectAll("line")
       .data(links)
       .join("line")
+      .attr("class", "flowing-link")
       .attr("stroke", d => {
         const tgt = nodes.find(n => n.id === (d.target.id || d.target));
-        return tgt ? (tgt.risk === "HIGH" ? "#EF444455" : tgt.risk === "MEDIUM" ? "#F59E0B55" : "#10B98155") : "rgba(255,255,255,0.1)";
+        return tgt ? (tgt.risk === "HIGH" ? "#EF444477" : tgt.risk === "MEDIUM" ? "#F59E0B77" : "#10B98177") : "rgba(255,255,255,0.15)";
       })
-      .attr("stroke-width", d => 1 + d.w * 2)
-      .attr("stroke-dasharray", d => d.w < 0.25 ? "3,3" : "none")
+      .attr("stroke-width", d => 1.2 + d.w * 2.2)
       .attr("marker-end", d => {
         const tgt = nodes.find(n => n.id === (d.target.id || d.target));
         return `url(#arrow-${tgt ? tgt.risk : "FOUNDATION"})`;
@@ -212,6 +213,17 @@ export default function DependencyGraph({ results, ratings, goal }) {
         setTooltip({ id: d.id, x: mx, y: my });
       })
       .on("mouseleave", () => setTooltip(null));
+
+    // Concentric halo for High Risk nodes
+    nodeEl.filter(d => d.risk === "HIGH")
+      .append("circle")
+      .attr("r", 32)
+      .attr("fill", "none")
+      .attr("stroke", "#EF4444")
+      .attr("stroke-width", 1)
+      .attr("opacity", 0.3)
+      .attr("stroke-dasharray", "4,4")
+      .attr("class", "radar-sweep");
 
     // Outer circle
     nodeEl.append("circle")
@@ -291,19 +303,19 @@ export default function DependencyGraph({ results, ratings, goal }) {
           ((l.source.id || l.source) === selected && (l.target.id || l.target) === d.id) ||
           ((l.source.id || l.source) === d.id && (l.target.id || l.target) === selected)
         );
-        return isSelected || isConnected ? 1 : 0.2;
+        return isSelected || isConnected ? 1 : 0.15;
       });
 
     svg.selectAll(".links line")
       .attr("opacity", d => {
         if (!selected) return 0.6;
         const isConnected = (d.source.id || d.source) === selected || (d.target.id || d.target) === selected;
-        return isConnected ? 1 : 0.06;
+        return isConnected ? 1 : 0.05;
       })
       .attr("stroke-width", d => {
-        if (!selected) return 1 + d.w * 2;
+        if (!selected) return 1.2 + d.w * 2.2;
         const isConnected = (d.source.id || d.source) === selected || (d.target.id || d.target) === selected;
-        return isConnected ? 2.5 + d.w * 2 : 1;
+        return isConnected ? 3 + d.w * 2 : 1;
       });
   }, [selected, links]);
 
@@ -492,12 +504,14 @@ export default function DependencyGraph({ results, ratings, goal }) {
 
       {/* Selected Node Details Drawer */}
       {selNode && (
-        <div className="vercel-card animate-fade-in" style={{ padding: "1.25rem" }}>
+        <SpotlightCard style={{ padding: "1.25rem" }}>
           <div style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-start",
             marginBottom: "0.75rem",
+            position: "relative",
+            zIndex: 2,
           }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -541,6 +555,8 @@ export default function DependencyGraph({ results, ratings, goal }) {
               display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",
               gap: "0.5rem",
+              position: "relative",
+              zIndex: 2,
             }}>
               {[
                 { l: "Study Load", v: `${selNode.studyH} Hours`, c: "#FFFFFF" },
@@ -574,11 +590,13 @@ export default function DependencyGraph({ results, ratings, goal }) {
               border: "1px solid rgba(239, 68, 68, 0.2)",
               padding: "0.5rem 0.75rem",
               borderRadius: 6,
+              position: "relative",
+              zIndex: 2,
             }}>
               ⚠️ You rated your comfort in this chapter as {selNode.rating}/5. This gap creates direct friction for all connected Class 11–12 topics.
             </p>
           )}
-        </div>
+        </SpotlightCard>
       )}
     </div>
   );

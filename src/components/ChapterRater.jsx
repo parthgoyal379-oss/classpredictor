@@ -1,5 +1,6 @@
 import { ArrowRight, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import { FOUNDATION, SMETA, DLABEL, DCOL } from "../data/chapters";
+import SpotlightCard from "./SpotlightCard";
 
 export default function ChapterRater({
   studentName,
@@ -60,6 +61,7 @@ export default function ChapterRater({
                   color: isActive ? "#FFFFFF" : "var(--text-secondary)",
                   border: isActive ? "1px solid rgba(255, 255, 255, 0.12)" : "1px solid transparent",
                   whiteSpace: "nowrap",
+                  transition: "all 0.2s ease",
                 }}
               >
                 <span>{m.name}</span>
@@ -78,7 +80,7 @@ export default function ChapterRater({
           })}
         </div>
 
-        {/* Global Progress */}
+        {/* Global Progress with pulsating percentage */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
             {ratedCount} of {totalCount} rated
@@ -91,13 +93,14 @@ export default function ChapterRater({
             border: "1px solid var(--border)",
             padding: "2px 7px",
             borderRadius: 6,
+            boxShadow: pct === 100 ? "0 0 10px rgba(16, 185, 129, 0.3)" : "none",
           }}>
             {pct}%
           </span>
         </div>
       </div>
 
-      {/* Progress Line */}
+      {/* Animated Progress Line */}
       <div style={{
         height: 2,
         background: "rgba(255, 255, 255, 0.06)",
@@ -108,9 +111,9 @@ export default function ChapterRater({
         <div style={{
           height: "100%",
           width: pct + "%",
-          background: "#FFFFFF",
-          transition: "width 0.3s ease",
-          boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
+          background: "linear-gradient(90deg, #FFFFFF, rgba(255,255,255,0.8))",
+          transition: "width 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+          boxShadow: "0 0 12px rgba(255, 255, 255, 0.6)",
         }} />
       </div>
 
@@ -183,16 +186,15 @@ export default function ChapterRater({
         ))}
       </div>
 
-      {/* Chapters Rating Cards */}
+      {/* Chapters Rating Cards with Spotlight Effect */}
       <div style={{ display: "grid", gap: "0.75rem", marginBottom: "2.5rem" }}>
         {curChapters.map((ch, idx) => {
           const rating = ratings[ch.id];
           const hasRated = rating != null;
 
           return (
-            <div
+            <SpotlightCard
               key={ch.id}
-              className="vercel-card"
               style={{
                 padding: "1rem 1.25rem",
                 display: "flex",
@@ -205,6 +207,8 @@ export default function ChapterRater({
                 alignItems: "flex-start",
                 justifyContent: "space-between",
                 gap: "1rem",
+                position: "relative",
+                zIndex: 2,
               }}>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem" }}>
@@ -240,6 +244,7 @@ export default function ChapterRater({
                       border: "1px solid " + DCOL[rating] + "44",
                       padding: "2px 7px",
                       borderRadius: 4,
+                      animation: "fadeInUp 0.2s ease",
                     }}>
                       {DLABEL[rating]}
                     </span>
@@ -247,7 +252,7 @@ export default function ChapterRater({
                 </div>
               </div>
 
-              {/* Segmented rating buttons */}
+              {/* Segmented rating buttons with tactile active state */}
               <div style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(5, 1fr)",
@@ -256,6 +261,8 @@ export default function ChapterRater({
                 padding: "3px",
                 borderRadius: 8,
                 border: "1px solid rgba(255, 255, 255, 0.05)",
+                position: "relative",
+                zIndex: 2,
               }}>
                 {[1, 2, 3, 4, 5].map(val => {
                   const isSelected = rating === val;
@@ -270,7 +277,7 @@ export default function ChapterRater({
                         borderRadius: 6,
                         border: "1px solid " + (isSelected ? DCOL[val] : "transparent"),
                         background: isSelected 
-                          ? DCOL[val] + "26" 
+                          ? DCOL[val] + "2B" 
                           : "transparent",
                         color: isSelected ? "#FFFFFF" : "var(--text-secondary)",
                         cursor: "pointer",
@@ -278,7 +285,9 @@ export default function ChapterRater({
                         flexDirection: "column",
                         alignItems: "center",
                         gap: "2px",
-                        transition: "all 0.15s ease",
+                        transform: isSelected ? "scale(1.03)" : "scale(1)",
+                        boxShadow: isSelected ? `0 0 14px ${DCOL[val]}33` : "none",
+                        transition: "all 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
                       }}
                     >
                       <span className="font-mono" style={{
@@ -300,7 +309,7 @@ export default function ChapterRater({
                   );
                 })}
               </div>
-            </div>
+            </SpotlightCard>
           );
         })}
       </div>
@@ -314,11 +323,11 @@ export default function ChapterRater({
         gap: "0.75rem",
         padding: "0.85rem 1.25rem",
         borderRadius: 12,
-        background: "rgba(10, 10, 10, 0.9)",
+        background: "rgba(10, 10, 10, 0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         border: "1px solid rgba(255, 255, 255, 0.12)",
-        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.7)",
+        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.8)",
       }}>
         {!isFirst && (
           <button

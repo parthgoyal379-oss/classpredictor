@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import confetti from "canvas-confetti";
 import { 
-  Share2, RotateCcw, AlertTriangle, ChevronDown, ChevronUp, 
+  Share2, RotateCcw, AlertTriangle, ChevronDown, 
   Lightbulb, BookOpen, CheckCircle2, 
   Compass, Grid, Network, MessageSquare, Flame
 } from "lucide-react";
@@ -9,6 +10,7 @@ import { getTip } from "../utils/analyzer";
 import RoadmapView from "./RoadmapView";
 import PriorityMatrix from "./PriorityMatrix";
 import DependencyGraph from "../DependencyGraph";
+import SpotlightCard from "./SpotlightCard";
 
 export default function ReportDashboard({
   studentName,
@@ -27,6 +29,21 @@ export default function ReportDashboard({
 }) {
   const [expanded, setExpanded] = useState(null);
   const [copyFeedback, setCopyFeedback] = useState(false);
+
+  // Celebratory confetti burst on initial report generation
+  useEffect(() => {
+    try {
+      confetti({
+        particleCount: 40,
+        spread: 60,
+        origin: { y: 0.85 },
+        colors: ["#FFFFFF", "#3B82F6", "#A855F7", "#10B981"],
+        disableForReducedMotion: true,
+      });
+    } catch {
+      // safe fallback
+    }
+  }, []);
 
   const { res, roadmap, warnings, stats } = results;
   const gk = goal === "NEET" ? "NEET" : goal === "JEE" ? "JEE" : goal === "CUET" ? "CUET" : "Boards";
@@ -52,6 +69,16 @@ export default function ReportDashboard({
   const handleCopy = () => {
     onShare();
     setCopyFeedback(true);
+    try {
+      confetti({
+        particleCount: 25,
+        spread: 45,
+        origin: { y: 0.75 },
+        colors: ["#FFFFFF", "#F59E0B"],
+      });
+    } catch {
+      // safe fallback
+    }
     setTimeout(() => setCopyFeedback(false), 2000);
   };
 
@@ -67,7 +94,7 @@ export default function ReportDashboard({
         flexWrap: "wrap",
       }}>
         <div>
-          <div className="pill-badge" style={{ marginBottom: "0.5rem" }}>
+          <div className="shimmer-badge" style={{ marginBottom: "0.5rem" }}>
             <span className="font-mono" style={{ color: "var(--accent-blue)" }}>PREDICTIVE INTELLIGENCE</span>
             <span>•</span>
             <span>{stream} Track</span>
@@ -97,7 +124,7 @@ export default function ReportDashboard({
             style={{ padding: "0.5rem 0.85rem", fontSize: "0.8rem" }}
           >
             <Share2 size={14} />
-            <span>{copyFeedback ? "Copied!" : "Share Report"}</span>
+            <span>{copyFeedback ? "Copied to Clipboard!" : "Share Report"}</span>
           </button>
 
           <button
@@ -111,7 +138,7 @@ export default function ReportDashboard({
         </div>
       </div>
 
-      {/* Metric Cards Grid */}
+      {/* Metric Cards Grid with Cursor Spotlight */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -152,9 +179,8 @@ export default function ReportDashboard({
             border: "rgba(255, 255, 255, 0.1)",
           },
         ].map(card => (
-          <div
+          <SpotlightCard
             key={card.label}
-            className="vercel-card"
             style={{
               padding: "1.1rem 1.25rem",
               background: `linear-gradient(180deg, ${card.bg} 0%, rgba(10,10,10,0.95) 100%)`,
@@ -168,16 +194,18 @@ export default function ReportDashboard({
               lineHeight: 1,
               marginBottom: "0.45rem",
               letterSpacing: "-0.02em",
+              position: "relative",
+              zIndex: 2,
             }}>
               {card.val}
             </div>
-            <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#EDEDED" }}>
+            <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#EDEDED", position: "relative", zIndex: 2 }}>
               {card.label}
             </div>
-            <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)", marginTop: "2px" }}>
+            <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)", marginTop: "2px", position: "relative", zIndex: 2 }}>
               {card.sub}
             </div>
-          </div>
+          </SpotlightCard>
         ))}
       </div>
 
@@ -193,9 +221,8 @@ export default function ReportDashboard({
 
           <div style={{ display: "grid", gap: "0.6rem" }}>
             {warnings.map((w, idx) => (
-              <div
+              <SpotlightCard
                 key={idx}
-                className="vercel-card"
                 style={{
                   padding: "0.95rem 1.15rem",
                   background: w.sev === "high" ? "rgba(239, 68, 68, 0.05)" : "rgba(245, 158, 11, 0.05)",
@@ -216,10 +243,12 @@ export default function ReportDashboard({
                   color: w.sev === "high" ? "var(--accent-red)" : "var(--accent-amber)",
                   flexShrink: 0,
                   marginTop: "2px",
+                  position: "relative",
+                  zIndex: 2,
                 }}>
                   <Flame size={15} />
                 </div>
-                <div>
+                <div style={{ position: "relative", zIndex: 2 }}>
                   <h4 style={{
                     fontSize: "0.85rem",
                     fontWeight: 600,
@@ -232,7 +261,7 @@ export default function ReportDashboard({
                     {w.text}
                   </p>
                 </div>
-              </div>
+              </SpotlightCard>
             ))}
           </div>
         </div>
@@ -270,6 +299,7 @@ export default function ReportDashboard({
                 justifyContent: "center",
                 gap: "0.45rem",
                 whiteSpace: "nowrap",
+                transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
               {t.icon}
@@ -289,7 +319,7 @@ export default function ReportDashboard({
             marginBottom: "1rem",
           }}>
             <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
-              Sorted by risk priority. Click any chapter to inspect exact foundational gaps and actionable tactics.
+              Sorted by risk priority. Click any chapter to expand foundational gaps and actionable tactics.
             </p>
           </div>
 
@@ -307,6 +337,7 @@ export default function ReportDashboard({
                   style={{
                     overflow: "hidden",
                     borderColor: isOpen ? riskColor + "66" : "var(--border)",
+                    transition: "border-color 0.25s ease, box-shadow 0.25s ease",
                   }}
                 >
                   {/* Card Header Row */}
@@ -354,7 +385,7 @@ export default function ReportDashboard({
                     {/* Right Meta Indicators */}
                     <div style={{ display: "flex", alignItems: "center", gap: "0.85rem", flexShrink: 0 }}>
                       <div style={{ textAlign: "right" }}>
-                        <span className="font-mono" style={{
+                        <span className={`font-mono ${ch.risk === "HIGH" ? "pulse-ring" : ""}`} style={{
                           fontSize: "0.7rem",
                           fontWeight: 700,
                           color: riskColor,
@@ -375,114 +406,120 @@ export default function ReportDashboard({
                         </div>
                       </div>
 
-                      <div style={{ color: "var(--text-tertiary)" }}>
-                        {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      <div style={{
+                        color: "var(--text-tertiary)",
+                        transition: "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      }}>
+                        <ChevronDown size={16} />
                       </div>
                     </div>
                   </div>
 
-                  {/* Expandable Details Drawer */}
-                  {isOpen && (
-                    <div style={{
-                      padding: "1.1rem 1.25rem",
-                      borderTop: "1px solid var(--border)",
-                      background: "rgba(0, 0, 0, 0.4)",
-                    }}>
-                      {/* Gaps Breakdown */}
-                      {ch.gaps && ch.gaps.length > 0 ? (
-                        <div style={{ marginBottom: "1.1rem" }}>
-                          <span className="font-mono" style={{
-                            fontSize: "0.68rem",
-                            color: "var(--accent-red)",
-                            letterSpacing: "0.08em",
-                            fontWeight: 700,
-                            display: "block",
-                            marginBottom: "0.45rem",
-                          }}>
-                            CRITICAL PREREQUISITE DEFICITS
-                          </span>
-                          <div style={{ display: "grid", gap: "0.4rem" }}>
-                            {ch.gaps.map((g, gi) => (
-                              <div key={gi} style={{
-                                display: "flex",
-                                alignItems: "flex-start",
-                                gap: "0.5rem",
-                                fontSize: "0.8rem",
-                                color: "var(--text-secondary)",
-                                background: "rgba(239, 68, 68, 0.05)",
-                                border: "1px solid rgba(239, 68, 68, 0.15)",
-                                padding: "0.5rem 0.75rem",
-                                borderRadius: 6,
-                              }}>
-                                <span style={{ color: "var(--accent-red)", fontWeight: 700 }}>↳</span>
-                                <span>{g.reason}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.45rem",
-                          fontSize: "0.82rem",
-                          color: "var(--accent-emerald)",
-                          marginBottom: "1.1rem",
-                        }}>
-                          <CheckCircle2 size={15} />
-                          <span>No severe foundational deficits detected for this topic.</span>
-                        </div>
-                      )}
-
-                      {/* Stat Metrics Box */}
+                  {/* Fluid CSS Grid Accordion Drawer */}
+                  <div className={`accordion-wrapper ${isOpen ? "open" : ""}`}>
+                    <div className="accordion-inner">
                       <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(3, 1fr)",
-                        gap: "0.5rem",
-                        marginBottom: "1rem",
+                        padding: "1.1rem 1.25rem",
+                        borderTop: "1px solid var(--border)",
+                        background: "rgba(0, 0, 0, 0.4)",
                       }}>
-                        {[
-                          { l: "Target Study Deficit", v: `${ch.studyH} Hours`, c: "#FFFFFF" },
-                          { l: "Calculated Risk", v: ch.risk, c: riskColor },
-                          { l: `${goal} Weightage`, v: wtLabel(wtVal), c: wtColor(wtVal) },
-                        ].map(m => (
-                          <div key={m.l} style={{
-                            padding: "0.6rem",
-                            background: "rgba(255, 255, 255, 0.02)",
-                            border: "1px solid var(--border)",
-                            borderRadius: 6,
-                            textAlign: "center",
+                        {/* Gaps Breakdown */}
+                        {ch.gaps && ch.gaps.length > 0 ? (
+                          <div style={{ marginBottom: "1.1rem" }}>
+                            <span className="font-mono" style={{
+                              fontSize: "0.68rem",
+                              color: "var(--accent-red)",
+                              letterSpacing: "0.08em",
+                              fontWeight: 700,
+                              display: "block",
+                              marginBottom: "0.45rem",
+                            }}>
+                              CRITICAL PREREQUISITE DEFICITS
+                            </span>
+                            <div style={{ display: "grid", gap: "0.4rem" }}>
+                              {ch.gaps.map((g, gi) => (
+                                <div key={gi} style={{
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                  gap: "0.5rem",
+                                  fontSize: "0.8rem",
+                                  color: "var(--text-secondary)",
+                                  background: "rgba(239, 68, 68, 0.05)",
+                                  border: "1px solid rgba(239, 68, 68, 0.15)",
+                                  padding: "0.5rem 0.75rem",
+                                  borderRadius: 6,
+                                }}>
+                                  <span style={{ color: "var(--accent-red)", fontWeight: 700 }}>↳</span>
+                                  <span>{g.reason}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.45rem",
+                            fontSize: "0.82rem",
+                            color: "var(--accent-emerald)",
+                            marginBottom: "1.1rem",
                           }}>
-                            <div className="font-mono" style={{ fontSize: "0.82rem", fontWeight: 700, color: m.c }}>
-                              {m.v}
-                            </div>
-                            <div style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", marginTop: "2px" }}>
-                              {m.l}
-                            </div>
+                            <CheckCircle2 size={15} />
+                            <span>No severe foundational deficits detected for this topic.</span>
                           </div>
-                        ))}
-                      </div>
+                        )}
 
-                      {/* Action Plan Advice */}
-                      {chTip && (
+                        {/* Stat Metrics Box */}
                         <div style={{
-                          padding: "0.75rem 0.9rem",
-                          background: "rgba(255, 255, 255, 0.03)",
-                          border: "1px solid rgba(255, 255, 255, 0.08)",
-                          borderRadius: 8,
-                          display: "flex",
-                          alignItems: "flex-start",
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
                           gap: "0.5rem",
+                          marginBottom: "1rem",
                         }}>
-                          <Lightbulb size={16} style={{ color: "var(--accent-amber)", flexShrink: 0, marginTop: "2px" }} />
-                          <div style={{ fontSize: "0.82rem", color: "#EDEDED", lineHeight: 1.5 }}>
-                            <strong style={{ color: "var(--accent-amber)", fontWeight: 600 }}>Action Tactic: </strong>
-                            {chTip}
-                          </div>
+                          {[
+                            { l: "Target Study Deficit", v: `${ch.studyH} Hours`, c: "#FFFFFF" },
+                            { l: "Calculated Risk", v: ch.risk, c: riskColor },
+                            { l: `${goal} Weightage`, v: wtLabel(wtVal), c: wtColor(wtVal) },
+                          ].map(m => (
+                            <div key={m.l} style={{
+                              padding: "0.6rem",
+                              background: "rgba(255, 255, 255, 0.02)",
+                              border: "1px solid var(--border)",
+                              borderRadius: 6,
+                              textAlign: "center",
+                            }}>
+                              <div className="font-mono" style={{ fontSize: "0.82rem", fontWeight: 700, color: m.c }}>
+                                {m.v}
+                              </div>
+                              <div style={{ fontSize: "0.68rem", color: "var(--text-tertiary)", marginTop: "2px" }}>
+                                {m.l}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      )}
+
+                        {/* Action Plan Advice */}
+                        {chTip && (
+                          <div style={{
+                            padding: "0.75rem 0.9rem",
+                            background: "rgba(255, 255, 255, 0.03)",
+                            border: "1px solid rgba(255, 255, 255, 0.08)",
+                            borderRadius: 8,
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "0.5rem",
+                          }}>
+                            <Lightbulb size={16} style={{ color: "var(--accent-amber)", flexShrink: 0, marginTop: "2px" }} />
+                            <div style={{ fontSize: "0.82rem", color: "#EDEDED", lineHeight: 1.5 }}>
+                              <strong style={{ color: "var(--accent-amber)", fontWeight: 600 }}>Action Tactic: </strong>
+                              {chTip}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}
@@ -514,7 +551,7 @@ export default function ReportDashboard({
       {tab === "feedback" && (
         <div className="animate-fade-in" style={{ maxWidth: 540, margin: "0 auto" }}>
           {feedback.submitted ? (
-            <div className="vercel-card" style={{ padding: "2.5rem 2rem", textAlign: "center" }}>
+            <SpotlightCard style={{ padding: "2.5rem 2rem", textAlign: "center" }}>
               <div style={{
                 width: 44,
                 height: 44,
@@ -525,30 +562,32 @@ export default function ReportDashboard({
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 1rem",
+                position: "relative",
+                zIndex: 2,
               }}>
                 <CheckCircle2 size={22} />
               </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.4rem" }}>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.4rem", position: "relative", zIndex: 2 }}>
                 Feedback Submitted!
               </h3>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1.25rem", lineHeight: 1.5 }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1.25rem", lineHeight: 1.5, position: "relative", zIndex: 2 }}>
                 Thank you, {studentName}. Your candid review helps improve the accuracy and roadmap algorithms for future students.
               </p>
-              <div className="font-mono" style={{ fontSize: "0.78rem", color: "var(--text-tertiary)" }}>
+              <div className="font-mono" style={{ fontSize: "0.78rem", color: "var(--text-tertiary)", position: "relative", zIndex: 2 }}>
                 Direct Creator Contact: {CREATOR_EMAIL}
               </div>
-            </div>
+            </SpotlightCard>
           ) : (
-            <div className="vercel-card" style={{ padding: "1.75rem" }}>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.35rem" }}>
+            <SpotlightCard style={{ padding: "1.75rem" }}>
+              <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#FFFFFF", marginBottom: "0.35rem", position: "relative", zIndex: 2 }}>
                 How useful was this diagnostic?
               </h3>
-              <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+              <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginBottom: "1.5rem", position: "relative", zIndex: 2 }}>
                 Takes 20 seconds. Built independently by Parth Goyal for aspirants like you.
               </p>
 
               {/* Star rating */}
-              <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem", position: "relative", zIndex: 2 }}>
                 {[1, 2, 3, 4, 5].map(star => (
                   <button
                     key={star}
@@ -572,7 +611,7 @@ export default function ReportDashboard({
               </div>
 
               {/* Text feedback */}
-              <div style={{ marginBottom: "1.25rem" }}>
+              <div style={{ marginBottom: "1.25rem", position: "relative", zIndex: 2 }}>
                 <label style={{ fontSize: "0.78rem", color: "var(--text-secondary)", display: "block", marginBottom: "0.5rem" }}>
                   Any suggestions, missing chapters, or advice? (optional)
                 </label>
@@ -584,7 +623,7 @@ export default function ReportDashboard({
                   style={{
                     width: "100%",
                     padding: "0.75rem 0.85rem",
-                    background: "#111111",
+                    background: "#161616",
                     border: "1px solid var(--border)",
                     borderRadius: 8,
                     color: "#FFFFFF",
@@ -600,11 +639,11 @@ export default function ReportDashboard({
                 onClick={onSubmitFeedback}
                 disabled={feedback.rating === 0}
                 className="btn-primary"
-                style={{ width: "100%", padding: "0.75rem", borderRadius: 8 }}
+                style={{ width: "100%", padding: "0.75rem", borderRadius: 8, position: "relative", zIndex: 2 }}
               >
                 <span>Submit Feedback</span>
               </button>
-            </div>
+            </SpotlightCard>
           )}
         </div>
       )}
