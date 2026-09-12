@@ -65,7 +65,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
             • THE 4 KILLER TRANSITIONS
           </span>
         </div>
-        <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "0.35rem" }}>
+        <h3 style={{ fontSize: "clamp(1.2rem, 3.8vw, 1.5rem)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "0.35rem" }}>
           The Notorious Bottleneck Inspector
         </h3>
         <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
@@ -77,7 +77,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
           gap: "0.75rem",
           marginBottom: "1.25rem",
         }}
@@ -126,6 +126,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
 
       {/* Expanded Deep-Dive X-Ray Drawer */}
       <SpotlightCard
+        className="mobile-card-p"
         style={{
           padding: "1.75rem",
           background: "linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, #0A0A0A 100%)",
@@ -144,7 +145,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
                 {active.dangerRate}
               </span>
             </div>
-            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFFFFF" }}>
+            <h3 style={{ fontSize: "clamp(1.05rem, 3.2vw, 1.3rem)", fontWeight: 800, color: "#FFFFFF" }}>
               {active.name}: Forensic Failure Analysis
             </h3>
           </div>
@@ -154,7 +155,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
               playClick();
               onStartAnalysis();
             }}
-            className="btn-secondary"
+            className="btn-secondary mobile-full-w"
             style={{
               padding: "0.55rem 1rem",
               fontSize: "0.78rem",
@@ -172,7 +173,7 @@ export default function BottleneckInspector({ onStartAnalysis }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
             gap: "1rem",
             position: "relative",
             zIndex: 2,

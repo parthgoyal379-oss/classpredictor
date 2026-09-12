@@ -637,4 +637,63 @@ html, body {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   MOBILE PHONE UX OPTIMIZATIONS (< 640px)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .mobile-hide-text {
+    display: none !important;
+  }
+
+  .mobile-compact-p {
+    padding: 0.65rem 0.85rem !important;
+  }
+
+  .mobile-full-w {
+    width: 100% !important;
+  }
+
+  .mobile-card-p {
+    padding: 1.15rem 1rem !important;
+  }
+
+  .mobile-sticky-bar {
+    padding: 0.65rem 0.75rem !important;
+    gap: 0.45rem !important;
+  }
+
+  .mobile-sticky-bar button {
+    padding: 0.65rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .hero-container-mobile {
+    margin-top: -120px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+.rating-sublabel {
+  font-size: 0.62rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .rating-sublabel {
+    font-size: 0.52rem;
+  }
+}
+
+
 

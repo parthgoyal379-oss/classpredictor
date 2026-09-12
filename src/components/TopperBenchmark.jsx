@@ -24,6 +24,7 @@ export default function TopperBenchmark({ results, stream, goal }) {
 
   return (
     <SpotlightCard
+      className="mobile-card-p"
       style={{
         padding: "1.5rem",
         marginBottom: "2rem",
@@ -74,9 +75,9 @@ export default function TopperBenchmark({ results, stream, goal }) {
         </span>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem", alignItems: "center" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))", gap: "1.5rem", alignItems: "center" }}>
         {/* Circular SVG Meter */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
           <div style={{ position: "relative", width: 110, height: 110, flexShrink: 0 }}>
             <svg width="110" height="110" viewBox="0 0 110 110" style={{ transform: "rotate(-90deg)" }}>
               {/* Background track */}

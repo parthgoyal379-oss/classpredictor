@@ -151,7 +151,7 @@ export default function ReportDashboard({
         </div>
 
         {/* Top actions */}
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
           <button
             onClick={() => {
               playClick();
@@ -168,7 +168,7 @@ export default function ReportDashboard({
             title="Download high-resolution official diagnostic dossier image"
           >
             <Download size={14} />
-            <span>Download Dossier</span>
+            <span>Download<span className="mobile-hide-text"> Dossier</span></span>
           </button>
 
           <button
@@ -196,7 +196,7 @@ export default function ReportDashboard({
             style={{ padding: "0.5rem 0.85rem", fontSize: "0.8rem" }}
           >
             <Share2 size={14} />
-            <span>{copyFeedback ? "Copied to Clipboard!" : "Share Report"}</span>
+            <span>{copyFeedback ? "Copied!" : <>Share<span className="mobile-hide-text"> Report</span></>}</span>
           </button>
 
           <button
@@ -215,6 +215,7 @@ export default function ReportDashboard({
 
       {/* Executive Diagnostic Verdict Card */}
       <SpotlightCard
+        className="mobile-card-p"
         style={{
           padding: "1.25rem 1.5rem",
           marginBottom: "1.5rem",
@@ -274,7 +275,7 @@ export default function ReportDashboard({
       {/* Metric Cards Grid with Cursor Spotlight */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))",
         gap: "0.75rem",
         marginBottom: "2rem",
       }}>

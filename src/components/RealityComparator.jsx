@@ -101,13 +101,14 @@ export default function RealityComparator({ onStartAnalysis }) {
               • THE CLASS 11 COGNITIVE CHASM
             </span>
           </div>
-          <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
+          <h3 style={{ fontSize: "clamp(1.15rem, 3.5vw, 1.4rem)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
             The Class 10 Illusion vs. The Class 11 Reality Check
           </h3>
         </div>
 
         {/* Interactive Mode Toggle */}
         <div
+          className="mobile-full-w"
           style={{
             display: "flex",
             background: "rgba(255, 255, 255, 0.04)",
@@ -124,6 +125,7 @@ export default function RealityComparator({ onStartAnalysis }) {
             }}
             className="btn-ghost"
             style={{
+              flex: 1,
               padding: "0.45rem 0.9rem",
               borderRadius: 7,
               fontSize: "0.78rem",
@@ -133,6 +135,7 @@ export default function RealityComparator({ onStartAnalysis }) {
               border: mode === "illusion" ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid transparent",
               cursor: "pointer",
               transition: "all 0.2s ease",
+              textAlign: "center",
             }}
           >
             🎓 The Class 10 Illusion
@@ -145,6 +148,7 @@ export default function RealityComparator({ onStartAnalysis }) {
             }}
             className="btn-ghost"
             style={{
+              flex: 1,
               padding: "0.45rem 0.9rem",
               borderRadius: 7,
               fontSize: "0.78rem",
@@ -154,6 +158,7 @@ export default function RealityComparator({ onStartAnalysis }) {
               border: mode === "reality" ? "1px solid rgba(239, 68, 68, 0.3)" : "1px solid transparent",
               cursor: "pointer",
               transition: "all 0.2s ease",
+              textAlign: "center",
             }}
           >
             ⚡ The Class 11 Reality

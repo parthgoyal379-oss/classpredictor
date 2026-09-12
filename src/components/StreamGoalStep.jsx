@@ -23,7 +23,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
           Initial Calibration
         </span>
         <h2 style={{
-          fontSize: "1.75rem",
+          fontSize: "clamp(1.35rem, 4.2vw, 1.75rem)",
           fontWeight: 700,
           color: "#FFFFFF",
           letterSpacing: "-0.02em",
@@ -55,7 +55,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(150px, 100%), 1fr))",
           gap: "0.75rem",
         }}>
           {Object.entries(STREAM_SUBJECTS).map(([id, subs]) => {
@@ -148,7 +148,7 @@ export default function StreamGoalStep({ studentName, stream, setStream, goal, s
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
           gap: "0.75rem",
         }}>
           {exams.map(e => {

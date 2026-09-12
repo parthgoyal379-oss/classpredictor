@@ -130,7 +130,7 @@ export default function HeroConsoleMockup({ onStart }) {
         {/* Top Console Status Bar */}
         <div
           style={{
-            padding: "0.85rem 1.5rem",
+            padding: "0.85rem clamp(0.85rem, 3vw, 1.5rem)",
             borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
             background: "rgba(255, 255, 255, 0.02)",
             display: "flex",
@@ -158,7 +158,7 @@ export default function HeroConsoleMockup({ onStart }) {
           </div>
 
           {/* Interactive Stream Switcher Pills */}
-          <div style={{ display: "flex", gap: "0.35rem", background: "rgba(255, 255, 255, 0.04)", padding: "3px", borderRadius: 8 }}>
+          <div style={{ display: "flex", gap: "0.35rem", background: "rgba(255, 255, 255, 0.04)", padding: "3px", borderRadius: 8, flexWrap: "wrap" }}>
             {streams.map(s => {
               const isActive = activeStream === s.id;
               return (
@@ -190,7 +190,7 @@ export default function HeroConsoleMockup({ onStart }) {
         </div>
 
         {/* Main Console Body */}
-        <div style={{ padding: "1.5rem" }}>
+        <div className="mobile-card-p" style={{ padding: "clamp(1rem, 3vw, 1.5rem)" }}>
           {/* Diagnostic Telemetry Top Bar */}
           <div
             style={{
@@ -263,7 +263,7 @@ export default function HeroConsoleMockup({ onStart }) {
                     background: "rgba(255, 255, 255, 0.015)",
                     border: "1px solid rgba(255, 255, 255, 0.06)",
                     borderRadius: 12,
-                    padding: "1rem 1.25rem",
+                    padding: "clamp(0.75rem, 2.5vw, 1.25rem)",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
@@ -286,7 +286,7 @@ export default function HeroConsoleMockup({ onStart }) {
                       const isHovered = activeNode === node.id;
 
                       return (
-                        <div key={node.id} style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                        <div key={node.id} style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", maxWidth: "100%" }}>
                           <div
                             onMouseEnter={() => setActiveNode(node.id)}
                             onMouseLeave={() => setActiveNode(null)}
@@ -301,9 +301,10 @@ export default function HeroConsoleMockup({ onStart }) {
                               cursor: "pointer",
                               transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
                               transform: isHovered ? "translateY(-2px) scale(1.02)" : "scale(1)",
+                              maxWidth: "100%",
                             }}
                           >
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", flexWrap: "wrap" }}>
                               <span style={{
                                 width: 7,
                                 height: 7,
@@ -366,7 +367,7 @@ export default function HeroConsoleMockup({ onStart }) {
                 playClick();
                 onStart();
               }}
-              className="btn-primary"
+              className="btn-primary mobile-full-w"
               style={{
                 padding: "0.6rem 1.25rem",
                 fontSize: "0.82rem",

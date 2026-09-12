@@ -53,6 +53,7 @@ export default function Hero({ onStart }) {
       <LampEffect />
 
       <div
+        className="hero-container-mobile"
         style={{
           position: "relative",
           zIndex: 1,
@@ -73,7 +74,7 @@ export default function Hero({ onStart }) {
         {/* Hero Title with Dynamic Word Rotator (Option C) */}
         <h1
           style={{
-            fontSize: "clamp(2.4rem, 6.2vw, 4.8rem)",
+            fontSize: "clamp(1.85rem, 5.8vw, 4.8rem)",
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: "-0.04em",
@@ -589,6 +590,8 @@ export default function Hero({ onStart }) {
               justifyContent: "space-between",
               marginBottom: "1.5rem",
               padding: "0 0.5rem",
+              flexWrap: "wrap",
+              gap: "0.5rem",
             }}
           >
             <span

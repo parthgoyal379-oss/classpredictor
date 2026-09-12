@@ -343,20 +343,23 @@ export default function ChapterRater({
       </div>
 
       {/* Sticky Bottom Actions Bar */}
-      <div style={{
-        position: "sticky",
-        bottom: "1rem",
-        zIndex: 40,
-        display: "flex",
-        gap: "0.75rem",
-        padding: "0.85rem 1.25rem",
-        borderRadius: 12,
-        background: "rgba(10, 10, 10, 0.92)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid rgba(255, 255, 255, 0.12)",
-        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.8)",
-      }}>
+      <div
+        className="mobile-sticky-bar"
+        style={{
+          position: "sticky",
+          bottom: "1rem",
+          zIndex: 40,
+          display: "flex",
+          gap: "0.75rem",
+          padding: "0.85rem 1.25rem",
+          borderRadius: 12,
+          background: "rgba(10, 10, 10, 0.92)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
+          boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.8)",
+        }}
+      >
         {isFirst ? (
           onBack && (
             <button
@@ -365,7 +368,7 @@ export default function ChapterRater({
               style={{ padding: "0.75rem 1.1rem" }}
             >
               <ChevronLeft size={16} />
-              <span>Stream & Target</span>
+              <span><span className="mobile-hide-text">Stream & </span>Track</span>
             </button>
           )
         ) : (
@@ -375,7 +378,7 @@ export default function ChapterRater({
             style={{ padding: "0.75rem 1.1rem" }}
           >
             <ChevronLeft size={16} />
-            <span>Previous Subject</span>
+            <span>Prev<span className="mobile-hide-text">ious</span></span>
           </button>
         )}
 
@@ -392,7 +395,7 @@ export default function ChapterRater({
             gap: "0.45rem",
           }}
         >
-          <span>Quick Analyze ({ratedCount}/{totalCount})</span>
+          <span><span className="mobile-hide-text">Quick </span>Analyze ({ratedCount}/{totalCount})</span>
         </button>
 
         {!isLast ? (
@@ -404,7 +407,7 @@ export default function ChapterRater({
               borderRadius: 8,
             }}
           >
-            <span>Next: {SMETA[subjects[subIdx + 1]]?.name}</span>
+            <span>Next<span className="mobile-hide-text">: {SMETA[subjects[subIdx + 1]]?.name}</span></span>
             <ChevronRight size={16} />
           </button>
         ) : (
@@ -417,7 +420,7 @@ export default function ChapterRater({
               borderRadius: 8,
             }}
           >
-            <span>Generate Intelligence Report</span>
+            <span>Generate<span className="mobile-hide-text"> Intelligence</span> Report</span>
             <ArrowRight size={16} />
           </button>
         )}

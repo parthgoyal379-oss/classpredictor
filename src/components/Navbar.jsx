@@ -23,6 +23,7 @@ export default function Navbar({
       }}
     >
       <div
+        className="mobile-compact-p"
         style={{
           maxWidth: 1120,
           margin: "0 auto",
@@ -46,7 +47,7 @@ export default function Navbar({
             userSelect: "none",
           }}
         >
-          <BrandLogo size={34} variant="icon" glow={true} />
+          <BrandLogo size={32} variant="icon" glow={true} />
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
               <span
@@ -73,14 +74,14 @@ export default function Navbar({
                 v2.5
               </span>
             </div>
-            <p style={{ fontSize: "0.68rem", color: "var(--text-secondary)", letterSpacing: "-0.01em" }}>
+            <p className="mobile-hide-text" style={{ fontSize: "0.68rem", color: "var(--text-secondary)", letterSpacing: "-0.01em" }}>
               Prerequisite Gap Engine
             </p>
           </div>
         </div>
 
         {/* Right Nav actions */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
           {/* Quick Cmd+K Search Pill */}
           <button
             onClick={() => {
@@ -89,7 +90,7 @@ export default function Navbar({
             }}
             className="btn-ghost"
             style={{
-              padding: "0.35rem 0.65rem",
+              padding: "0.35rem 0.55rem",
               background: "rgba(255, 255, 255, 0.04)",
               border: "1px solid rgba(255, 255, 255, 0.08)",
               borderRadius: 6,
@@ -101,9 +102,10 @@ export default function Navbar({
             }}
             title="Open Command Palette (Ctrl+K or Cmd+K)"
           >
-            <Search size={13} style={{ color: "#00DFD8" }} />
-            <span style={{ fontSize: "0.75rem" }}>Search</span>
+            <Search size={14} style={{ color: "#00DFD8" }} />
+            <span className="mobile-hide-text" style={{ fontSize: "0.75rem" }}>Search</span>
             <kbd
+              className="mobile-hide-text"
               style={{
                 fontSize: "0.65rem",
                 background: "rgba(255, 255, 255, 0.08)",
@@ -137,7 +139,7 @@ export default function Navbar({
             title={soundEnabled ? "Mute Sound Effects" : "Enable Sound Effects"}
           >
             {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-            <span style={{ fontSize: "0.7rem", fontFamily: "'Geist Mono', monospace" }}>
+            <span className="mobile-hide-text" style={{ fontSize: "0.7rem", fontFamily: "'Geist Mono', monospace" }}>
               {soundEnabled ? "SFX" : "MUTED"}
             </span>
           </button>
@@ -152,14 +154,17 @@ export default function Navbar({
             }}
             className="btn-ghost"
             style={{
-              padding: "0.35rem 0.65rem",
+              padding: "0.35rem 0.55rem",
               fontSize: "0.75rem",
               color: "var(--text-secondary)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.35rem",
             }}
             title="Admin Dashboard"
           >
-            <Shield size={13} />
-            <span>Admin</span>
+            <Shield size={14} />
+            <span className="mobile-hide-text">Admin</span>
           </button>
         </div>
       </div>
