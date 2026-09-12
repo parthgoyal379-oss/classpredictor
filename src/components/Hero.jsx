@@ -1,12 +1,34 @@
 import { ArrowRight, GitFork, AlertTriangle, Compass, CheckCircle2, Star, ShieldCheck } from "lucide-react";
 import { TESTIMONIALS } from "../data/testimonials";
 import SpotlightCard from "./SpotlightCard";
+import AnimatedCounter from "./AnimatedCounter";
+import BorderBeam from "./BorderBeam";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
 export default function Hero({ onStart }) {
+  // Duplicate testimonials for continuous infinite marquee loop
+  const marqueeList = [...TESTIMONIALS, ...TESTIMONIALS];
+
   return (
     <div style={{ position: "relative", minHeight: "100vh", overflow: "hidden" }}>
+      {/* Aurora Ambient Colored Glow Orbs */}
+      <div className="aurora-orb" style={{
+        top: "-10%",
+        left: "15%",
+        width: "500px",
+        height: "500px",
+        background: "radial-gradient(circle, #3B82F6 0%, transparent 70%)",
+      }} />
+      <div className="aurora-orb" style={{
+        top: "25%",
+        right: "10%",
+        width: "450px",
+        height: "450px",
+        background: "radial-gradient(circle, #8B5CF6 0%, transparent 70%)",
+        animationDelay: "-6s",
+      }} />
+
       {/* Background ambient spotlight & pulsing grid */}
       <div className="ambient-spotlight" />
       <div className="vercel-grid-bg" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }} />
@@ -22,24 +44,43 @@ export default function Hero({ onStart }) {
         alignItems: "center",
         textAlign: "center",
       }}>
+        {/* Creator Shimmer Badge */}
+        <div className="shimmer-badge" style={{ marginBottom: "1.75rem", cursor: "default" }}>
+          <div style={{
+            width: 18,
+            height: 18,
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, #F59E0B, #EF4444)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "0.62rem",
+            fontWeight: 700,
+            color: "#FFFFFF",
+          }}>
+            P
+          </div>
+          <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
+            Engineered by <strong style={{ color: "#EDEDED", fontWeight: 600 }}>Parth Goyal</strong>
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>•</span>
+          <span className="font-mono" style={{ fontSize: "0.7rem", color: "var(--accent-amber)" }}>
+            JEE · NEET · Boards · CUET
+          </span>
+        </div>
 
-        {/* Hero Title */}
+        {/* Hero Title with Shimmering Animated Gradient */}
         <h1 style={{
           fontSize: "clamp(2.5rem, 6.5vw, 4.8rem)",
           fontWeight: 800,
           lineHeight: 1.05,
           letterSpacing: "-0.04em",
           color: "#FFFFFF",
-          maxWidth: 860,
+          maxWidth: 880,
           marginBottom: "1.25rem",
         }}>
           Know exactly what<br />
-          <span style={{
-            background: "linear-gradient(180deg, #FFFFFF 20%, #A1A1AA 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            display: "inline-block",
-          }}>
+          <span className="animated-gradient-text" style={{ display: "inline-block" }}>
             Class 11 will hit you with.
           </span>
         </h1>
@@ -87,7 +128,7 @@ export default function Hero({ onStart }) {
           </div>
         </div>
 
-        {/* Bento Grid Feature Showcase with Mouse Spotlight */}
+        {/* Bento Grid Feature Showcase with Border Beam on Primary Card */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
@@ -103,6 +144,7 @@ export default function Hero({ onStart }) {
               title: "Prerequisite Graph",
               desc: "Maps 30+ fundamental Class 9–10 nodes to Class 11–12 advanced chapters.",
               tag: "Graph Theory",
+              hasBeam: true,
             },
             {
               icon: <ShieldCheck size={20} style={{ color: "var(--accent-purple)" }} />,
@@ -123,7 +165,9 @@ export default function Hero({ onStart }) {
               tag: "Early Warning",
             },
           ].map(f => (
-            <SpotlightCard key={f.title} style={{ padding: "1.35rem" }}>
+            <SpotlightCard key={f.title} style={{ padding: "1.35rem", position: "relative" }}>
+              {f.hasBeam && <BorderBeam size={160} duration={6} colorFrom="#38BDF8" colorTo="#A855F7" />}
+
               <div style={{
                 display: "flex",
                 alignItems: "center",
@@ -179,7 +223,7 @@ export default function Hero({ onStart }) {
           ))}
         </div>
 
-        {/* Minimalist Metrics Counter */}
+        {/* Minimalist Metrics Counter with Animated Count-Up */}
         <SpotlightCard style={{
           width: "100%",
           maxWidth: 880,
@@ -191,10 +235,10 @@ export default function Hero({ onStart }) {
           background: "linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%), #0A0A0A",
         }}>
           {[
-            { val: "30+", label: "Chapters Mapped" },
-            { val: "4", label: "Target Exams (JEE/NEET/Boards/CUET)" },
-            { val: "100%", label: "Free & Independent" },
-            { val: "250+", label: "Students Analyzed" },
+            { target: 30, suffix: "+", label: "Chapters Mapped" },
+            { target: 4, suffix: "", label: "Target Exams (JEE/NEET/Boards/CUET)" },
+            { target: 100, suffix: "%", label: "Free & Independent" },
+            { target: 250, suffix: "+", label: "Students Analyzed" },
           ].map(s => (
             <div key={s.label} style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
               <div className="font-mono" style={{
@@ -204,7 +248,7 @@ export default function Hero({ onStart }) {
                 letterSpacing: "-0.03em",
                 lineHeight: 1.1,
               }}>
-                {s.val}
+                <AnimatedCounter target={s.target} suffix={s.suffix} duration={1400} />
               </div>
               <div style={{
                 fontSize: "0.72rem",
@@ -217,8 +261,8 @@ export default function Hero({ onStart }) {
           ))}
         </SpotlightCard>
 
-        {/* Student Testimonials */}
-        <div style={{ width: "100%", maxWidth: 960, marginBottom: "4rem" }}>
+        {/* Continuous Infinite Marquee Testimonials Ticker */}
+        <div style={{ width: "100%", maxWidth: 1000, marginBottom: "4rem" }}>
           <div style={{
             display: "flex",
             alignItems: "center",
@@ -232,63 +276,69 @@ export default function Hero({ onStart }) {
               letterSpacing: "0.1em",
               textTransform: "uppercase",
             }}>
-              Validated by Students
+              Validated by Aspirants
             </span>
             <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-              Average 4.9/5 from 40+ reviews
+              Hover to pause • 4.9/5 satisfaction
             </span>
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1rem",
-            textAlign: "left",
-          }}>
-            {TESTIMONIALS.map((t, idx) => (
-              <SpotlightCard key={idx} style={{ padding: "1.25rem" }}>
-                <div style={{ display: "flex", gap: "2px", marginBottom: "0.75rem", position: "relative", zIndex: 2 }}>
-                  {[...Array(t.stars)].map((_, i) => (
-                    <Star key={i} size={13} fill="#F59E0B" color="#F59E0B" />
-                  ))}
-                </div>
-                <p style={{
-                  fontSize: "0.82rem",
-                  color: "var(--text-secondary)",
-                  lineHeight: 1.6,
-                  marginBottom: "1rem",
-                  position: "relative",
-                  zIndex: 2,
-                }}>
-                  "{t.text}"
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", position: "relative", zIndex: 2 }}>
-                  <div style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: "rgba(255, 255, 255, 0.08)",
-                    border: "1px solid rgba(255, 255, 255, 0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: "#FFFFFF",
+          {/* Marquee Ticker */}
+          <div className="marquee-container">
+            <div className="marquee-content">
+              {marqueeList.map((t, idx) => (
+                <SpotlightCard
+                  key={idx}
+                  style={{
+                    padding: "1.25rem",
+                    width: 320,
+                    flexShrink: 0,
+                    textAlign: "left",
+                  }}
+                >
+                  <div style={{ display: "flex", gap: "2px", marginBottom: "0.75rem", position: "relative", zIndex: 2 }}>
+                    {[...Array(t.stars)].map((_, i) => (
+                      <Star key={i} size={13} fill="#F59E0B" color="#F59E0B" />
+                    ))}
+                  </div>
+                  <p style={{
+                    fontSize: "0.82rem",
+                    color: "var(--text-secondary)",
+                    lineHeight: 1.6,
+                    marginBottom: "1rem",
+                    position: "relative",
+                    zIndex: 2,
                   }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#EDEDED" }}>
-                      {t.name}
+                    "{t.text}"
+                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", position: "relative", zIndex: 2 }}>
+                    <div style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      color: "#FFFFFF",
+                    }}>
+                      {t.avatar}
                     </div>
-                    <div style={{ fontSize: "0.7rem", color: "var(--text-tertiary)" }}>
-                      {t.role}
+                    <div>
+                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#EDEDED" }}>
+                        {t.name}
+                      </div>
+                      <div style={{ fontSize: "0.7rem", color: "var(--text-tertiary)" }}>
+                        {t.role}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </SpotlightCard>
-            ))}
+                </SpotlightCard>
+              ))}
+            </div>
           </div>
         </div>
 

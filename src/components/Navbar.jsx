@@ -1,4 +1,5 @@
-import { Shield, Activity } from "lucide-react";
+import { Shield } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function Navbar({ onOpenAdmin, onReset }) {
   return (
@@ -30,19 +31,7 @@ export default function Navbar({ onOpenAdmin, onReset }) {
             userSelect: "none",
           }}
         >
-          <div style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            background: "linear-gradient(135deg, #FFFFFF 0%, #71717A 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#000000",
-            boxShadow: "0 0 15px rgba(255, 255, 255, 0.2)",
-          }}>
-            <Activity size={17} strokeWidth={2.5} />
-          </div>
+          <BrandLogo size={34} variant="icon" glow={true} />
           <div>
             <div style={{
               display: "flex",
