@@ -11,6 +11,7 @@ import RoadmapView from "./RoadmapView";
 import PriorityMatrix from "./PriorityMatrix";
 import DependencyGraph from "../DependencyGraph";
 import SpotlightCard from "./SpotlightCard";
+import BrandLogo from "./BrandLogo";
 
 export default function ReportDashboard({
   studentName,
@@ -93,27 +94,30 @@ export default function ReportDashboard({
         marginBottom: "2rem",
         flexWrap: "wrap",
       }}>
-        <div>
-          <div className="shimmer-badge" style={{ marginBottom: "0.5rem" }}>
-            <span className="font-mono" style={{ color: "var(--accent-blue)" }}>PREDICTIVE INTELLIGENCE</span>
-            <span>•</span>
-            <span>{stream} Track</span>
-            <span>•</span>
-            <span style={{ color: "#FFFFFF" }}>{goal} Target</span>
-          </div>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem" }}>
+          <BrandLogo size={46} variant="icon" glow={true} />
+          <div>
+            <div className="shimmer-badge" style={{ marginBottom: "0.5rem" }}>
+              <span className="font-mono" style={{ color: "var(--accent-blue)" }}>PREDICTIVE INTELLIGENCE</span>
+              <span>•</span>
+              <span>{stream} Track</span>
+              <span>•</span>
+              <span style={{ color: "#FFFFFF" }}>{goal} Target</span>
+            </div>
 
-          <h1 style={{
-            fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
-            fontWeight: 800,
-            letterSpacing: "-0.03em",
-            color: "#FFFFFF",
-            lineHeight: 1.1,
-          }}>
-            {studentName}'s Diagnostic Overview
-          </h1>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.35rem" }}>
-            {stats.total} Advanced chapters analyzed across {stream} curriculum
-          </p>
+            <h1 style={{
+              fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              color: "#FFFFFF",
+              lineHeight: 1.1,
+            }}>
+              {studentName}'s Diagnostic Overview
+            </h1>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.35rem" }}>
+              {stats.total} Advanced chapters analyzed across {stream} curriculum
+            </p>
+          </div>
         </div>
 
         {/* Top actions */}

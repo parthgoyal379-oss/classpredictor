@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Shield, Key, ArrowLeft, Users, MessageSquare, Star } from "lucide-react";
+import BrandLogo from "./BrandLogo";
 
 export default function AdminDashboard({
   statsData,
@@ -28,7 +29,8 @@ export default function AdminDashboard({
         justifyContent: "space-between",
         marginBottom: "2rem",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <BrandLogo size={36} variant="icon" glow={true} />
           <div style={{
             width: 36,
             height: 36,

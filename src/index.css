@@ -512,3 +512,64 @@ html, body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
 }
+
+/* ─────────────────────────────────────────────────────────────
+   VERCEL SHIP & ACETERNITY EXTREME VISUAL FX
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes lampPulse {
+  0% { opacity: 0.45; transform: translateY(-40%) scale(0.96); }
+  100% { opacity: 0.75; transform: translateY(-38%) scale(1.04); }
+}
+
+/* Cyber Reticle Corner Crosshairs */
+.cyber-reticle {
+  position: absolute;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+  z-index: 4;
+  line-height: 1;
+}
+.cyber-reticle.top-left { top: 6px; left: 8px; }
+.cyber-reticle.top-right { top: 6px; right: 8px; }
+.cyber-reticle.bottom-left { bottom: 6px; left: 8px; }
+.cyber-reticle.bottom-right { bottom: 6px; right: 8px; }
+.tilt-card-wrapper:hover .cyber-reticle {
+  color: #00DFD8;
+  text-shadow: 0 0 8px #00DFD8;
+}
+
+/* Magic Pulsing Button Hover */
+.magic-btn-container:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 35px -2px rgba(0, 223, 216, 0.65), 0 0 65px -5px rgba(139, 92, 246, 0.55);
+}
+.magic-btn-container:active {
+  transform: translateY(0) scale(0.98);
+}
+.magic-btn-arrow {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.magic-btn-container:hover .magic-btn-arrow {
+  transform: translateX(5px);
+}
+
+/* Reverse Marquee for Opposing Ribbon */
+.marquee-reverse {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+  animation: marqueeRev 34s linear infinite;
+}
+.marquee-container:hover .marquee-reverse {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeRev {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}

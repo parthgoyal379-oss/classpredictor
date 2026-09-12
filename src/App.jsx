@@ -12,7 +12,7 @@ import ReportDashboard from "./components/ReportDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import FeedbackModal from "./components/FeedbackModal";
 import LoadingScanner from "./components/LoadingScanner";
-import VercelCanvas from "./components/VercelCanvas";
+import CosmicCanvas from "./components/CosmicCanvas";
 
 import { ADMIN_PASSWORD, STREAM_SUBJECTS, FOUNDATION } from "./data/chapters";
 import { runAnalysis } from "./utils/analyzer";
@@ -258,8 +258,8 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#000000", position: "relative" }}>
-      {/* Vercel Ambient Interactive Particles */}
-      <VercelCanvas />
+      {/* Cosmic Nebula & Shooting Meteor Canvas */}
+      <CosmicCanvas />
 
       {/* Universal Top Navigation */}
       <Navbar
