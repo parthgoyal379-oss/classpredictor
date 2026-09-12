@@ -1,6 +1,7 @@
 import { ArrowRight, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import { FOUNDATION, SMETA, DLABEL, DCOL } from "../data/chapters";
 import SpotlightCard from "./SpotlightCard";
+import { playRating, playClick } from "../utils/audio";
 
 export default function ChapterRater({
   studentName,
@@ -270,7 +271,10 @@ export default function ChapterRater({
                   return (
                     <button
                       key={val}
-                      onClick={() => onRate(ch.id, val)}
+                      onClick={() => {
+                        playRating(val);
+                        onRate(ch.id, val);
+                      }}
                       className="btn"
                       style={{
                         padding: "0.45rem 0",

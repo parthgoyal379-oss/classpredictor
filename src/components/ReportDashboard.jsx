@@ -3,7 +3,7 @@ import confetti from "canvas-confetti";
 import { 
   Share2, RotateCcw, AlertTriangle, ChevronDown, 
   Lightbulb, BookOpen, CheckCircle2, 
-  Compass, Grid, Network, MessageSquare, Flame
+  Compass, Grid, Network, MessageSquare, Flame, Download
 } from "lucide-react";
 import { SMETA, WT_ORD } from "../data/chapters";
 import { getTip } from "../utils/analyzer";
@@ -12,6 +12,8 @@ import PriorityMatrix from "./PriorityMatrix";
 import DependencyGraph from "../DependencyGraph";
 import SpotlightCard from "./SpotlightCard";
 import BrandLogo from "./BrandLogo";
+import { generateDiagnosticDossier } from "../utils/dossierGenerator";
+import { playSuccess, playClick } from "../utils/audio";
 
 export default function ReportDashboard({
   studentName,
@@ -34,6 +36,7 @@ export default function ReportDashboard({
   // Celebratory confetti burst on initial report generation
   useEffect(() => {
     try {
+      playSuccess();
       confetti({
         particleCount: 40,
         spread: 60,
@@ -121,9 +124,31 @@ export default function ReportDashboard({
         </div>
 
         {/* Top actions */}
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
           <button
-            onClick={handleCopy}
+            onClick={() => {
+              playClick();
+              generateDiagnosticDossier({ studentName, stream, goal, results });
+            }}
+            className="btn-secondary"
+            style={{
+              padding: "0.5rem 0.85rem",
+              fontSize: "0.8rem",
+              background: "rgba(0, 223, 216, 0.08)",
+              borderColor: "rgba(0, 223, 216, 0.3)",
+              color: "#00DFD8",
+            }}
+            title="Download high-resolution official diagnostic dossier image"
+          >
+            <Download size={14} />
+            <span>Download Dossier</span>
+          </button>
+
+          <button
+            onClick={() => {
+              playClick();
+              handleCopy();
+            }}
             className="btn-secondary"
             style={{ padding: "0.5rem 0.85rem", fontSize: "0.8rem" }}
           >
@@ -132,7 +157,10 @@ export default function ReportDashboard({
           </button>
 
           <button
-            onClick={onReset}
+            onClick={() => {
+              playClick();
+              onReset();
+            }}
             className="btn-ghost"
             style={{ padding: "0.5rem 0.85rem", fontSize: "0.8rem" }}
           >

@@ -7,6 +7,7 @@ import LampEffect from "./LampEffect";
 import TiltCard from "./TiltCard";
 import WaveformHUD from "./WaveformHUD";
 import MagicButton from "./MagicButton";
+import InteractiveSandbox from "./InteractiveSandbox";
 
 export const CREATOR_EMAIL = "parthgoyal379@gmail.com";
 
@@ -97,6 +98,9 @@ export default function Hero({ onStart }) {
         >
           Rate your Class 9–10 foundations. Our algorithmic dependency graph projects which Class 11–12 chapters will bottleneck you — and maps precisely how to fix them.
         </p>
+
+        {/* 10-Second Interactive Sandbox Preview */}
+        <InteractiveSandbox onStartAnalysis={onStart} />
 
         {/* High-Energy Magic CTA Button with Rotating Conic Laser */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.15rem", marginBottom: "4rem" }}>

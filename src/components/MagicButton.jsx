@@ -1,9 +1,15 @@
-﻿import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { playClick } from "../utils/audio";
 
 export default function MagicButton({ onClick, children, className = "", style = {} }) {
+  const handleClick = (e) => {
+    playClick();
+    onClick?.(e);
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={`magic-btn-container ${className}`}
       style={{
         position: "relative",
