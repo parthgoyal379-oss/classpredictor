@@ -1,5 +1,5 @@
-﻿import { useState, useEffect } from "react";
-import { X, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
 
 const RECENT_ACTIVITIES = [
   { city: "Kota", stream: "PCM", goal: "JEE 2027", ago: "14s ago" },

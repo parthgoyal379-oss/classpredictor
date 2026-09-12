@@ -1,7 +1,7 @@
-﻿import { useState, useEffect, useRef } from "react";
-import { Search, X, Command, Play, Volume2, VolumeX, Shield, RotateCcw, BookOpen, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, X, Play, Volume2, VolumeX, Shield, RotateCcw, BookOpen, ArrowRight } from "lucide-react";
 import { FOUNDATION, ADVANCED } from "../data/chapters";
-import { getSoundEnabled, setSoundEnabled, playClick } from "../utils/audio";
+import { setSoundEnabled, playClick } from "../utils/audio";
 
 export default function CommandPalette({
   isOpen,
@@ -18,9 +18,12 @@ export default function CommandPalette({
 
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 60);
+      const timer = setTimeout(() => {
+        setQuery("");
+        setSelectedIndex(0);
+        inputRef.current?.focus();
+      }, 20);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 

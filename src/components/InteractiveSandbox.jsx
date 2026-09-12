@@ -1,5 +1,5 @@
-﻿import { useState } from "react";
-import { Sliders, Zap, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Sliders, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 import { playRating, playClick } from "../utils/audio";
 
 const SAMPLE_FOUNDATIONS = [

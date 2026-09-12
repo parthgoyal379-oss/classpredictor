@@ -1,4 +1,3 @@
-import React from "react";
 
 /**
  * BrandLogo - Extreme Premium Dark Mode Logo Component for ClassPredictor
