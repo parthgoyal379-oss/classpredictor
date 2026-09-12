@@ -1,6 +1,15 @@
 ﻿import { useState, useRef } from "react";
+import BorderBeam from "./BorderBeam";
 
-export default function TiltCard({ children, className = "", style = {}, glowColor = "#38BDF8" }) {
+export default function TiltCard({
+  children,
+  className = "",
+  style = {},
+  glowColor = "#38BDF8",
+  hasBeam = false,
+  beamColorFrom = "#00DFD8",
+  beamColorTo = "#A855F7",
+}) {
   const cardRef = useRef(null);
   const [coords, setCoords] = useState({ x: 0, y: 0, isHovered: false });
 
@@ -62,6 +71,16 @@ export default function TiltCard({ children, className = "", style = {}, glowCol
         ...style,
       }}
     >
+      {/* Optional Continuous Border Beam Laser */}
+      {hasBeam && (
+        <BorderBeam
+          duration={4.5}
+          borderWidth={1.5}
+          colorFrom={beamColorFrom}
+          colorTo={beamColorTo}
+        />
+      )}
+
       {/* Specular Holographic Glare Overlay */}
       <div
         style={{

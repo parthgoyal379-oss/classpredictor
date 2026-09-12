@@ -1,28 +1,9 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="favTitanium" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="50%" stop-color="#CBD5E1" />
-      <stop offset="100%" stop-color="#64748B" />
-    </linearGradient>
-    <linearGradient id="favPrism" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8" />
-      <stop offset="60%" stop-color="#818CF8" />
-      <stop offset="100%" stop-color="#C084FC" />
-    </linearGradient>
-  </defs>
-
-  <!-- Base Dark Squircle -->
-  <rect x="1" y="1" width="46" height="46" rx="12" fill="#06080D" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
-
-  <!-- C Element -->
-  <path d="M22 13 H12 C10.343 13 9 14.343 9 16 V32 C9 33.657 10.343 35 12 35 H22" 
-        stroke="url(#favTitanium)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- Predictive Vector / P Core -->
-  <path d="M22 35 V13 L29 13 C32.5 13 35 15.5 35 19 C35 22.5 32.5 25 29 25 H22" 
-        stroke="url(#favPrism)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- Center Forward Apex Spark -->
-  <circle cx="29" cy="19" r="1.5" fill="#FFFFFF" />
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <clipPath id="squircleClip">
+    <rect x="0" y="0" width="64" height="64" rx="16" />
+  </clipPath>
+  <g clip-path="url(#squircleClip)">
+    <rect width="64" height="64" fill="#000000" />
+    <image href="/brand-logo-icon.png" width="64" height="64" preserveAspectRatio="xMidYMid slice" />
+  </g>
 </svg>

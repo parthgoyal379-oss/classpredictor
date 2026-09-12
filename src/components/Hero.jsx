@@ -1,8 +1,7 @@
-﻿import { GitFork, AlertTriangle, Compass, CheckCircle2, Star, ShieldCheck } from "lucide-react";
+import { GitFork, AlertTriangle, Compass, CheckCircle2, Star, ShieldCheck } from "lucide-react";
 import { TESTIMONIALS } from "../data/testimonials";
 import SpotlightCard from "./SpotlightCard";
 import AnimatedCounter from "./AnimatedCounter";
-import BorderBeam from "./BorderBeam";
 import BrandLogo from "./BrandLogo";
 import LampEffect from "./LampEffect";
 import TiltCard from "./TiltCard";
@@ -139,13 +138,15 @@ export default function Hero({ onStart }) {
           {/* Card 1: Prerequisite Graph + Live Telemetry Waveform */}
           <TiltCard
             glowColor="#00DFD8"
+            hasBeam={true}
+            beamColorFrom="#00DFD8"
+            beamColorTo="#A855F7"
             style={{
               padding: "1.5rem",
               gridColumn: "span 1",
               border: "1px solid rgba(0, 223, 216, 0.25)",
             }}
           >
-            <BorderBeam duration={4.5} borderWidth={1.5} colorFrom="#00DFD8" colorTo="#A855F7" />
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div
                 style={{
